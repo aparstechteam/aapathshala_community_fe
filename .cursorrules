@@ -1,0 +1,5 @@
+Tech Stack: Next.js, Prisma, ShadCN UI (React)
+UI Components:
+For design, implement ShadCN UI with React.
+All reusable components should be placed in the components folder.
+Use these components across both regular pages and admin pages to maintain consistency.

@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@200;400;500;600;700&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+@font-face {
+  font-family: "Siliguri";
+  src: url("/fonts/siliguri.ttf") format("truetype");
+  font-weight: normal; /* Add variations if needed */
+  font-style: normal; /* Add variations if needed */
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: "Siliguri", sans-serif;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
+
+.scrolled::-webkit-scrollbar {
+  display: none;
+}
+
+.scrolled {
+  position: sticky;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: #151515;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #44e3f2, #14aeab);
+  border-radius: 6px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #16d7ec, #14aeab);
+}
+
+/* Water Effect */
+::-webkit-scrollbar-thumb::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.5) 10%,
+    transparent 10.01%
+  );
+  background-size: 10px 10px;
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  transition: transform 0.5s ease;
+}
+
+::-webkit-scrollbar-thumb:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* 3D Interaction */
+::-webkit-scrollbar-thumb:active {
+  transform: scale(0.9) rotateX(15deg) rotateY(15deg);
+}
+
+/* Hide the scrollbar for Webkit-based browsers */
+.scroll-area::-webkit-scrollbar {
+  display: none; /* Hide scrollbar */
+}
+
+/* For other browsers */
+.scroll-area {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.teko {
+  font-family: "Teko", sans-serif;
+}
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.33%); /* Moves by one complete set of teachers */
+  }
+}

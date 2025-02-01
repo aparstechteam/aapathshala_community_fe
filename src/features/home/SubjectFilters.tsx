@@ -81,7 +81,7 @@ export const SubjectFilters = (props: Props) => {
                 </Popover>
             </div>
 
-            <div className='text-sm font-medium p-2 rounded-full bg-ash/10'>{batchName || user?.hsc_batch}</div>
+            <div className='text-sm font-medium'>{batchName || user?.hsc_batch}</div>
             {filterSubjects}
         </div >
     ) : null

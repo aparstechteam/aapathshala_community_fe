@@ -80,7 +80,7 @@ const GroupPage = () => {
                             </div>
                         </div>
                     )}
-                    {clubs.filter((c) => c.is_member)?.length > 0 && (
+                    {clubs?.filter((c) => c.is_member)?.length > 0 && (
                         <div className='w-full'>
                             <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
                                 <h2 className='text-lg font-medium'>জয়েন্ড ক্লাব সমূহ</h2>
@@ -88,7 +88,7 @@ const GroupPage = () => {
                             </div>
                         </div>
                     )}
-                    {groups.filter((g) => !g.is_member)?.length > 0 && (
+                    {groups?.filter((g) => !g.is_member)?.length > 0 && (
                         <div className='w-full space-y-4 h-full'>
                             <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
                                 <h2 className='text-lg font-medium'>অন্যান্য গ্রুপ সমূহ</h2>
@@ -96,7 +96,7 @@ const GroupPage = () => {
                             </div>
                         </div>
                     )}
-                    {clubs.filter((c) => !c.is_member)?.length > 0 && (
+                    {clubs?.filter((c) => !c.is_member)?.length > 0 && (
                         <div className='w-full space-y-4 h-full'>
                             <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
                                 <h2 className='text-lg font-medium'>অন্যান্য ক্লাব সমূহ</h2>

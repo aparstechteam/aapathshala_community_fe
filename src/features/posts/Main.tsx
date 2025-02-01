@@ -621,7 +621,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <Tagtag tags={post?.tags || []} />
+                  <Tagtag tags={post?.tags || [user?.role]} />
                 </div>
 
                 <h2 className="text-gray-500 flex items-center dark:text-gray-400 text-sm">

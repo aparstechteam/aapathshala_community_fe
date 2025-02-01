@@ -113,7 +113,8 @@ const HomePage: NextPage = () => {
   useEffect(() => {
     const fetchPinnedPosts = async () => {
       try {
-        const response = await axios.get(`${secondaryAPI}/api/post/pinned_posts`, {
+        const batchName = localStorage.getItem("hsc_batch") || user?.hsc_batch;
+        const response = await axios.get(`${secondaryAPI}/api/post/pinned_posts?hsc_batch=${batchName}`, {
           headers: {
             'Authorization': `Bearer ${accessToken()}`
           }
@@ -125,7 +126,7 @@ const HomePage: NextPage = () => {
       }
     }
     fetchPinnedPosts()
-  }, [refetchPinnedPosts])
+  }, [refetchPinnedPosts, user])
 
   async function unpinPost(id: string | number) {
     try {

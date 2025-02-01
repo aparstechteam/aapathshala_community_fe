@@ -216,10 +216,12 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
         });
         return;
       }
-
+      const batchName = localStorage.getItem("hsc_batch") || user?.hsc_batch;
+      
       const data = {
         category: category.value,
         body: prompt,
+        hsc_batch: batchName,
         subject_id: subject || "",
         chapter_id: chapter,
         token,
@@ -445,9 +447,11 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
   async function handlePollSubmit(e: FormEvent) {
     e.preventDefault();
     try {
+      const batchName = localStorage.getItem("hsc_batch") || user?.hsc_batch;
       setLoading(true);
       const data = {
         category: "poll",
+        hsc_batch: batchName,
         body: prompt,
         pollType: pollType ? "question" : "survey",
         pollOptions: options,

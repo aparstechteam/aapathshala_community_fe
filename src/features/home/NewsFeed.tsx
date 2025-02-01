@@ -12,7 +12,7 @@ type TNewsFeed = {
   selectedSubject?: string
   sort?: string
   refetch?: () => void
-  
+
 }
 
 export function NewsFeed(props: TNewsFeed) {
@@ -44,8 +44,9 @@ export function NewsFeed(props: TNewsFeed) {
       try {
         setError('')
         setLoading(true);
+        const batchName = localStorage.getItem("hsc_batch") || user?.hsc_batch;
         if (!!user?.id) {
-          const POST_API_URL = `${secondaryAPI}/api/post?page=${page}&pageSize=10&subjectId=${dSelectedSubject || ''}&sortedBy=${dsort || ''}&group=${groupId}`;
+          const POST_API_URL = `${secondaryAPI}/api/post?page=${page}&pageSize=10&subjectId=${dSelectedSubject || ''}&sortedBy=${dsort || ''}&group=${groupId}&hsc_batch=${batchName}`;
 
           const response = await axios.get(POST_API_URL, {
             headers: {
@@ -71,7 +72,7 @@ export function NewsFeed(props: TNewsFeed) {
         setLoading(false);
       }
     };
-    
+
     getPosts();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -7,6 +7,10 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
   useUser,
 } from "@/components";
 import { cn } from "@/lib/utils";
@@ -46,6 +50,14 @@ export const Header = () => {
   const [allNotifications, setAllNotifications] = useState<Notification[]>([]);
   const [success, setSuccess] = useState<boolean>(false);
   const [notificationCount, setNotificationCount] = useState<number>(0);
+  const [batchName, setBatchName] = useState<string>("");
+
+  useEffect(() => {
+    const batch = localStorage.getItem("hsc_batch");
+    if (batch) {
+      setBatchName(batch);
+    }
+  }, []);
 
   async function handleLogout() {
     try {
@@ -316,13 +328,9 @@ export const Header = () => {
                         {user?.name}
                       </h4>
                       <p>
-                        {Number(user.level) === 0 ? (
-                          <span className="text-sm capitalize">Guardian</span>
-                        ) : (
-                          <span className="text-sm capitalize">
-                            Class: {user.level}
-                          </span>
-                        )}
+                        <span className="text-sm capitalize">
+                          {batchName || user.hsc_batch}
+                        </span>
                       </p>
                     </div>
                     <div className="grid gap-1 pt-3">
@@ -350,12 +358,26 @@ export const Header = () => {
                       >
                         <WandSparkles size={16} /> Feedback
                       </Link>
-                      <Link
-                        className="flex items-center gap-2 px-2 py-2 !border-0 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400"
-                        href="/auth?step=1"
-                      >
-                        <UserRound size={16} /> Switch Profile
-                      </Link>
+                      <Select value={batchName || user?.hsc_batch} onValueChange={(value) => {
+                        localStorage.setItem('hsc_batch', value)
+                        if (batchName !== value) {
+                          setBatchName(value)
+                          router.reload()
+                        }
+                      }}>
+                        <SelectTrigger className="flex items-center justify-start gap-2 px-2 py-2 !border-0 hover:bg-gray-100 !rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">
+                          <h2 className="flex items-center text-base gap-2">
+                            <UserRound size={16} />
+                            <span>
+                              Switch Batch
+                            </span>
+                          </h2>
+                        </SelectTrigger>
+                        <SelectContent className="z-[9999] relative !bg-ash/40 grid gap-2">
+                          <SelectItem value="HSC 25">HSC 25</SelectItem>
+                          <SelectItem value="HSC 26">HSC 26</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     <div className="grid gap-1 pt-3">

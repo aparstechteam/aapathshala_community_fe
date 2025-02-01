@@ -20,7 +20,7 @@ export function GroupLists(props: Props) {
                     {loading && <div className="flex justify-center items-center h-full">
                         <Loader2 className="w-6 h-6 animate-spin" />
                     </div>}
-                    {groups.map((g) => (
+                    {groups?.map((g) => (
                         <div
                             key={g.id}
                             className="flex items-center justify-between gap-2 sm:gap-4 py-2"

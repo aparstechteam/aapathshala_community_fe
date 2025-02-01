@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, filterIcon, Popover, PopoverContent, PopoverTrigger, useUser } from '@/components'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SubjectFilter } from '../subjects';
 import { Subject } from '@/@types';
 import { PopoverClose } from '@radix-ui/react-popover';
@@ -19,6 +19,14 @@ export const SubjectFilters = (props: Props) => {
     const { subjects, selectedSubject, setSelectedSubject, setSort } = props
     const [open, setOpen] = useState<boolean>(false);
     const [sortbySelected, setSortbySelected] = useState<string>(sortby[1])
+    const [batchName, setBatchName] = useState<string>('')
+
+    useEffect(() => {
+        const batch = localStorage.getItem('hsc_batch')
+        if (batch) {
+            setBatchName(batch)
+        }
+    }, [user])
 
     const filterSubjects = (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -73,10 +81,7 @@ export const SubjectFilters = (props: Props) => {
                 </Popover>
             </div>
 
-            {/* <button type="button" className="flex items-center gap-2 relative z-[2]">
-                {filterIcon}
-                <span className="text-sm font-medium">বিষয় ফিল্টার করো</span>
-            </button> */}
+            <div className='text-sm font-medium p-2 rounded-full bg-ash/10'>{batchName || user?.hsc_batch}</div>
             {filterSubjects}
         </div >
     ) : null

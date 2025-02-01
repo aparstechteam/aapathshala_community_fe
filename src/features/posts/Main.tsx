@@ -512,6 +512,13 @@ export const PostComponent: React.FC<PostShowProps> = ({
     </Dialog>
   );
 
+  const [aspectRatio, setAspectRatio] = useState<number | null>(null)
+
+  const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = event.target as HTMLImageElement
+    setAspectRatio(img.naturalHeight / img.naturalWidth)
+  }
+
   return (
     <>
       {saveTypesModal}
@@ -647,7 +654,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
                       </span>
                     </Link>
                   )}
-                  {!post?.group_name && !!post?.subject?.name ? (
+                  {!!post?.subject?.name ? (
                     <>
                       <span>{post?.subject?.name || post?.subjectName}</span>
                       <span className="flex items-center px-1">
@@ -896,13 +903,20 @@ export const PostComponent: React.FC<PostShowProps> = ({
               <button type="button" onClick={() => {
                 setShowImage(post?.image)
                 setImgShowOpen(true)
-              }} className="relative xl:h-[600px] h-[300px] w-full">
-                <Image
-                  src={post?.image}
-                  fill
-                  alt="post-image"
-                  className="object-contain aspect-auto md:rounded-xl bg-gray-50 dark:bg-gray-800"
-                />
+              }}>
+                <div
+                  className="relative md:rounded-xl w-full overflow-hidden bg-gray-200"
+                  style={{ paddingBottom: aspectRatio ? `${aspectRatio * 100}%` : '56.25%' }}
+                >
+                  <Image
+                    src={post?.image}
+                    alt="Post image"
+                    layout="fill"
+                    objectFit="cover"
+                    className="md:rounded-xl"
+                    onLoad={handleImageLoad}
+                  />
+                </div>
               </button>
             ) : (!!post?.images &&
               <div className={cn("grid gap-2", post?.images.length > 1 ? "grid-cols-2" : "grid-cols-1")}>
@@ -911,20 +925,27 @@ export const PostComponent: React.FC<PostShowProps> = ({
                     setShowImage(image)
                     setImgShowOpen(true)
                   }}
-                    className="relative col-span-1 xl:h-[400px] h-[300px] w-full">
-                    <Image
-                      src={image}
-                      fill
-                      alt="post-image"
-                      className="object-cover md:rounded-xl bg-gray-50 dark:bg-gray-800"
-                    />
-                    {index === 3 && post?.images.length > 4 && (
-                      <div className="absolute text-2xl font-bold sm:rounded-xl top-0 right-0 flex items-center justify-center bg-black/40 w-full h-full text-white px-2 py-1">
-                        <span className="text-white rounded-full p-2 w-12 h-12">
-                          +{post?.images.length - 3}
-                        </span>
-                      </div>
-                    )}
+                    className="col-span-1 w-full">
+                    <div
+                      className="relative w-full overflow-hidden bg-gray-200 md:rounded-xl"
+                      style={{ paddingBottom: aspectRatio ? `${aspectRatio * 100}%` : '56.25%' }}
+                    >
+                      <Image
+                        src={image}
+                        alt="Post image"
+                        layout="fill"
+                        objectFit="cover"
+                        className="md:rounded-xl"
+                        onLoad={handleImageLoad}
+                      />
+                      {index === 3 && post?.images.length > 4 && (
+                        <div className="absolute text-2xl font-bold sm:rounded-xl top-0 right-0 flex items-center justify-center bg-black/40 w-full h-full text-white px-2 py-1">
+                          <span className="text-white rounded-full p-2 w-12 h-12">
+                            +{post?.images.length - 3}
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </button>
                 ))}
               </div>

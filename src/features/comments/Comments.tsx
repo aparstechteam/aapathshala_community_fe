@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios, { AxiosError } from 'axios';
-import { TrashIcon, LoaderCircle } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage, Input, fromNow, useUser } from '@/components';
+import { TrashIcon, LoaderCircle, X, Loader2 } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage, Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, Input, fromNow, useUser } from '@/components';
 import Router from 'next/router';
 import Image from 'next/image';
-import { useComments } from '@/hooks';
+import { useCloudflareImage, useComments } from '@/hooks';
 import { Comment } from '@/@types';
 import { cn } from '@/lib/utils';
 import dynamic from 'next/dynamic';
-import { curicity_id, secondaryAPI } from '@/configs';
+import { secondaryAPI } from '@/configs';
 import { handleError } from '@/hooks/error-handle';
 import { ValidImage } from '@/components/shared/ValidImage';
+import { toast } from '@/hooks/use-toast';
+import { ImageCropper } from '@/lib/imageCrop';
 const AppMath = dynamic(() => import('../../components/contexts/MathJAX'), { ssr: false });
 
 interface CommentProps {
@@ -24,6 +26,7 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
 
     const { user } = useUser()
     const { addComment, deleteComment } = useComments()
+    const { uploadImage } = useCloudflareImage()
 
     const [reaction, setReaction] = useState<string | null>(null);
     const [commentText, setCommentText] = useState<string>('');
@@ -81,14 +84,57 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
         }
     };
 
+    const [imgUploading, setImgUploading] = useState(false)
+    const [imgSrc, setImgSrc] = useState<File | null>(null)
+    const [file, setFile] = useState<File | null>(null)
+    const [cropperOpen, setCropperOpen] = useState(false)
+    const [preview, setPreview] = useState<string | null>(null)
+
+    const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+        const f = e.target.files?.[0];
+        if (f) {
+            setImgUploading(true)
+            setImgSrc(f)
+            // const imagelink = await uploadImage(file as File)
+            // setPreview(imagelink)
+            setCropperOpen(true)
+            setImgUploading(false)
+        }
+    };
+
+    const handleCroppedImageChange = async (f: File) => {
+        const file = f
+        if (file) {
+            setImgUploading(true)
+            setFile(file)
+            // setPreview(URL.createObjectURL(file));
+            setImgUploading(false)
+        }
+    };
+
+    async function cropDone() {
+        try {
+            setCropperOpen(false)
+            const imagelink = await uploadImage(file as File)
+            setPreview(imagelink as string);
+        } catch {
+            toast({
+                title: 'Image Upload Failed',
+                description: 'Please try again',
+                variant: 'destructive'
+            })
+        }
+    }
+
     const submitComment = async () => {
         try {
             setReplying(true);
-            await addComment(commentText, null, parentCommentId)
+            await addComment(commentText, preview, parentCommentId)
             setCommentText('');
             if (setSuccess)
                 setSuccess(true)
             setReplying(false);
+            setPreview('')
             setKey(key + 1)
         } catch (err) {
             setReplying(false);
@@ -102,10 +148,37 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
         setKey(key + 1)
     };
 
-    const bgColor = comment?.user_id === curicity_id ? 'bg-dashnje ring-2 ring-elegant/20 dark:ring-elegant/50' : 'bg-dew dark:bg-deep ring-0'
+    const cropperModal = (
+        <div className='fixed inset-0 z-50 flex items-center justify-center overflow-hidden'>
+            <Dialog open={cropperOpen} onOpenChange={setCropperOpen}>
+                <DialogContent className='p-4 bg-white flex justify-center max-w-[500px] items-center'>
+                    <DialogHeader>
+                        <DialogTitle className='text-center py-2 text-black'>Crop Image</DialogTitle>
+                    </DialogHeader>
+                    <ImageCropper imgFile={imgSrc as File} onCropComplete={handleCroppedImageChange} />
+                    <DialogFooter className='grid grid-cols-2 gap-2 justify-between w-full'>
+
+                        <Button className='ring-1 ring-ash text-black pb-1' type='button' onClick={() => {
+                            setImgSrc(null)
+                            setCropperOpen(false)
+                        }}>
+                            Cancel
+                        </Button>
+                        <Button type='button' className='ring-1 ring-ash text-black pb-1' onClick={() => cropDone()}>
+                            Crop
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        </div>
+    )
+
+
+    const bgColor = comment?.user_id === '43543' ? 'bg-dashnje ring-2 ring-elegant/20 dark:ring-elegant/50' : 'bg-dew dark:bg-deep ring-0'
 
     return (
         <div>
+            {cropperOpen && cropperModal}
             <div className="flex w-full pb-4">
                 <Avatar className="mt-2 cursor-pointer" onClick={() => Router.push(`/users/${comment.user.id}`)}>
                     <AvatarImage src={comment.user.image} alt={comment.user.name} />
@@ -127,7 +200,7 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
                                 <span className='pt-1'>
                                     {comment.user.name}
                                 </span>
-                                {comment.user_id === curicity_id && (
+                                {comment.user_id === '43543' && (
                                     <svg width="36" height="17" viewBox="0 0 36 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect y="0.5" width="36.0003" height="16" rx="8" fill="#8A00CA" />
                                         <path opacity="0.4" d="M12.3957 3.5C12.5588 3.5 12.7001 3.61304 12.736 3.77218L12.9865 4.88454C13.1695 5.69664 13.8037 6.33083 14.6158 6.51377L15.7281 6.76434C15.8873 6.80019 16.0003 6.94153 16.0003 7.10465C16.0003 7.26777 15.8873 7.40911 15.7281 7.44496L14.6158 7.69553C13.8037 7.87847 13.1695 8.51266 12.9865 9.32476L12.736 10.4371C12.7001 10.5963 12.5588 10.7093 12.3957 10.7093C12.2325 10.7093 12.0912 10.5963 12.0554 10.4371L11.8048 9.32476C11.6218 8.51266 10.9877 7.87847 10.1756 7.69553L9.06319 7.44496C8.90406 7.40911 8.79102 7.26777 8.79102 7.10465C8.79102 6.94153 8.90406 6.80019 9.06319 6.76434L10.1756 6.51377C10.9877 6.33083 11.6218 5.69664 11.8048 4.88454L12.0554 3.77218C12.0912 3.61304 12.2325 3.5 12.3957 3.5Z" fill="white" />
@@ -149,25 +222,25 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
                             {comment?.image && <Image height={200} width={200} src={comment.image} className="rounded-md" alt="" />}
                         </div>
                     </div>
-                    {comment.user_id === curicity_id && (
+                    {comment.user_id === '43543' && (
                         <div className='mt-3 text-xs md:text-sm font-medium px-3'>
                             <p>তুমি কি এই উত্তরটিতে স্যাটিস্ফাইড?</p>
                         </div>
                     )}
                     <div className="flex items-center px-2 mt-2 space-x-4 text-xs md:text-sm font-medium text-light">
 
-                        {comment.user_id === curicity_id ? (
+                        {comment.user_id === '43543' ? (
                             <>
-                                <button type='button' className={`flex items-center gap-1 ${reaction === 'satisfied' ? 'text-elegant font-bold' : comment.satisfied ? "text-elegant font-bold" : ""}`}
+                                <button type='button' className={`flex items-center gap-1 ${reaction === 'satisfied' ? 'text-elegant font-bold' : ''}`}
                                     onClick={() => reactToComment('satisfied')}>
                                     {/* <HeartIcon size={16} /> */}
-                                    <svg width="19" height="18" viewBox="0 0 19 18" fill={reaction === 'satisfied' ? "#8A00CA" : comment.satisfied ? "#8A00CA" : "none"} xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="19" height="18" viewBox="0 0 19 18" fill={reaction === 'satisfied' ? "#8A00CA" : "none"} xmlns="http://www.w3.org/2000/svg">
                                         <path d="M15.0969 2.99561C13.0857 1.76192 11.3303 2.25909 10.2758 3.05101C9.84339 3.37572 9.6272 3.53807 9.5 3.53807C9.3728 3.53807 9.15661 3.37572 8.72424 3.05101C7.66971 2.25909 5.91431 1.76192 3.90308 2.99561C1.26355 4.6147 0.66629 9.95614 6.75465 14.4625C7.91429 15.3208 8.49411 15.75 9.5 15.75C10.5059 15.75 11.0857 15.3208 12.2454 14.4625C18.3337 9.95614 17.7365 4.6147 15.0969 2.99561Z"
-                                            stroke={reaction === 'satisfied' ? "#8A00CA" : comment.satisfied ? "#8A00CA" : "#575757"} strokeWidth="1.125" strokeLinecap="round" />
+                                            stroke={reaction === 'satisfied' ? "#8A00CA" : "#575757"} strokeWidth="1.125" strokeLinecap="round" />
                                     </svg>
                                     <span className=''>Yes</span>
                                     <p className='flex items-center gap-1'>
-                                        <span className={cn('pt-0.5 ring-1 min-w-7 rounded-full px-2 text-xs', reaction === 'satisfied' ? 'text-elegant bg-elegant/10 ring-elegant/50' : comment.satisfied ? "text-elegant bg-elegant/10 ring-elegant/50" : 'bg-light/10 text-light ring-light/50 ')}>
+                                        <span className={cn('pt-0.5 ring-1 min-w-7 rounded-full px-2 text-xs', reaction === 'satisfied' ? 'text-elegant bg-elegant/10 ring-elegant/50' : 'bg-light/10 text-light ring-light/50 ')}>
                                             {comment.satisfied_count}
                                         </span>
                                     </p>
@@ -263,28 +336,59 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
             )}
 
             {mention && (
-                <div className='flex gap-2 items-center pl-10 pb-8'>
-                    <div className="flex items-start justify-between w-full gap-4" id="commentbox">
+                <div className={cn('flex gap-2 pl-10 pb-8', !!preview ? 'items-start' : 'items-center')}>
+                    <div className={cn("flex justify-between w-full gap-4", !!preview ? 'items-start' : 'items-center')} id="commentbox">
                         <ValidImage src={user?.image || ''} alt={user?.name || ''} />
-                        <div className="flex-1">
-                            <Input type='text' className='!bg-transparent !rounded-full !text-gray-900 dark:!text-gray-100' value={commentText}
+                        <div className="flex-1 pt-1">
+                            <Input type='text' className='!bg-transparent !h-full !rounded-full !text-gray-900 dark:!text-gray-100' value={commentText}
                                 onChange={(e) => {
                                     e.preventDefault()
                                     setCommentText(e.target.value)
                                     setKey(key + 2)
                                 }} placeholder={`Type your reply to ...@${mention}`} />
                             {/* <span className="text-xs font-semibold text-teal-500">Replying to @{mention}</span> */}
+                            {preview && (
+                                <div className='w-full h-full flex justify-center py-4'>
+                                    <div className='max-w-[180px] min-h-[180px] relative'>
+                                        <div>
+                                            <Image src={preview as string} alt='preview' width={180} height={180} className='rounded-lg object-contain ring-1 ring-ash' />
+                                        </div>
+                                        <button type='button' className='absolute duration-300 hover:opacity-100 opacity-0 rounded-lg top-0 right-0 w-full h-full flex items-center justify-center hover:bg-black/40'
+                                            onClick={() => {
+                                                setPreview(null)
+                                                setFile(null)
+                                                setImgSrc(null)
+                                            }}>
+                                            <span className='p-2 rounded-lg bg-red-500'>
+                                                <X className='w-4 h-4 text-white' />
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
 
-                    <div className={cn(!commentText && 'invisible opacity-0', "duration-300 transition-all text-right")}>
-                        <button type='submit' onClick={submitComment} className='!rounded-full p-2 text-black bg-white'
+                    <div className='!rounded-full !cursor-pointer flex items-center gap-2 relative !text-black dark:!text-life dark:bg-life/20 bg-white p-2'>
+                        <Input className='!p-0 opacity-0 absolute w-full h-full !cursor-pointer' type="file" accept="image/*" onChange={handleImageChange} />
+                        {imgUploading ? <Loader2 className='animate-spin w-4 h-4' /> : (
+                            <svg className='cursor-pointer' width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="6.5" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M1.5 10.5C1.5 6.02166 1.5 3.78249 2.89124 2.39124C4.28249 1 6.52166 1 11 1C15.4783 1 17.7175 1 19.1088 2.39124C20.5 3.78249 20.5 6.02166 20.5 10.5C20.5 14.9783 20.5 17.2175 19.1088 18.6088C17.7175 20 15.4783 20 11 20C6.52166 20 4.28249 20 2.89124 18.6088C1.5 17.2175 1.5 14.9783 1.5 10.5Z" stroke="currentColor" strokeWidth="1.5" />
+                                <path d="M4 19.4999C8.37246 14.275 13.2741 7.384 20.4975 12.0424" stroke="currentColor" strokeWidth="1.5" />
+                            </svg>
+                        )}
+                    </div>
+
+                    <div className={cn(!commentText ? 'text-light' : "text-olive bg-olive/10", "duration-300 rounded-full transition-all text-right")}>
+
+                        <button type='submit' disabled={!commentText} onClick={submitComment} className='!rounded-full p-2'
                         >
                             {replying ? (
-                                <LoaderCircle className="animate-spin" />
+                                <LoaderCircle size={16} className="animate-spin" />
                             ) : (
                                 <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M18.4164 9.30198L2.29277 1.43678C2.15411 1.36914 2.00184 1.33398 1.84755 1.33398C1.2867 1.33398 0.832031 1.78865 0.832031 2.3495V2.37881C0.832031 2.51508 0.84874 2.65083 0.88179 2.78303L2.42843 8.96957C2.47067 9.13857 2.61355 9.2634 2.78665 9.28265L9.58462 10.038C9.82036 10.0642 9.9987 10.2634 9.9987 10.5007C9.9987 10.7379 9.82036 10.9372 9.58462 10.9633L2.78665 11.7187C2.61355 11.7379 2.47067 11.8627 2.42843 12.0317L0.88179 18.2182C0.84874 18.3505 0.832031 18.4862 0.832031 18.6225V18.6518C0.832031 19.2127 1.2867 19.6673 1.84755 19.6673C2.00184 19.6673 2.15411 19.6322 2.29277 19.5645L18.4164 11.6993C18.8746 11.4758 19.1654 11.0106 19.1654 10.5007C19.1654 9.99074 18.8746 9.52548 18.4164 9.30198Z" fill="#008643" />
+                                    <path d="M18.4164 9.30198L2.29277 1.43678C2.15411 1.36914 2.00184 1.33398 1.84755 1.33398C1.2867 1.33398 0.832031 1.78865 0.832031 2.3495V2.37881C0.832031 2.51508 0.84874 2.65083 0.88179 2.78303L2.42843 8.96957C2.47067 9.13857 2.61355 9.2634 2.78665 9.28265L9.58462 10.038C9.82036 10.0642 9.9987 10.2634 9.9987 10.5007C9.9987 10.7379 9.82036 10.9372 9.58462 10.9633L2.78665 11.7187C2.61355 11.7379 2.47067 11.8627 2.42843 12.0317L0.88179 18.2182C0.84874 18.3505 0.832031 18.4862 0.832031 18.6225V18.6518C0.832031 19.2127 1.2867 19.6673 1.84755 19.6673C2.00184 19.6673 2.15411 19.6322 2.29277 19.5645L18.4164 11.6993C18.8746 11.4758 19.1654 11.0106 19.1654 10.5007C19.1654 9.99074 18.8746 9.52548 18.4164 9.30198Z" fill="currentColor" />
                                 </svg>
                             )}
                         </button>

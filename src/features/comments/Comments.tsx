@@ -158,16 +158,16 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
 
                         {comment.user_id === curicity_id ? (
                             <>
-                                <button type='button' className={`flex items-center gap-1 ${reaction === 'satisfied' ? 'text-elegant font-bold' : ''}`}
+                                <button type='button' className={`flex items-center gap-1 ${reaction === 'satisfied' ? 'text-elegant font-bold' : comment.satisfied ? "text-elegant font-bold" : ""}`}
                                     onClick={() => reactToComment('satisfied')}>
                                     {/* <HeartIcon size={16} /> */}
-                                    <svg width="19" height="18" viewBox="0 0 19 18" fill={reaction === 'satisfied' ? "#8A00CA" : "none"} xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="19" height="18" viewBox="0 0 19 18" fill={reaction === 'satisfied' ? "#8A00CA" : comment.satisfied ? "#8A00CA" : "none"} xmlns="http://www.w3.org/2000/svg">
                                         <path d="M15.0969 2.99561C13.0857 1.76192 11.3303 2.25909 10.2758 3.05101C9.84339 3.37572 9.6272 3.53807 9.5 3.53807C9.3728 3.53807 9.15661 3.37572 8.72424 3.05101C7.66971 2.25909 5.91431 1.76192 3.90308 2.99561C1.26355 4.6147 0.66629 9.95614 6.75465 14.4625C7.91429 15.3208 8.49411 15.75 9.5 15.75C10.5059 15.75 11.0857 15.3208 12.2454 14.4625C18.3337 9.95614 17.7365 4.6147 15.0969 2.99561Z"
-                                            stroke={reaction === 'satisfied' ? "#8A00CA" : "#575757"} strokeWidth="1.125" strokeLinecap="round" />
+                                            stroke={reaction === 'satisfied' ? "#8A00CA" : comment.satisfied ? "#8A00CA" : "#575757"} strokeWidth="1.125" strokeLinecap="round" />
                                     </svg>
                                     <span className=''>Yes</span>
                                     <p className='flex items-center gap-1'>
-                                        <span className={cn('pt-0.5 ring-1 min-w-7 rounded-full px-2 text-xs', reaction === 'satisfied' ? 'text-elegant bg-elegant/10 ring-elegant/50' : 'bg-light/10 text-light ring-light/50 ')}>
+                                        <span className={cn('pt-0.5 ring-1 min-w-7 rounded-full px-2 text-xs', reaction === 'satisfied' ? 'text-elegant bg-elegant/10 ring-elegant/50' : comment.satisfied ? "text-elegant bg-elegant/10 ring-elegant/50" : 'bg-light/10 text-light ring-light/50 ')}>
                                             {comment.satisfied_count}
                                         </span>
                                     </p>

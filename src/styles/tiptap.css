@@ -1,0 +1,19 @@
+.ProseMirror {
+  padding: 10px;
+  min-height: 100px;
+  font-family: "Siliguri", sans-serif;
+}
+.ProseMirror-focused {
+  outline: none;
+}
+
+/* Basic editor styles */
+.tiptap {
+  .mention {
+    background-color: var(--purple-light);
+    border-radius: 0.4rem;
+    box-decoration-break: clone;
+    color: var(--purple);
+    padding: 0.1rem 0.3rem;
+  }
+}

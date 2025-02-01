@@ -119,3 +119,20 @@ body {
     transform: translateX(-33.33%); /* Moves by one complete set of teachers */
   }
 }
+
+.mention {
+  background-color: rgb(187, 231, 192);
+  border-radius: 10px;
+  box-decoration-break: clone;
+  align-items: center;
+  color: rgb(6, 77, 35);
+  padding: 0.1rem 0.3rem;
+}
+
+.hash-tag {
+  color: #008643;
+  font-style: italic;
+  &:hover {
+    color: #43a047;
+  }
+}

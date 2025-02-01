@@ -31,6 +31,7 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
+  RtxEditor,
 } from "@/components";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import Image from "next/image";
@@ -1052,7 +1053,14 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                         )}
                       >
                         <div>
-                          <Textarea
+                          <RtxEditor
+                            content={prompt}
+                            onUpdate={(value) => {
+                              setPrompt(value);
+                              setError({ ...error, prompt: "" });
+                            }}
+                          />
+                          {/* <Textarea
                             required
                             value={prompt}
                             onChange={(e) => {
@@ -1065,7 +1073,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                               error.prompt && !prompt && "ring-hot ring-2"
                             )}
                             placeholder="তোমার প্রশ্ন বা সমস্যা লিখো..."
-                          />
+                          /> */}
                           {error && !prompt && (
                             <p className="text-hot text-xs mt-2">
                               {error.prompt}

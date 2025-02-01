@@ -1,10 +1,12 @@
 "use-client"
 import { UserProvider } from "@/components/contexts/UserContext";
 import { Toaster } from "@/components/ui/toaster";
-import "@/styles/globals.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ThemeProvider } from "next-themes";
 import type { AppProps } from "next/app";
+import "@/styles/globals.css";
+import '@/styles/tiptap.css'
+import '@/styles/mention.css'
 
 
 export default function App({ Component, pageProps }: AppProps) {

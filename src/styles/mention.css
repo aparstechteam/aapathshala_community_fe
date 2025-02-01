@@ -1,0 +1,35 @@
+/* Dropdown menu */
+.dropdown-menu {
+  background: white;
+  border: 1px solid var(--gray-1);
+  border-radius: 0.7rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  overflow: auto;
+  padding: 0.4rem;
+  position: relative;
+  padding: 0.5rem;
+}
+
+.dropdown-menu button {
+  align-items: center;
+  background-color: white;
+  color: black;
+  display: flex;
+  gap: 0.25rem;
+  text-align: left;
+  width: 100%;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.dropdown-menu button:hover,
+.dropdown-menu button:hover.is-selected {
+  background-color: rgb(210, 146, 210);
+}
+
+.dropdown-menu button.is-selected {
+  background-color: rgb(225, 108, 225);
+}

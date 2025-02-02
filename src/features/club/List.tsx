@@ -231,8 +231,7 @@ export function ClubListCard(props: Propss) {
                       <span>Inactive</span>
                     </span>
                   ) : (
-                    g?.is_paid &&
-                    !user?.is_paid && (
+                    g?.is_eligible && (
                       <p className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-elegant/10 text-elegant text-xs">
                         <span className="pt-0.5 font-medium">Paid</span>
                         <span>
@@ -257,7 +256,7 @@ export function ClubListCard(props: Propss) {
                   )}
                 </div>
               </div>
-              {g.is_eligible && !user?.is_paid && !g.is_member && (
+              {g.is_eligible && !g.is_member && (
                 <button
                   type="button"
                   onClick={() => {

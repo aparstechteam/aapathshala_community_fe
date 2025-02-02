@@ -7,6 +7,8 @@ import Cookies from 'js-cookie';
 
 export const handleError = async (error: AxiosError, refetch?: () => void) => {
 
+    
+
     if (error.response && error.response.status === 402) {
         toast({
             title: 'Developer Error',
@@ -17,7 +19,7 @@ export const handleError = async (error: AxiosError, refetch?: () => void) => {
     }
 
     if (error.response && error.response.status === 404) {
-        // Router.push('/auth')
+        Router.push('/auth')
         return
     }
 

@@ -16,6 +16,7 @@ type UserData = {
     followers: number;
     following: number;
     school: string;
+    institute_name: string;
     thana: string;
     district: string;
     bio: string;
@@ -29,6 +30,7 @@ type UserData = {
     instagram: string;
     gender: string;
     religion: string;
+    course_enrolled?: string[];
 };
 
 type DashboardData = {
@@ -40,6 +42,7 @@ type DashboardData = {
 export type UserProfile = {
     userData: UserData;
     dashboard: DashboardData;
+    course_enrolled: string[];
 };
 
 

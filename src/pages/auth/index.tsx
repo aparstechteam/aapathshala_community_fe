@@ -27,13 +27,12 @@ const LoginPage = () => {
         },
       });
       const data = await response.data;
-      localStorage.setItem('user', JSON.stringify(response.data.user))
       setUser(data.user)
+      localStorage.setItem('user', JSON.stringify(data.user))
       if (!data?.user?.status) {
         Router.push("/auth/register");
       } else {
         Router.push("/");
-        localStorage.removeItem('user')
       }
     } catch (error) {
       console.error("Error assigning user:", error);
@@ -52,7 +51,6 @@ const LoginPage = () => {
           "Content-Type": "application/json",
         },
       });
-      setUser(res.data.user)
 
       localStorage.setItem('accessToken', res.data.accessToken)
       localStorage.setItem('refreshToken', res.data.refreshToken)

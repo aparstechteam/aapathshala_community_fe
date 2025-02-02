@@ -83,9 +83,9 @@ type DashboardData = {
 };
 
 export type UserProfile = {
-  userData: UserData;
-  dashboard: DashboardData;
-  course_enrolled: string[];
+  userData: UserData
+  dashboard: DashboardData
+  course_enrolled: string[]
 };
 
 type Props = {

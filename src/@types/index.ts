@@ -82,6 +82,7 @@ export type UserData = {
     religion?: string
     bio?: string
     institute_name?: string
+    course_enrolled?: string[]
 };
 
 export type Club = {

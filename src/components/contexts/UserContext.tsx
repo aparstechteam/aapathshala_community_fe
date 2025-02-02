@@ -33,7 +33,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         async function getme() {
             const usercache = localStorage.getItem('user') || ''
-            if (usercache) {
+            if (!!usercache) {
                 const usercached = JSON.parse(usercache as string)
                 setUser(usercached)
                 getActiveUsers(usercached?.id as string)

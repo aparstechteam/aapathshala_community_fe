@@ -17,6 +17,7 @@ type Props = {
 }
 
 export const Sidebar = (props: Props) => {
+
   const { user } = useUser();
   const [groups, setGroups] = useState<Club[]>([]);
   const [mygroups, setMyGroups] = useState<Club[]>([]);
@@ -34,7 +35,6 @@ export const Sidebar = (props: Props) => {
         });
         if (response.data.groups.length > 0) {
           setMyGroups(response.data.groups);
-          // localStorage.setItem('clubs', JSON.stringify(response.data.groups));
         }
         setLoading(false);
       } catch (err) {
@@ -58,7 +58,6 @@ export const Sidebar = (props: Props) => {
         });
         if (response.data.groups.length > 0) {
           setGroups(response.data.groups);
-          // localStorage.setItem('groups', JSON.stringify(response.data.groups));
         }
         setLoading(false);
       } catch (err) {

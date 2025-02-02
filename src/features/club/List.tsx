@@ -116,9 +116,9 @@ export function ClubListCard(props: Propss) {
           <Button
             size="sm"
             className="bg-hot/10 text-hot"
-            onClick={() => setGoribOpen(false)}
+            onClick={() => Router.push('/profile?tab=courses')}
           >
-            বাতিল
+            কোর্স অ্যাড করো
           </Button>
           <Button
             size="sm"
@@ -128,7 +128,7 @@ export function ClubListCard(props: Propss) {
               setGoribOpen(false);
             }}
           >
-            ভর্তি হও
+            কোর্স কিনো
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -28,7 +28,7 @@ import {
 } from "@/components";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { UserComments } from "../comments";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import {
   BookOpenText,
   Check,
@@ -102,6 +102,8 @@ export const ProfileComponent = (props: Props) => {
   const { uploadImage } = useCloudflareImage();
   const { toast } = useToast();
   const { user, setUser } = useUser();
+  const router = useRouter();
+  const tab = router.query.tab as string;
 
   const [currTab, setCurrTab] = useState("posts");
   const [followLoading, setFollowLoading] = useState(false);
@@ -123,6 +125,12 @@ export const ProfileComponent = (props: Props) => {
   const [collections, setCollections] = useState<Collection[]>([]);
 
   const [openCourse, setOpenCourse] = useState(false);
+
+  useEffect(() => {
+    if (tab === 'courses') {
+      setOpenCourse(true);
+    }
+  }, [tab]);
 
   useEffect(() => {
     async function getcollections() {

@@ -109,9 +109,7 @@ export function ClubListCard(props: Propss) {
         </DialogHeader>
         <div>
           <h2>
-            এই বিষয়ভিত্তিক ডিসকাশন গ্রুপটি শুধুমাত্র আমাদের একাডেমিক প্রোগ্রাম
-            ২০২৫ এ ভর্তি হওয়া শিক্ষার্থীদের জন্যে। বিষয়ভিত্তিক প্রিমিয়াম গ্রুপে
-            জয়েনের জন্যে এখনি ভর্তি হও।
+            এই গ্রুপে জয়েন হবার জন্যে, তোমাকে অবশ্যই কোর্সটি কিনতে হবে।
           </h2>
         </div>
         <DialogFooter>
@@ -126,11 +124,7 @@ export function ClubListCard(props: Propss) {
             size="sm"
             className="bg-olive text-white"
             onClick={() => {
-              if (user?.level === 0) {
-                Router.push(`https://acsfs.com/communityG`);
-              } else {
-                Router.push(`https://acsfs.com/community${user?.level}`);
-              }
+              Router.push(`https://aparsclassroom.com/shop`);
               setGoribOpen(false);
             }}
           >
@@ -146,29 +140,28 @@ export function ClubListCard(props: Propss) {
       <DialogContent className="max-w-[400px] bg-white dark:bg-neutral-950 p-5 text-black">
         <DialogHeader>
           <DialogTitle className="text-black text-center">
-            Comming Soon
+            No Access
           </DialogTitle>
         </DialogHeader>
         <div className="grid gap-2">
           <h2>
-            এই ক্লাবটি বর্তমানে ইনএক্টিভ রয়েছে। অতি দ্রুতই সকলের জন্য ক্লাবটি
-            ওপেন করা হবে।
+            দু:খিত, এই কোর্সে এখনো স্মার্ট কমিউনিটি এর এক্সেস দেয়া হয়নি।
           </h2>
           <h2>ধন্যবাদ</h2>
         </div>
         <DialogFooter>
-          <Button
+          {/* <Button
             size="sm"
             className="bg-hot/10 text-hot"
             onClick={() => setGoribOpen(false)}
           >
             বাতিল
-          </Button>
+          </Button> */}
           <Button
             size="sm"
             className="bg-olive text-white"
             onClick={() => {
-              setGoribOpen(false);
+              setCommingsoonOpen(false);
             }}
           >
             ঠিকাছে
@@ -264,7 +257,7 @@ export function ClubListCard(props: Propss) {
                   )}
                 </div>
               </div>
-              {g.is_paid && !user?.is_paid && !g.is_member && (
+              {g.is_eligible && !user?.is_paid && !g.is_member && (
                 <button
                   type="button"
                   onClick={() => {

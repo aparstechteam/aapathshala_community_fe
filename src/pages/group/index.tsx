@@ -17,7 +17,7 @@ const GroupPage = () => {
         async function getGroups() {
             try {
                 setLoading(true)
-                const response = await axios.get(`${secondaryAPI}/api/group?group_type=SUBJECT`, {
+                const response = await axios.get(`${secondaryAPI}/api/group?group_type=COURSE`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                     }

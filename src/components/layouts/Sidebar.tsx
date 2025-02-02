@@ -19,20 +19,21 @@ type Props = {
 export const Sidebar = (props: Props) => {
   const { user } = useUser();
   const [groups, setGroups] = useState<Club[]>([]);
-  const [clubs, setClubs] = useState<Club[]>([]);
+  const [mygroups, setMyGroups] = useState<Club[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const getClubs = async () => {
       try {
+        const batchName = localStorage.getItem('hsc_batch') || user.hsc_batch;
         setLoading(true);
-        const response = await axios.get(`${secondaryAPI}/api/group?group_type=CLUB`, {
+        const response = await axios.get(`${secondaryAPI}/api/group/mygroups?hsc_batch=${batchName}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
           }
         });
         if (response.data.groups.length > 0) {
-          setClubs(response.data.groups);
+          setMyGroups(response.data.groups);
           // localStorage.setItem('clubs', JSON.stringify(response.data.groups));
         }
         setLoading(false);
@@ -43,13 +44,14 @@ export const Sidebar = (props: Props) => {
     };
 
     getClubs();
-  }, []);
+  }, [user.hsc_batch]);
 
   useEffect(() => {
     const getGroups = async () => {
       try {
+        const batchName = localStorage.getItem('hsc_batch') || user.hsc_batch;
         setLoading(true);
-        const response = await axios.get(`${secondaryAPI}/api/group/mygroups`, {
+        const response = await axios.get(`${secondaryAPI}/api/group/?group_type=COURSE&hsc_batch=${batchName}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
           }
@@ -66,7 +68,7 @@ export const Sidebar = (props: Props) => {
     };
 
     getGroups();
-  }, []);
+  }, [user.hsc_batch]);
 
   return (
     <div className="min-w-[350px] py-4 relative z-20">
@@ -83,16 +85,16 @@ export const Sidebar = (props: Props) => {
             {groups.length > 0 && (
               <div className="flex w-[340px] flex-col gap-2 p-4 rounded-xl ring-1 ring-ash dark:ring-ash/20 bg-white dark:bg-neutral-950">
                 <h2 className='font-semibold'>
-                  {user.level === 0 ? 'গ্রুপ সমূহ' : 'প্রিমিয়াম গ্রুপ সমূহ'}
+                  {user.level === 0 ? 'গ্রুপ সমূহ' : 'কোর্স সমূহ'}
                 </h2>
                 <ClubListCard className="h-full !max-w-[340px]" clubs={groups} loading={loading} />
               </div>
             )}
 
-            {clubs.length > 0 && (
+            {mygroups.length > 0 && (
               <div className="flex w-[340px] flex-col gap-2 p-4 rounded-xl ring-1 ring-ash dark:ring-ash/20 bg-white dark:bg-neutral-950">
-                <h2 className='font-semibold'>ক্লাব সমূহ</h2>
-                <ClubListCard className="h-full !max-w-[340px]" clubs={clubs} loading={loading} />
+                <h2 className='font-semibold'>জয়েন্ড গ্রুপ সমূহ</h2>
+                <ClubListCard className="h-full !max-w-[340px]" clubs={mygroups} loading={loading} />
               </div>
             )}
           </>

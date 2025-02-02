@@ -47,6 +47,7 @@ export const Sidebar = (props: Props) => {
   }, [user.hsc_batch]);
 
   useEffect(() => {
+    
     const getGroups = async () => {
       try {
         const batchName = localStorage.getItem('hsc_batch') || user.hsc_batch;

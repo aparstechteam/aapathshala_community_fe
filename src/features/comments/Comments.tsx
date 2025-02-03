@@ -8,7 +8,7 @@ import { useCloudflareImage, useComments } from '@/hooks';
 import { Comment } from '@/@types';
 import { cn } from '@/lib/utils';
 import dynamic from 'next/dynamic';
-import { secondaryAPI } from '@/configs';
+import { curicity_id, secondaryAPI } from '@/configs';
 import { handleError } from '@/hooks/error-handle';
 import { ValidImage } from '@/components/shared/ValidImage';
 import { toast } from '@/hooks/use-toast';
@@ -174,7 +174,7 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
     )
 
 
-    const bgColor = comment?.user_id === '43543' ? 'bg-dashnje ring-2 ring-elegant/20 dark:ring-elegant/50' : 'bg-dew dark:bg-deep ring-0'
+    const bgColor = comment?.user_id === curicity_id ? 'bg-dashnje ring-2 ring-elegant/20 dark:ring-elegant/50' : 'bg-dew dark:bg-deep ring-0'
 
     return (
         <div>
@@ -200,7 +200,7 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
                                 <span className='pt-1'>
                                     {comment.user.name}
                                 </span>
-                                {comment.user_id === '43543' && (
+                                {comment.user_id === curicity_id && (
                                     <svg width="36" height="17" viewBox="0 0 36 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect y="0.5" width="36.0003" height="16" rx="8" fill="#8A00CA" />
                                         <path opacity="0.4" d="M12.3957 3.5C12.5588 3.5 12.7001 3.61304 12.736 3.77218L12.9865 4.88454C13.1695 5.69664 13.8037 6.33083 14.6158 6.51377L15.7281 6.76434C15.8873 6.80019 16.0003 6.94153 16.0003 7.10465C16.0003 7.26777 15.8873 7.40911 15.7281 7.44496L14.6158 7.69553C13.8037 7.87847 13.1695 8.51266 12.9865 9.32476L12.736 10.4371C12.7001 10.5963 12.5588 10.7093 12.3957 10.7093C12.2325 10.7093 12.0912 10.5963 12.0554 10.4371L11.8048 9.32476C11.6218 8.51266 10.9877 7.87847 10.1756 7.69553L9.06319 7.44496C8.90406 7.40911 8.79102 7.26777 8.79102 7.10465C8.79102 6.94153 8.90406 6.80019 9.06319 6.76434L10.1756 6.51377C10.9877 6.33083 11.6218 5.69664 11.8048 4.88454L12.0554 3.77218C12.0912 3.61304 12.2325 3.5 12.3957 3.5Z" fill="white" />
@@ -222,14 +222,14 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
                             {comment?.image && <Image height={200} width={200} src={comment.image} className="rounded-md" alt="" />}
                         </div>
                     </div>
-                    {comment.user_id === '43543' && (
+                    {comment.user_id === curicity_id && (
                         <div className='mt-3 text-xs md:text-sm font-medium px-3'>
                             <p>তুমি কি এই উত্তরটিতে স্যাটিস্ফাইড?</p>
                         </div>
                     )}
                     <div className="flex items-center px-2 mt-2 space-x-4 text-xs md:text-sm font-medium text-light">
 
-                        {comment.user_id === '43543' ? (
+                        {comment.user_id === curicity_id ? (
                             <>
                                 <button type='button' className={`flex items-center gap-1 ${reaction === 'satisfied' ? 'text-elegant font-bold' : ''}`}
                                     onClick={() => reactToComment('satisfied')}>

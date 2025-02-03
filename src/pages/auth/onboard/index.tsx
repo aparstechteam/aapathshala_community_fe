@@ -101,9 +101,10 @@ const OnboardPage = () => {
 
     const [myinfo, setMyInfo] = useState({
         bio: "",
-        image: preview,
-        gender: "", // M,F
-        religion: "", // ISLAM, HINDU, CHRISTIAN,..,OTHERS
+        image: preview ?? preview,
+        gender: "",
+        religion: "",
+        hsc_batch: "",
     });
 
     const [friends, setFriends] = useState<UserData[]>([]);
@@ -424,7 +425,7 @@ const OnboardPage = () => {
 
     const userinfo = (
         <Dialog
-            open={!openInfo}
+            open={openInfo}
             onOpenChange={(v) => {
                 setOpenInfo(v);
                 setInfoStep(0);
@@ -584,6 +585,56 @@ const OnboardPage = () => {
                                 </Select>
                                 {error && !myinfo.religion && (
                                     <p className="text-hot text-xs">ধর্ম সিলেক্ট করো</p>
+                                )}
+                            </div>
+                        </div>
+                        <div className="w-full">
+                            <div className="flex flex-col gap-3">
+                                <Label>তোমার ব্যাচ সিলেক্ট করো</Label>
+                                <Select
+                                    value={myinfo.hsc_batch}
+                                    required
+                                    onValueChange={(value) => {
+                                        setMyInfo({ ...myinfo, hsc_batch: value });
+                                        setError("");
+                                    }}
+                                >
+                                    <SelectTrigger
+                                        className={cn(
+                                            "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-ash/20",
+                                            error && !myinfo.hsc_batch && "ring-hot ring-2"
+                                        )}
+                                    >
+                                        <SelectValue placeholder={"তুমি কোন ধর্মের অনুসারী?"} />
+                                    </SelectTrigger>
+                                    <SelectContent
+                                        align="start"
+                                        className="dark:!bg-gray-800 text-light dark:text-gray-200 !bg-white max-h-[250px]"
+                                    >
+                                        <SelectItem
+                                            value={"HSC 25"}
+                                            className="hover:!text-white !text-black dark:text-white"
+                                        >
+                                            HSC 2025
+                                        </SelectItem>
+
+                                        <SelectItem
+                                            value={"HSC 26"}
+                                            className="hover:!text-white !text-black dark:text-white"
+                                        >
+                                            HSC 2026
+                                        </SelectItem>
+                                        <SelectItem
+                                            value={"HSC 27"}
+                                            className="hover:!text-white !text-black dark:text-white"
+                                        >
+                                            HSC 2027
+                                        </SelectItem>
+
+                                    </SelectContent>
+                                </Select>
+                                {error && !myinfo.hsc_batch && (
+                                    <p className="text-hot text-xs">ব্যাচ সিলেক্ট করো</p>
                                 )}
                             </div>
                         </div>
@@ -874,7 +925,7 @@ const OnboardPage = () => {
                                         >
                                             <SelectTrigger
                                                 className={cn(
-                                                    "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-green-200 dark:hover:bg-green-200/20",
+                                                    "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-ash/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-green-200/20",
                                                     error && !city && "ring-hot ring-2"
                                                 )}
                                             >
@@ -896,7 +947,7 @@ const OnboardPage = () => {
                                                     <SelectItem
                                                         key={x.id}
                                                         value={x.id}
-                                                        className="hover:!text-white text-black dark:text-white"
+                                                        className="hover:!text-white hover:!bg-ice"
                                                     >
                                                         {x.name}
                                                     </SelectItem>
@@ -920,7 +971,7 @@ const OnboardPage = () => {
                                         >
                                             <SelectTrigger
                                                 className={cn(
-                                                    "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-green-200 dark:hover:bg-green-200/20",
+                                                    "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-ash/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-green-200/20",
                                                     error && !area && "ring-hot ring-2"
                                                 )}
                                             >
@@ -942,7 +993,7 @@ const OnboardPage = () => {
                                                     <SelectItem
                                                         key={x.id}
                                                         value={x.id}
-                                                        className="hover:!text-white text-black dark:text-white"
+                                                        className="hover:!text-white hover:!bg-ice"
                                                     >
                                                         {x.name}
                                                     </SelectItem>
@@ -990,7 +1041,7 @@ const OnboardPage = () => {
                                             >
                                                 <SelectTrigger
                                                     className={cn(
-                                                        "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-green-200 dark:hover:bg-green-200/20",
+                                                        "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-green-200/20",
                                                         error && !school && "ring-hot ring-2"
                                                     )}
                                                 >
@@ -1008,7 +1059,7 @@ const OnboardPage = () => {
                                                     align="start"
                                                     className="dark:!bg-gray-800 text-light dark:text-gray-200 !bg-white max-h-[250px]"
                                                 >
-                                                    <div className="px-2">
+                                                    <div className="px-2 hidden">
                                                         {!addSchool && (
                                                             <button
                                                                 type="button"
@@ -1027,7 +1078,7 @@ const OnboardPage = () => {
                                                                 <SelectItem
                                                                     key={x.id}
                                                                     value={x.id}
-                                                                    className="hover:!text-white"
+                                                                    className="hover:!text-white hover:!bg-ice"
                                                                 >
                                                                     {x.school_name}
                                                                 </SelectItem>

@@ -242,37 +242,37 @@ export const ClubComponent = (props: Props) => {
 
     const gorib = (
         <Dialog open={goribOpen} onOpenChange={setGoribOpen}>
-          <DialogContent className="max-w-[400px] bg-white dark:bg-neutral-950 p-5 text-black">
-            <DialogHeader>
-              <DialogTitle className="text-hot text-center">Attention!</DialogTitle>
-            </DialogHeader>
-            <div>
-              <h2>
-                এই গ্রুপে জয়েন হবার জন্যে, তোমাকে অবশ্যই কোর্সটি কিনতে হবে।
-              </h2>
-            </div>
-            <DialogFooter>
-              <Button
-                size="sm"
-                className="bg-hot/10 text-hot"
-                onClick={() => Router.push('/profile?tab=courses')}
-              >
-                কোর্স অ্যাড করো
-              </Button>
-              <Button
-                size="sm"
-                className="bg-olive text-white"
-                onClick={() => {
-                  Router.push(`https://aparsclassroom.com/shop`);
-                  setGoribOpen(false);
-                }}
-              >
-                কোর্স কিনো
-              </Button>
-            </DialogFooter>
-          </DialogContent>
+            <DialogContent className="max-w-[400px] bg-white dark:bg-neutral-950 p-5 text-black">
+                <DialogHeader>
+                    <DialogTitle className="text-hot text-center">Attention!</DialogTitle>
+                </DialogHeader>
+                <div>
+                    <h2>
+                        এই গ্রুপে জয়েন হবার জন্যে, তোমাকে অবশ্যই কোর্সটি কিনতে হবে।
+                    </h2>
+                </div>
+                <DialogFooter>
+                    <Button
+                        size="sm"
+                        className="bg-hot/10 text-hot"
+                        onClick={() => Router.push('/profile?tab=courses')}
+                    >
+                        কোর্স অ্যাড করো
+                    </Button>
+                    <Button
+                        size="sm"
+                        className="bg-olive text-white"
+                        onClick={() => {
+                            Router.push(`https://aparsclassroom.com/shop`);
+                            setGoribOpen(false);
+                        }}
+                    >
+                        কোর্স কিনো
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
         </Dialog>
-      );
+    );
 
     return (
         <div className='w-full min-h-screen bg-[#F5F6F7] dark:bg-[#171717] z-0  text-black dark:text-white'>
@@ -374,9 +374,9 @@ export const ClubComponent = (props: Props) => {
                         {/* Buttons and Links */}
                         <div className='flex w-full items-center justify-center py-2 lg:py-0 lg:justify-end gap-2'>
                             <Button disabled={loading || isJoined} type='button' onClick={() => {
-                                if(!club?.is_eligible){
+                                if (club?.is_eligible) {
                                     setGoribOpen(true)
-                                }else{
+                                } else {
                                     setShowJoiningRules(true)
                                 }
                             }} size='sm' className='bg-olive text-white hover:text-olive ring-1 ring-ash hover:bg-olive/20 duration-300 transition-all hover:!bg-opacity-80'>
@@ -422,7 +422,7 @@ export const ClubComponent = (props: Props) => {
                         <div className='w-full space-y-2'>
                             {showMembers ? (
                                 <MembersComponent
-                                    group={club as Club} 
+                                    group={club as Club}
                                     members={members as Memberr[]}
                                     setMembers={setMembers}
                                     id={user?.id as string}

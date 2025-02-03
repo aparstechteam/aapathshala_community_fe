@@ -96,7 +96,7 @@ const LoginPage = () => {
               </div>
               <p className="text-center pt-4">
                 <span className="text-clip bg-gradient-to-r from-sky-500 via-olive to-blue-600 text-transparent bg-clip-text text-base md:text-xl font-semibold tracking-tight">
-                  where knowledge meets collaboration
+                  Where knowledge meets collaboration
                 </span>
               </p>
             </CardHeader>

@@ -356,7 +356,7 @@ export const ProfileComponent = (props: Props) => {
     try {
       setLoading(true);
       const res = await axios.put(
-        `${secondaryAPI}/api/auth/update-bio`,
+        `${secondaryAPI}/api/auth/update`,
         {
           name: name,
           facebook: fb,

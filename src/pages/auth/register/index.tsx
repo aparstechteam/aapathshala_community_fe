@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import axios, { AxiosError } from 'axios';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { Button, FormControl, Select, FormItem, FormLabel, Input, SelectContent, SelectItem, SelectTrigger, SelectGroup, SelectValue, useUser, Logo2 } from '@/components';
 import Head from 'next/head';
 import { Loader2, Logs } from 'lucide-react';
@@ -25,15 +25,15 @@ interface FormData {
     joiningId: string;
     status: string
 }
+type DistrictData = {
+    id: number | string;
+    name: string
+};
 
-interface DistrictData {
-    districts: string[];
-    thanas: string[];
-}
 
 interface CollegeData {
-    _id: string;
-    name: string;
+    id: number | string;
+    school_name: string;
 }
 
 
@@ -43,13 +43,14 @@ export default function SignUpForm() {
     const { toast } = useToast()
 
     const [step, setStep] = useState<number>(1);
-    const [districts, setDistricts] = useState<string[]>([]);
-    const [thanas, setThanas] = useState<string[]>([]);
-    const [district, setDistrict] = useState<string>('');
-    const [thana, setThana] = useState<string>('');
-    const [college, setCollege] = useState<string>('');
+    const [districts, setDistricts] = useState<DistrictData[]>([]);
+    const [thanas, setThanas] = useState<DistrictData[]>([]);
     const [colleges, setColleges] = useState<CollegeData[]>([]);
+    const [district, setDistrict] = useState<number | string>('');
+    const [thana, setThana] = useState<number | string>('');
+    const [college, setCollege] = useState<number | string>('');
     const [loading, setLoading] = useState<boolean>(false);
+
     const [joiningIdLoading, setJoiningIdLoading] = useState<boolean>(false);
     const [collegeLoading, setCollegeLoading] = useState<boolean>(false);
     const [joiningId, setJoiningId] = useState<string>('');
@@ -61,13 +62,14 @@ export default function SignUpForm() {
         defaultValues: {
             name: user?.name || '',
             phone: user?.phone || '',
-            district: district,
-            thana: thana,
-            instituteId: college,
+            district: district.toString(),
+            thana: thana.toString(),
+            instituteId: college.toString(),
             hsc_batch: user?.hsc_batch || '',
             email: user?.email || '',
             joiningId: joiningId,
             // status: 'active'
+
         }
     });
 
@@ -94,44 +96,38 @@ export default function SignUpForm() {
     }, [user])
 
     useEffect(() => {
-        const getCollegeData = async () => {
+        const getDistricts = async () => {
             setLoading(true);
             try {
-                const { data } = await axios.get<DistrictData>('https://collegeinfobe-production.up.railway.app/api/colleges/filters', {
-                    params: {
-                        district: ''
-                    }
-                });
-                setDistricts(data.districts);
-                // setThanas(data.thanas);
+                const { data } = await axios.get(`${secondaryAPI}/api/location/districts`)
+                setDistricts(data.data);
+
             } catch (error) {
                 console.error(error);
             } finally {
                 setLoading(false);
             }
         };
-        getCollegeData()
+        getDistricts()
 
     }, [step])
 
+
     useEffect(() => {
-        const getDistrictData = async () => {
+        const getThanas = async () => {
             setLoading(true);
             try {
-                const { data } = await axios.get<DistrictData>('https://collegeinfobe-production.up.railway.app/api/colleges/filters', {
-                    params: {
-                        district: district
-                    }
-                });
+                const { data } = await axios.get(`${secondaryAPI}/api/location/thanas/${district}`);
                 // setDistricts(data.districts);
-                setThanas(data.thanas);
+                setThanas(data.data);
             } catch (error) {
                 console.error(error);
             } finally {
                 setLoading(false);
             }
         };
-        getDistrictData()
+        if (district)
+            getThanas()
 
     }, [step, district])
 
@@ -139,18 +135,18 @@ export default function SignUpForm() {
         const getColleges = async () => {
             setCollegeLoading(true);
             try {
-                const { data } = await axios.get<{ colleges: CollegeData[] }>('https://collegeinfobe-production.up.railway.app/api/colleges', {
-                    params: { district, thana }
-                });
-                setColleges(data.colleges);
+                const { data } = await axios.get(`${secondaryAPI}/api/location/schools/${thana}`);
+                setColleges(data.data);
             } catch (error) {
                 console.error(error);
             } finally {
                 setCollegeLoading(false);
             }
         };
-        void getColleges()
+        if (thana)
+            getColleges()
     }, [district, thana])
+
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
 
@@ -166,7 +162,7 @@ export default function SignUpForm() {
                 }
             });
             router.push('/auth/onboard');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.log(error)
             handleError(error as AxiosError)
@@ -216,8 +212,8 @@ export default function SignUpForm() {
                     <div className="max-w-xl w-full mx-auto p-4 grid items-center !text-black">
                         {/* <ToastContainer /> */}
                         <div>
-                            {step === 1 && user?.status !== 'active' ? (
-                                <div className="px-5 py-10 grid ring-2 ring-life/40 backdrop-blur-sm rounded-xl grid-cols-1 justify-center w-full space-y-3">
+                            {step === 1 ? (
+                                <div className="px-5 py-10 grid ring-2 ring-elegant/40 backdrop-blur-sm rounded-xl grid-cols-1 justify-center w-full space-y-3">
                                     <div className='flex justify-center'>
                                         <Logo2 />
                                     </div>
@@ -237,9 +233,15 @@ export default function SignUpForm() {
                                                     id='joiningId' placeholder="গ্রুপ জয়েনিং আইডি" />
                                             </FormControl>
                                         </FormItem>
-                                        <Button className='w-full bg-gradient-to-r from-green-600 !rounded-full to-lime-500 text-white' onClick={verifyJoiningId} disabled={joiningIdLoading}>
-                                            {joiningIdLoading ? 'ভেরিফাইং...' : 'সাবমিট করুন'}
-                                        </Button>
+                                        <div className='grid gap-2 py-2'>
+
+                                            <Button className='w-full bg-gradient-to-r from-elegant !rounded-full to-elegant/70 text-white' onClick={verifyJoiningId} disabled={joiningIdLoading}>
+                                                {joiningIdLoading ? 'ভেরিফাইং...' : 'সাবমিট করুন'}
+                                            </Button>
+                                            <Button className='w-full bg-gradient-to-r from-light !rounded-full to-light/70 text-white' onClick={() => router.push('/auth/onboard')} disabled={joiningIdLoading}>
+                                                {joiningIdLoading ? 'ভেরিফাইং...' : '৭ দিনের ফ্রি ট্রায়াল দিয়ে দেখো'}
+                                            </Button>
+                                        </div>
                                     </FormProvider>
                                 </div>
                             ) : (
@@ -247,7 +249,7 @@ export default function SignUpForm() {
                                     <form onSubmit={handleSubmit(onSubmit)} className="gap-4 bg-white/50 backdrop-blur-sm ring-1 shadow-light/30 shadow-md ring-ash rounded-lg p-5  grid grid-cols-2">
                                         <div
                                             className="text-center text-2xl font-semibold col-span-2">
-                                            রেজিস্ট্রেশন সম্পন্ন করুন
+                                            রেজিস্ট্রেশন সম্পন্ন কর
                                         </div>
 
                                         <FormItem className='col-span-2'>
@@ -276,10 +278,11 @@ export default function SignUpForm() {
                                         <FormItem className='col-span-1'>
                                             <FormLabel>জেলা</FormLabel>
                                             <FormControl {...register('district')}>
-                                                <Select value={district} onValueChange={(value) => {
+                                                <Select name='district' value={district as string} onValueChange={(value) => {
                                                     setDistrict(value)
                                                     setValue("district", value)
                                                 }}>
+
                                                     <SelectTrigger className="w-full !ring-light !ring-2">
                                                         <SelectValue placeholder="জেলা নির্বাচন করুন" />
                                                     </SelectTrigger>
@@ -287,11 +290,12 @@ export default function SignUpForm() {
                                                         <SelectGroup>
                                                             {/* <SelectLabel>Select District</SelectLabel> */}
                                                             {districts?.map(distr => (
-                                                                <SelectItem key={distr} value={distr}>
-                                                                    {distr}
+                                                                <SelectItem key={distr.id} value={distr.id.toString()}>
+                                                                    {distr.name}
                                                                 </SelectItem>
                                                             ))}
                                                         </SelectGroup>
+
                                                     </SelectContent>
                                                 </Select>
                                             </FormControl>
@@ -300,7 +304,7 @@ export default function SignUpForm() {
                                         <FormItem className='col-span-1'>
                                             <FormLabel>থানা</FormLabel>
                                             <FormControl {...register('thana')}>
-                                                <Select value={thana}
+                                                <Select name='thana' value={thana as string}
                                                     onValueChange={(value) => {
                                                         setThana(value)
                                                         setValue("thana", value)
@@ -312,10 +316,11 @@ export default function SignUpForm() {
                                                         <SelectGroup>
                                                             {/* <SelectLabel>Select Thana</SelectLabel> */}
                                                             {thanas.map(thana => (
-                                                                <SelectItem key={thana} value={thana}>
-                                                                    {thana}
+                                                                <SelectItem key={thana.id} value={thana.id.toString()}>
+                                                                    {thana.name}
                                                                 </SelectItem>
                                                             ))}
+
                                                         </SelectGroup>
                                                     </SelectContent>
                                                 </Select>
@@ -325,10 +330,11 @@ export default function SignUpForm() {
                                         <FormItem className='col-span-2'>
                                             <FormLabel>কলেজ</FormLabel>
                                             <FormControl  {...register('instituteId')}>
-                                                <Select value={college} onValueChange={(value) => {
+                                                <Select name='instituteId' value={college as string} onValueChange={(value) => {
                                                     setCollege(value)
                                                     setValue("instituteId", value)
                                                 }}>
+
                                                     <SelectTrigger className="w-full !ring-light !ring-2">
                                                         <SelectValue placeholder="কলেজ নির্বাচন করুন" />
                                                     </SelectTrigger>
@@ -337,10 +343,11 @@ export default function SignUpForm() {
                                                             <SelectGroup>
                                                                 {/* <SelectLabel>Select College</SelectLabel> */}
                                                                 {colleges.map(college => (
-                                                                    <SelectItem key={college._id} value={college._id}>
-                                                                        {college.name}
+                                                                    <SelectItem key={college.id} value={college.id.toString()}>
+                                                                        {college.school_name}
                                                                     </SelectItem>
                                                                 ))}
+
                                                             </SelectGroup>
                                                         )}
                                                     </SelectContent>
@@ -351,7 +358,7 @@ export default function SignUpForm() {
                                         <FormItem className='col-span-1'>
                                             <FormLabel>এইচ এস সি ব্যাচ</FormLabel>
                                             <FormControl {...register('hsc_batch')}>
-                                                <Select onValueChange={(value) => {
+                                                <Select name='hsc_batch' onValueChange={(value) => {
                                                     setValue("hsc_batch", value)
                                                 }}>
                                                     <SelectTrigger className="w-full !ring-2 focus:!ring-2 !ring-light">
@@ -372,9 +379,9 @@ export default function SignUpForm() {
                                         </FormItem>
 
                                         <FormItem className='col-span-1'>
-                                            <FormLabel>তুমি ছেলে অথবা মেয়ে?</FormLabel>
+                                            <FormLabel>তুমি ছাত্র না ছাত্রী?</FormLabel>
                                             <FormControl  {...register('gender')}>
-                                                <Select onValueChange={(value) => {
+                                                <Select name='gender' onValueChange={(value) => {
                                                     setValue("gender", value)
                                                 }}>
                                                     <SelectTrigger className="w-full !ring-light !ring-2">
@@ -383,10 +390,11 @@ export default function SignUpForm() {
                                                     <SelectContent>
                                                         <SelectGroup>
                                                             {/* <SelectLabel>Select Gender</SelectLabel> */}
-                                                            <SelectItem value="boy">ছেলে</SelectItem>
-                                                            <SelectItem value="girl">মেয়ে</SelectItem>
+                                                            <SelectItem value="boy">ছাত্র</SelectItem>
+                                                            <SelectItem value="girl">ছাত্রী</SelectItem>
                                                         </SelectGroup>
                                                     </SelectContent>
+
                                                 </Select>
                                             </FormControl>
                                         </FormItem>
@@ -394,7 +402,7 @@ export default function SignUpForm() {
                                         <FormItem className='col-span-2'>
                                             <FormLabel>তোমার এডমিশনের লক্ষ্য কী?</FormLabel>
                                             <FormControl {...register('goal')}>
-                                                <Select onValueChange={(value) => {
+                                                <Select name='goal' onValueChange={(value) => {
                                                     setValue("goal", value)
                                                 }}>
                                                     <SelectTrigger className="w-full !ring-light !ring-2">
@@ -413,7 +421,7 @@ export default function SignUpForm() {
                                         </FormItem>
 
                                         <div className='col-span-2 pt-2'>
-                                            <Button type="submit" disabled={loading} className='w-full bg-gradient-to-r from-green-600 !rounded-full to-lime-500 text-white'>
+                                            <Button type="submit" disabled={loading} className='w-full bg-elegant !rounded-full text-white'>
                                                 {loading ? <Loader2 className='w-4 h-4 animate-spin' /> : 'সাইন আপ'}
                                             </Button>
                                         </div>

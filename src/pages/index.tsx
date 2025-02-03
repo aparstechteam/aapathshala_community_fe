@@ -184,7 +184,7 @@ const HomePage: NextPage = () => {
           <div className='w-full h-full grid gap-4 items-center justify-center max-w-5xl mx-auto'>
             <Image src={'/images/coming-soon.svg'} alt='marketplace' width={100} height={100} className='mx-auto' />
             <h2 className='text-xl font-bold text-center'>শীঘ্রই আসছে! </h2>
-            <h2 className='text-base text-center'>চোখ রাখো ACS ফিউচার স্কুল, স্টাডি কমিউনিটিতে...</h2>
+            {/* <h2 className='text-base text-center'>চোখ রাখো ACS ফিউচার স্কুল, স্টাডি কমিউনিটিতে...</h2> */}
           </div>
         </div>
       ) : (

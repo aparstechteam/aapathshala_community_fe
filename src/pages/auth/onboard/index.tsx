@@ -109,8 +109,6 @@ const OnboardPage = () => {
 
     const [friends, setFriends] = useState<UserData[]>([]);
     const [followLoading, setFollowLoading] = useState(false);
-    const [teachers, setTeachers] = useState<UserData[]>([]);
-    const [authorities, setAuthorities] = useState<UserData[]>([]);
 
     const toggleFollow = async (id: string) => {
         // if (isFollowing) return;
@@ -154,8 +152,6 @@ const OnboardPage = () => {
                     },
                 });
                 setFriends(res.data.following);
-                setTeachers(res.data.teachers);
-                setAuthorities(res.data.authorities);
             } catch (err) {
                 handleError(err as AxiosError, fetchFriends);
             }
@@ -420,7 +416,7 @@ const OnboardPage = () => {
     const titles = [
         "অলমোস্ট শেষ! তোমার কিছু তথ্য দাও",
         "কমিউনিটি এর ব্যবহারবিধি",
-        "ফলো করে কানেক্ট থাকো",
+        "তোমার সহপাঠীদের ফলো করো",
     ];
 
     const userinfo = (
@@ -659,8 +655,8 @@ const OnboardPage = () => {
                 )}
                 {infoStep === 2 && (
                     <ScrollArea className="overflow-y-auto h-[400px]">
-                        {/* <h2 className='text-center pb-4 w-full'>ফলো করে তাদের রেগুলার একটিভিটি এর সাথে কানেক্টেড থাকো</h2> */}
-                        <h2 className="font-medium py-2 w-full">তোমার সহপাঠীদের ফলো করো</h2>
+                       
+                        {/* <h2 className="font-medium py-2 w-full">তোমার সহপাঠীদের ফলো করো</h2> */}
                         <div className="flex flex-wrap items-center justify-center  pb-4 gap-2">
                             {friends?.map((x, i) => (
                                 <div
@@ -692,7 +688,7 @@ const OnboardPage = () => {
                             ))}
                         </div>
 
-                        <h2 className="font-medium py-2 w-full">তোমার শিক্ষকদের ফলো করো</h2>
+                        {/* <h2 className="font-medium py-2 w-full">তোমার শিক্ষকদের ফলো করো</h2>
                         <div className="flex flex-wrap items-center pb-4 justify-center gap-2">
                             {teachers?.map((x, i) => (
                                 <div
@@ -721,9 +717,9 @@ const OnboardPage = () => {
                                     </button>
                                 </div>
                             ))}
-                        </div>
+                        </div> */}
 
-                        <h2 className="font-medium py-2 w-full">
+                        {/* <h2 className="font-medium py-2 w-full">
                             ক্লাব এক্সিকিউটিভ মেম্বারদের ফলো করো
                         </h2>
                         <div className="flex flex-wrap items-center pb-4 justify-center gap-2">
@@ -754,7 +750,7 @@ const OnboardPage = () => {
                                     </button>
                                 </div>
                             ))}
-                        </div>
+                        </div> */}
                     </ScrollArea>
                 )}
                 <DialogFooter>

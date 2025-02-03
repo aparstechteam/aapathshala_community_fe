@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Club, Group } from '@/@types'
 import { Layout } from '@/components'
 import { secondaryAPI } from '@/configs'
@@ -11,13 +12,14 @@ const GroupPage = () => {
     const [groups, setGroups] = useState<Group[]>([])
     const [myGroups, setMyGroups] = useState<Group[]>([])
     const [clubs, setClubs] = useState<Club[]>([])
+    const [courses, setCourses] = useState<Group[]>([])
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         async function getGroups() {
             try {
                 setLoading(true)
-                const response = await axios.get(`${secondaryAPI}/api/group?group_type=COURSE`, {
+                const response = await axios.get(`${secondaryAPI}/api/group`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                     }
@@ -48,21 +50,21 @@ const GroupPage = () => {
     }, [])
 
     useEffect(() => {
-        const fetchGroups = async () => {
+        const fetchCourses = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`${secondaryAPI}/api/group/mygroups`, {
+                const response = await axios.get(`${secondaryAPI}/api/group?group_type=COURSE`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                     }
                 });
-                setMyGroups(response.data.groups);
+                setCourses(response.data.groups);
                 setLoading(false);
             } catch {
                 setLoading(false);
             }
         };
-        fetchGroups();
+        fetchCourses();
     }, []);
 
     return (
@@ -72,35 +74,35 @@ const GroupPage = () => {
             </Head>
             <Layout>
                 <div className='px-2 grid w-full gap-4 pt-6 lg:pt-4 pb-5 max-w-5xl mx-auto min-h-[calc(100vh-80px)] !text-black dark:!text-white'>
-                    {myGroups?.length > 0 && (
+                    {groups?.length > 0 && (
                         <div className='w-full'>
                             <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
-                                <h2 className='text-lg font-medium'>জয়েন্ড গ্রুপ সমূহ</h2>
-                                <GroupLists className="max-h-full" groups={myGroups.filter((g) => g.type !== 'CLUB')?.map((g) => ({ ...g, is_member: true }))} loading={loading} />
+                                <h2 className='text-lg font-medium'>গ্রুপ সমূহ</h2>
+                                <GroupLists className="max-h-full" groups={groups} loading={loading} />
                             </div>
                         </div>
                     )}
-                    {clubs?.filter((c) => c.is_member)?.length > 0 && (
+                    {/* {clubs?.filter((c) => c.is_member)?.length > 0 && (
                         <div className='w-full'>
                             <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
                                 <h2 className='text-lg font-medium'>জয়েন্ড ক্লাব সমূহ</h2>
                                 <GroupLists groups={clubs.filter((c) => c.is_member)} loading={loading} />
                             </div>
                         </div>
-                    )}
-                    {groups?.filter((g) => !g.is_member)?.length > 0 && (
+                    )} */}
+                    {/* {groups?.filter((g) => !g.is_member)?.length > 0 && (
                         <div className='w-full space-y-4 h-full'>
                             <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
                                 <h2 className='text-lg font-medium'>অন্যান্য গ্রুপ সমূহ</h2>
                                 <ClubListCard clubs={groups.filter((g) => !g.is_member)} loading={loading} className="min-h-[250px]" />
                             </div>
                         </div>
-                    )}
-                    {clubs?.filter((c) => !c.is_member)?.length > 0 && (
+                    )} */}
+                    {courses?.filter((c) => !c.is_member)?.length > 0 && (
                         <div className='w-full space-y-4 h-full'>
                             <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
-                                <h2 className='text-lg font-medium'>অন্যান্য ক্লাব সমূহ</h2>
-                                <ClubListCard clubs={clubs.filter((c) => !c.is_member)} loading={loading} className="min-h-[250px]" />
+                                <h2 className='text-lg font-medium'>কোর্স সমূহ</h2>
+                                <ClubListCard clubs={clubs} loading={loading} className="min-h-[250px]" />
                             </div>
                         </div>
                     )}

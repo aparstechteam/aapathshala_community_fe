@@ -733,7 +733,9 @@ export const ProfileComponent = (props: Props) => {
                       {userProfile?.course_enrolled?.map((course: string) => (
                         <span className="text-sm text-elegant hover:text-white hover:bg-elegant duration-300 px-3 py-0.5 rounded-full bg-elegant/10" key={course}>{course}</span>
                       ))}
-                      <button type="button" onClick={() => setOpenCourse(true)} className="text-sm text-olive px-3 py-0.5 rounded-full bg-olive/10 hover:bg-olive hover:text-white transition-colors duration-300">Add +</button>
+                      {userProfile?.userData?.id === user?.id && (
+                        <button type="button" onClick={() => setOpenCourse(true)} className="text-sm text-olive px-3 py-0.5 rounded-full bg-olive/10 hover:bg-olive hover:text-white transition-colors duration-300">Add +</button>
+                      )}
                     </div>
                   </div>
 

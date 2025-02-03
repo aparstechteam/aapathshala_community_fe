@@ -85,7 +85,7 @@ export const Sidebar = (props: Props) => {
             {groups.length > 0 && (
               <div className="flex w-[340px] flex-col gap-2 p-4 rounded-xl ring-1 ring-ash dark:ring-ash/20 bg-white dark:bg-neutral-950">
                 <h2 className='font-semibold'>
-                  {user.level === 0 ? 'গ্রুপ সমূহ' : 'কোর্স সমূহ'}
+                  {'কোর্স সমূহ'}
                 </h2>
                 <ClubListCard className="h-full !max-w-[340px]" clubs={groups} loading={loading} />
               </div>
@@ -93,7 +93,7 @@ export const Sidebar = (props: Props) => {
 
             {mygroups.length > 0 && (
               <div className="flex w-[340px] flex-col gap-2 p-4 rounded-xl ring-1 ring-ash dark:ring-ash/20 bg-white dark:bg-neutral-950">
-                <h2 className='font-semibold'>জয়েন্ড গ্রুপ সমূহ</h2>
+                <h2 className='font-semibold'>গ্রুপ সমূহ</h2>
                 <ClubListCard className="h-full !max-w-[340px]" clubs={mygroups} loading={loading} />
               </div>
             )}

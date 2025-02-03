@@ -191,7 +191,7 @@ const PostDetailsPage: NextPage = () => {
                                             {aiLoading ? (
                                                 <div className="text-center py-8">
                                                     <span className="text-2xl animate-pulse text-green-600 dark:text-green-400">🤖</span>
-                                                    <span className="text-lg font-semibold text-gray-800 animate-pulse dark:text-gray-200">AI is generating your answer...</span>
+                                                    <span className="text-lg font-semibold text-gray-800 animate-pulse dark:text-gray-200">Curiosity is generating your answer...</span>
                                                     <span className="text-2xl animate-pulse text-green-600 dark:text-green-400">🤖</span>
                                                 </div>
                                             ) : (comments.length === 0 && cmntLoading && (

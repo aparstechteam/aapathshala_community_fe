@@ -424,7 +424,7 @@ const OnboardPage = () => {
 
     const userinfo = (
         <Dialog
-            open={openInfo}
+            open={!openInfo}
             onOpenChange={(v) => {
                 setOpenInfo(v);
                 setInfoStep(0);
@@ -611,7 +611,7 @@ const OnboardPage = () => {
                         {/* <h2 className='text-center pb-4 w-full'>ফলো করে তাদের রেগুলার একটিভিটি এর সাথে কানেক্টেড থাকো</h2> */}
                         <h2 className="font-medium py-2 w-full">তোমার সহপাঠীদের ফলো করো</h2>
                         <div className="flex flex-wrap items-center justify-center  pb-4 gap-2">
-                            {friends.map((x, i) => (
+                            {friends?.map((x, i) => (
                                 <div
                                     key={i}
                                     className="flex flex-col w-[120px] items-center justify-center gap-2"
@@ -643,7 +643,7 @@ const OnboardPage = () => {
 
                         <h2 className="font-medium py-2 w-full">তোমার শিক্ষকদের ফলো করো</h2>
                         <div className="flex flex-wrap items-center pb-4 justify-center gap-2">
-                            {teachers.map((x, i) => (
+                            {teachers?.map((x, i) => (
                                 <div
                                     key={i}
                                     className="flex flex-col w-[120px] items-center justify-center gap-2"
@@ -676,7 +676,7 @@ const OnboardPage = () => {
                             ক্লাব এক্সিকিউটিভ মেম্বারদের ফলো করো
                         </h2>
                         <div className="flex flex-wrap items-center pb-4 justify-center gap-2">
-                            {authorities.map((x, i) => (
+                            {authorities?.map((x, i) => (
                                 <div
                                     key={i}
                                     className="flex flex-col w-[120px] items-center justify-center gap-2"

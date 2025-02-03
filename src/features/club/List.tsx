@@ -256,7 +256,7 @@ export function ClubListCard(props: Propss) {
                   )}
                 </div>
               </div>
-              {g.is_eligible && !g.is_member && (
+              {/* {g.is_eligible && !g.is_member && (
                 <button
                   type="button"
                   onClick={() => {
@@ -264,7 +264,7 @@ export function ClubListCard(props: Propss) {
                   }}
                   className="absolute right-0 top-0 w-full h-full"
                 />
-              )}
+              )} */}
               
               {g.disabled && !g.is_member && (
                 <button

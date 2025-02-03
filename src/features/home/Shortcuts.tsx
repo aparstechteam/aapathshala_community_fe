@@ -1,21 +1,29 @@
-import { useUser } from "@/components"
+import { Tagtag, useUser } from "@/components"
 import { Card, CardContent } from "@/components/ui/card"
 import { navItems } from "@/data/navItems"
 import { cn } from "@/lib/utils"
 import Router, { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 // import { Input } from "@/components/ui/input"
 
 export function Shortcuts() {
 
   const { user } = useUser()
-
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [batchName, setBatchName] = useState<string>("")
+
+  useEffect(() => {
+    const batch = localStorage.getItem("hsc_batch")
+    if (!!batch) {
+      setBatchName(batch)
+    }
+  }, [])
 
   function isActive(link: string) {
     return router.pathname === link
   }
+
 
   function handleSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -24,11 +32,14 @@ export function Shortcuts() {
     }
   }
 
-
   return (
     <Card className="w-full !max-w-[350px]">
-      <CardContent className="space-y-4 py-5">
-        <h2 className="text-base font-semibold mb-4">ফিউচার স্কুল স্মার্ট কমিউনিটি</h2>
+      <CardContent className="grid gap-4 py-5">
+        <h2 className="text-base flex items-center justify-between gap-2 font-semibold">
+          <span>ফিউচার স্কুল স্মার্ট কমিউনিটি</span>
+          <span className="text-xs flex items-center justify-center bg-elegant/10 text-elegant h-5 font-normal pt-0.5 w-[60px] rounded-full">{batchName}</span>
+        </h2>
+
 
         <form className="relative hidden lg:flex">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -47,12 +58,9 @@ export function Shortcuts() {
             onChange={(e) => setSearchQuery(e.target.value)}
             type="search"
             placeholder="সার্চ করো..."
-            className="bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-gray-200 rounded-full pl-10 pr-4 py-2.5 w-full 
-                border border-gray-200 dark:border-gray-700/50 
-                hover:border-green-500/30
-                focus:border-green-500/50 focus:ring-2 focus:ring-green-500/20 
-                focus:outline-none transition-all duration-300 
-                placeholder:text-gray-500 placeholder:text-sm"
+            className="bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-gray-200 rounded-full pl-10 pr-4 py-1.5 w-full 
+                 ring-gray-200 dark:border-gray-700/50 ring-2 border-0 outline-none focus:outline-none
+                focus:border-0 focus:ring-2 focus:ring-olive/50 transition-all duration-300 placeholder:text-gray-500 placeholder:text-sm"
           />
         </form>
         <nav className="space-y-1 text-light dark:text-white">
@@ -67,7 +75,9 @@ export function Shortcuts() {
               {!isActive(item.link) ? item.icon.selected : item.icon.unselected}
               <span className="text-sm sm:text-base font-medium">{item.label}</span>
               {item.label === 'প্রোফাইল' && (
-                <span className="text-xs capitalize rounded-full bg-olive/10 px-3 py-1 font-semibold shadow-sm text-olive">{user?.role?.toUpperCase()}</span>
+                <span>
+                  <Tagtag tags={[user?.role?.toUpperCase() as string]} />
+                </span>
               )}
             </button>
           ))}

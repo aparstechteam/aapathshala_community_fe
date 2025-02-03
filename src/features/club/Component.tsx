@@ -40,6 +40,7 @@ export const ClubComponent = (props: Props) => {
     const [page, setPage] = useState(1)
     const [searchQuery, setSearchQuery] = useState('')
     const [totalPages, setTotalPages] = useState(0)
+    const [goribOpen, setGoribOpen] = useState(false)
 
     useEffect(() => {
         setIsJoined(club?.is_member)
@@ -239,12 +240,47 @@ export const ClubComponent = (props: Props) => {
         </Dialog>
     )
 
+    const gorib = (
+        <Dialog open={goribOpen} onOpenChange={setGoribOpen}>
+          <DialogContent className="max-w-[400px] bg-white dark:bg-neutral-950 p-5 text-black">
+            <DialogHeader>
+              <DialogTitle className="text-hot text-center">Attention!</DialogTitle>
+            </DialogHeader>
+            <div>
+              <h2>
+                এই গ্রুপে জয়েন হবার জন্যে, তোমাকে অবশ্যই কোর্সটি কিনতে হবে।
+              </h2>
+            </div>
+            <DialogFooter>
+              <Button
+                size="sm"
+                className="bg-hot/10 text-hot"
+                onClick={() => Router.push('/profile?tab=courses')}
+              >
+                কোর্স অ্যাড করো
+              </Button>
+              <Button
+                size="sm"
+                className="bg-olive text-white"
+                onClick={() => {
+                  Router.push(`https://aparsclassroom.com/shop`);
+                  setGoribOpen(false);
+                }}
+              >
+                কোর্স কিনো
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      );
+
     return (
         <div className='w-full min-h-screen bg-[#F5F6F7] dark:bg-[#171717] z-0  text-black dark:text-white'>
 
             <div className='max-w-screen-2xl gap-4 px-0 lg:px-4 w-full mx-auto flex'>
                 {leaveDialog}
                 {joining_rules}
+                {gorib}
                 {/* My clubs */}
                 <div className={cn(clubs?.length > 0 ? 'hidden lg:block' : 'hidden')}>
                     <div className="min-h-[300px] w-[320px] bg-white dark:bg-gray-600/20 rounded-xl ring-1 ring-ash dark:ring-ash/20 mt-4 p-3">
@@ -337,9 +373,16 @@ export const ClubComponent = (props: Props) => {
 
                         {/* Buttons and Links */}
                         <div className='flex w-full items-center justify-center py-2 lg:py-0 lg:justify-end gap-2'>
-                            <Button disabled={loading || isJoined} type='button' onClick={() => setShowJoiningRules(true)} size='sm' className='bg-olive text-white hover:text-olive ring-1 ring-ash hover:bg-olive/20 duration-300 transition-all hover:!bg-opacity-80'>
+                            <Button disabled={loading || isJoined} type='button' onClick={() => {
+                                if(!club?.is_eligible){
+                                    setGoribOpen(true)
+                                }else{
+                                    setShowJoiningRules(true)
+                                }
+                            }} size='sm' className='bg-olive text-white hover:text-olive ring-1 ring-ash hover:bg-olive/20 duration-300 transition-all hover:!bg-opacity-80'>
                                 {isJoined ? <Check size={13} /> : <Plus size={13} />}
                                 <span className=''>
+
                                     {isJoined ? "সদস্য" : "জয়েন করো"}
                                 </span>
                             </Button>

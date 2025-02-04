@@ -17,11 +17,13 @@ const GroupPage = () => {
         async function getGroups() {
             try {
                 setLoading(true)
-                const response = await axios.get(`${secondaryAPI}/api/group`, {
+                const batch = localStorage.getItem("hsc_batch")
+                const response = await axios.get(`${secondaryAPI}/api/group?hsc_batch=${batch}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                     }
                 })
+
                 setGroups(response.data.groups)
                 setLoading(false)
             } catch {
@@ -51,7 +53,8 @@ const GroupPage = () => {
         const fetchCourses = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`${secondaryAPI}/api/group?group_type=COURSE`, {
+                const batch = localStorage.getItem("hsc_batch")
+                const response = await axios.get(`${secondaryAPI}/api/group?group_type=COURSE&hsc_batch=${batch}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                     }

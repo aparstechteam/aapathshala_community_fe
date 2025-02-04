@@ -31,6 +31,7 @@ type UserData = {
     gender: string;
     religion: string;
     course_enrolled?: string[];
+    hsc_batch: string;
 };
 
 type DashboardData = {

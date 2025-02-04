@@ -31,16 +31,28 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [activeUsers, setActiveUsers] = useState<number>(0);
 
     useEffect(() => {
+        const batch = localStorage.getItem('hsc_batch') || ''
+        if (!batch) {
+            localStorage.setItem('hsc_batch', user?.hsc_batch)
+        }
+    }, [user])
+
+
+    useEffect(() => {
         async function getme() {
             const usercache = localStorage.getItem('user') || ''
+            const batch = localStorage.getItem('hsc_batch') || ''
             if (!!usercache) {
                 const usercached = JSON.parse(usercache as string)
                 setUser(usercached)
+                if (!batch) {
+                    localStorage.setItem('hsc_batch', usercached?.hsc_batch)
+                }
                 getActiveUsers(usercached?.id as string)
             } else {
                 try {
                     const response = await axios.get(`${secondaryAPI}/api/auth/user`, {
-                       
+
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
@@ -49,9 +61,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                     setUser(response.data.user as UserData)
                     getActiveUsers(response.data.user?.id as string)
                     localStorage.setItem('user', JSON.stringify(response.data.user))
+                    if (!batch) {
+                        localStorage.setItem('hsc_batch', response.data.user?.hsc_batch || 'HSC 25')
+                    }
                 } catch (error) {
                     handleError(error as AxiosError, getme)
                 }
+
             }
         }
         getme()

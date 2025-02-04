@@ -30,7 +30,7 @@ export const SubjectFilters = (props: Props) => {
 
     const filterSubjects = (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger className="min-w-40 flex sm:justify-self-end z-[2] rounded-full dark:ring-elegant/20 bg-elegant/10 ring-1 ring-elegant/60 text-elegant relative p-1">
+            <DialogTrigger className="sm:min-w-40 flex sm:justify-self-end z-[2] rounded-full dark:ring-elegant/20 bg-elegant/10 ring-1 ring-elegant/60 text-elegant relative p-1">
                 <span className="text-sm px-4 w-full font-medium">{selectedSubject === "all" ? "সব বিষয়" : subjects.find(s => s.id === selectedSubject)?.name}</span>
             </DialogTrigger>
             <DialogContent className="w-full !rounded-xl max-w-sm bg-white p-5">
@@ -53,7 +53,7 @@ export const SubjectFilters = (props: Props) => {
 
 
     return user.level !== 0 ? (
-        <div className="w-full p-4 relative z-[3] flex justify-between rounded-xl ring-1 ring-ash dark:ring-elegant/40 bg-white dark:bg-elegant/10">
+        <div className="w-full p-4 relative z-[3] flex justify-between items-center rounded-xl ring-1 ring-ash dark:ring-elegant/40 bg-white dark:bg-elegant/10">
 
             <div className='flex items-center'>
                 <Popover>
@@ -82,6 +82,7 @@ export const SubjectFilters = (props: Props) => {
             </div>
 
             <div className='text-sm font-medium'>{batchName || user?.hsc_batch}</div>
+
             {filterSubjects}
         </div >
     ) : null

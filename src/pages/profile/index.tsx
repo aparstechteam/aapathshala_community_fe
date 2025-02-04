@@ -29,6 +29,7 @@ type UserData = {
   gender: string;
   religion: string;
   institute_name: string;
+  hsc_batch: string;
 };
 
 type DashboardData = {

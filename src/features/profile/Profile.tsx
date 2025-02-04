@@ -74,7 +74,9 @@ type UserData = {
   gender: string;
   religion: string;
   institute_name: string;
+  hsc_batch: string;
 };
+
 
 type DashboardData = {
   totalPosts: number;
@@ -118,10 +120,12 @@ export const ProfileComponent = (props: Props) => {
   const [name, setName] = useState(userProfile.userData?.name || "");
   const [fb, setFb] = useState(userProfile.userData?.facebook || "");
   const [insta, setInsta] = useState(userProfile.userData?.instagram || "");
-  const [gender, setGender] = useState(userProfile.userData?.gender || "");
-  const [religion, setReligion] = useState(userProfile.userData?.religion || "");
+  const [gender, setGender] = useState(user?.gender || "");
+  const [religion, setReligion] = useState(user?.religion || "");
+  const [hscBatch, setHscBatch] = useState(user?.hsc_batch || "");
   const [editOpen, setEditOpen] = useState(false);
-  const [preview, setPreview] = useState(userProfile?.userData?.image || "");
+  const [preview, setPreview] = useState(user?.image || "");
+
   const [collections, setCollections] = useState<Collection[]>([]);
 
   const [openCourse, setOpenCourse] = useState(false);
@@ -363,10 +367,14 @@ export const ProfileComponent = (props: Props) => {
           instagram: insta,
           bio: bio,
           image: preview,
-          gender: gender
+          gender: gender,
+          religion: religion,
+          hsc_batch: hscBatch,
+          phone: user?.phone
         },
         {
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
@@ -504,30 +512,28 @@ export const ProfileComponent = (props: Props) => {
             <Label className='col-span-2'>তুমি একজন</Label>
             <button onClick={() => {
               setError('')
-              setGender('MALE')
+              setGender('boy')
             }} type='button'
               className={cn('text-sm text-black ring-2 h-10 duration-300 px-4 py-0.5 rounded-lg',
                 (error && !gender) ? 'ring-hot' :
-                  gender === 'MALE' ? 'ring-olive' :
-                    gender !== 'MALE' && 'ring-ash',
+                  gender === 'boy' ? 'ring-olive' :
+                    gender !== 'boy' && 'ring-ash',
               )}>
               ছাত্র
             </button>
 
             <button onClick={() => {
-              setGender('FEMALE')
+              setGender('girl')
               setError('')
             }}
               type='button'
               className={cn('text-sm text-black ring-2 h-10 duration-300 px-4 py-1 rounded-lg',
                 (error && !gender) ? 'ring-hot' :
-                  gender === 'FEMALE' ? 'ring-olive' :
-                    gender !== 'FEMALE' && 'ring-ash',
+                  gender === 'girl' ? 'ring-olive' :
+                    gender !== 'girl' && 'ring-ash',
               )}>
               ছাত্রী
             </button>
-
-
           </div>
           <div className='w-full'>
 
@@ -567,6 +573,42 @@ export const ProfileComponent = (props: Props) => {
               </p>}
             </div>
           </div>
+          <div className='w-full'>
+
+            <div className='flex flex-col gap-3'>
+              <Label>তোমার ব্যাচ কী?</Label>
+              <Select value={hscBatch}
+                onValueChange={(value) => {
+                  setHscBatch(value)
+                  setError('')
+                }}>
+
+                <SelectTrigger className={cn("w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-ash/20",
+                  error && !hscBatch && "ring-hot ring-2"
+                )}>
+
+                  <SelectValue placeholder={"তুমি কোন ব্যাচে পড়ছ?"} />
+                </SelectTrigger>
+                <SelectContent align='start' className="dark:!bg-gray-800 text-light dark:text-gray-200 !bg-white max-h-[250px]">
+
+
+                  <SelectItem value={'HSC 25'} className='hover:!text-white !text-black dark:text-white'>
+                    HSC 2025
+                  </SelectItem>
+
+                  <SelectItem value={'HSC 26'} className='hover:!text-white !text-black dark:text-white'>
+                    HSC 2026
+                  </SelectItem>
+
+                </SelectContent>
+              </Select>
+              {error && !hscBatch && <p className='text-hot text-xs'>
+                ব্যাচ সিলেক্ট করো
+              </p>}
+
+            </div>
+          </div>
+
           <h2 className="text-sm font-medium text-black">তোমার সোশ্যাল মিডিয়া</h2>
           <div className="flex items-center gap-2">
             <Label htmlFor="facebook">
@@ -987,7 +1029,7 @@ export const ProfileComponent = (props: Props) => {
                       <div>
                         <span>
                           {" "}
-                          Student of class {userProfile.userData.level}
+                          Student of {userProfile.userData?.hsc_batch}
                         </span>
                       </div>
                     </h4>

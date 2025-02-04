@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Club, Group } from '@/@types'
+import { Group } from '@/@types'
 import { Layout } from '@/components'
 import { secondaryAPI } from '@/configs'
 import { ClubListCard, GroupLists } from '@/features'
@@ -10,8 +10,6 @@ import React, { useEffect, useState } from 'react'
 const GroupPage = () => {
 
     const [groups, setGroups] = useState<Group[]>([])
-    const [myGroups, setMyGroups] = useState<Group[]>([])
-    const [clubs, setClubs] = useState<Club[]>([])
     const [courses, setCourses] = useState<Group[]>([])
     const [loading, setLoading] = useState(false)
 
@@ -35,19 +33,19 @@ const GroupPage = () => {
 
 
 
-    useEffect(() => {
-        async function fetchClubs() {
-            const response = await axios.get(`${secondaryAPI}/api/group?group_type=CLUB`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-                }
-            })
-            if (response.data.groups)
-                setClubs(response.data.groups)
-        }
-        fetchClubs()
-    }, [])
+    // useEffect(() => {
+    //     async function fetchClubs() {
+    //         const response = await axios.get(`${secondaryAPI}/api/group?group_type=CLUB`, {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+    //             }
+    //         })
+    //         if (response.data.groups)
+    //             setClubs(response.data.groups)
+    //     }
+    //     fetchClubs()
+    // }, [])
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -102,7 +100,7 @@ const GroupPage = () => {
                         <div className='w-full space-y-4 h-full'>
                             <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
                                 <h2 className='text-lg font-medium'>কোর্স সমূহ</h2>
-                                <ClubListCard clubs={clubs} loading={loading} className="min-h-[250px]" />
+                                <ClubListCard clubs={courses} loading={loading} className="min-h-[250px]" />
                             </div>
                         </div>
                     )}

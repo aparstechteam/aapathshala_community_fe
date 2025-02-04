@@ -113,8 +113,9 @@ const HomePage: NextPage = () => {
   useEffect(() => {
     const fetchPinnedPosts = async () => {
       try {
-        const batchName = localStorage.getItem("hsc_batch") || user?.hsc_batch;
-        const response = await axios.get(`${secondaryAPI}/api/post/pinned_posts?hsc_batch=${batchName}`, {
+        const batch = localStorage.getItem("hsc_batch")
+        console.log(batch)
+        const response = await axios.get(`${secondaryAPI}/api/post/pinned_posts?hsc_batch=${batch}`, {
           headers: {
             'Authorization': `Bearer ${accessToken()}`
           }

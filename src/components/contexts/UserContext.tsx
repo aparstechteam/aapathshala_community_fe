@@ -67,7 +67,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
                 } catch (error) {
                     handleError(error as AxiosError, getme)
                 }
-
             }
         }
         getme()
@@ -75,7 +74,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         async function getActiveUsers(i: string) {
             try {
                 if (!!i) {
-                    const response = await axios.get(`${secondaryAPI}/api/active?uid=${i}`, {
+                    const response = await axios.get(`${secondaryAPI}/api/active`, {
                         // withCredentials: true,
                         headers: {
                             'Content-Type': 'application/json',

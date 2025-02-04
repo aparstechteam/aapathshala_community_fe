@@ -86,9 +86,9 @@ export const ProfileEdit = (props: Props) => {
                                     <SelectValue placeholder="ব্যাচ নির্বাচন করুন" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="HSC 2026">HSC 2026</SelectItem>
-                                    <SelectItem value="HSC 2025">HSC 2025</SelectItem>
-                                    <SelectItem value="HSC 2024">HSC 2024</SelectItem>
+                                    <SelectItem value="HSC 26">HSC 26</SelectItem>
+                                    <SelectItem value="HSC 25">HSC 25</SelectItem>
+                                    <SelectItem value="HSC 24">HSC 24</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>

@@ -136,3 +136,11 @@ body {
     color: #43a047;
   }
 }
+
+.aa a {
+  color: #008643;
+  font-style: italic;
+  &:hover {
+    color: #43a047;
+  }
+}

@@ -69,7 +69,7 @@ const AppMath: React.FC<AppMathProps> = ({ formula, key, className }) => {
 
   return (
     <MathJaxContext version={3} config={jaxconfig}>
-      <div className={cn("overflow-hidden break-words w-full", className)}>
+      <div className={cn("overflow-hidden break-words w-full aa", className)}>
         <MathJax className="mathjax" key={dkey}>
           {renderWithLineBreaks(formula || '')}
         </MathJax>

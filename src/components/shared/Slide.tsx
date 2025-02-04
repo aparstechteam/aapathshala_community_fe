@@ -15,6 +15,10 @@ import { PinOff } from "lucide-react"
 import { useUser } from "../contexts"
 import { ValidImage } from "./ValidImage"
 import { Tagtag } from "./Tagtag"
+import dynamic from "next/dynamic"
+const AppMath = dynamic(() => import("../../components/contexts/MathJAX"), {
+    ssr: false,
+  });
 
 export function PinnedPosts({ posts, unpin }: { posts: Post[], unpin: (id: string) => void }) {
 
@@ -92,8 +96,9 @@ export function PinnedPosts({ posts, unpin }: { posts: Post[], unpin: (id: strin
 
                                     <div className="space-y-2 mb-2">
                                         <p className="text-sm text-gray-600 dark:text-gray-200 pb-2 overflow-hidden">
-                                            {x.body.slice(0, 50)}{x.body.length > 50 && '...'}
+                                            <AppMath formula={x.body.slice(0, 100) + (x.body.length > 100 ? '...' : '')} />
                                         </p>
+
                                         {!!x?.image ? (
                                             <div className="relative h-[150px] w-full mx-auto">
                                                 <Image

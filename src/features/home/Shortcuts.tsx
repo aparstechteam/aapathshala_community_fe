@@ -36,7 +36,7 @@ export function Shortcuts() {
     <Card className="w-full !max-w-[350px]">
       <CardContent className="grid gap-4 py-5">
         <h2 className="text-base flex items-center justify-between gap-2 font-semibold">
-          <span>ফিউচার স্কুল স্মার্ট কমিউনিটি</span>
+          <span>ACS স্মার্ট কমিউনিটি</span>
           <span className="text-xs flex items-center justify-center bg-elegant/10 text-elegant h-5 font-normal pt-0.5 w-[60px] rounded-full">{batchName}</span>
         </h2>
 

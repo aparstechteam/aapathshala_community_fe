@@ -18,7 +18,7 @@ const GroupPage = () => {
             try {
                 setLoading(true)
                 const batch = localStorage.getItem("hsc_batch")
-                const response = await axios.get(`${secondaryAPI}/api/group?hsc_batch=${batch}`, {
+                const response = await axios.get(`${secondaryAPI}/api/group/mygroups?hsc_batch=${batch}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                     }

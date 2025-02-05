@@ -99,7 +99,7 @@ export type Club = {
     description: string | null;
     visibility: "PUBLIC" | "PRIVATE" | "PROTECTED";
     is_paid: boolean;
-    is_eligible: boolean;
+    is_eligiable: boolean;
     type: string;
     data: {
         type: string;
@@ -126,7 +126,7 @@ export type Group = {
     member_count: string;
     is_member: boolean;
     is_paid: boolean;
-    is_eligible: boolean;
+    is_eligiable: boolean;
     type: string;
 };
 

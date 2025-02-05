@@ -382,7 +382,7 @@ export const ClubComponent = (props: Props) => {
                         {/* Buttons and Links */}
                         <div className='flex w-full items-center justify-center py-2 lg:py-0 lg:justify-end gap-2'>
                             <Button disabled={loading || isJoined} type='button' onClick={() => {
-                                if (!club?.is_eligible) {
+                                if (!!club?.id && !club?.is_eligiable) {
                                     setGoribOpen(true)
                                 } else {
                                     setShowJoiningRules(true)

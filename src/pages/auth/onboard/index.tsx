@@ -660,12 +660,6 @@ const OnboardPage = () => {
                                         >
                                             HSC 2026
                                         </SelectItem>
-                                        <SelectItem
-                                            value={"HSC 27"}
-                                            className="hover:!text-white !text-black dark:text-white"
-                                        >
-                                            HSC 2027
-                                        </SelectItem>
 
                                     </SelectContent>
                                 </Select>

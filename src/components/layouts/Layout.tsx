@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { ReactNode, useEffect, useState } from 'react'
 import { Header } from './Header'
 import { Sidebar } from './Sidebar'
 import { Rightbar } from './Rightbar'
@@ -22,6 +23,12 @@ export const background = cn(bg, 'w-full pb-10 min-h-screen text-white pt-[100px
 export const Layout = (props: Props) => {
     const { variant, selectedSubject, setSelectedSubject } = props
     const router = useRouter()
+    const [timeLeft, setTimeLeft] = useState({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+    })
+
 
     return variant === 'home' ? (
 
@@ -47,13 +54,22 @@ export const Layout = (props: Props) => {
                     <div className="mx-auto w-full overflow-y-auto z-[2]">
                         {props.children}
                     </div>
+                    {timeLeft.days > 0 && (
+                        <div className='fixed bottom-5 left-0 w-full h-10 z-[999] flex items-center justify-center'>
+
+                            <p className='text-center bg-hot max-w-4xl mx-auto rounded-full h-full px-5 w-full flex items-center justify-center text-xl text-white'>
+                                ৭ দিন ফ্রি ট্রায়াল বাকি আছে
+                            </p>
+                        </div>
+                    )}
                 </div>
+
+
 
                 {/* Right Sidebar - Fixed */}
                 <div className="fixed hidden xl:block top-[73px] right-0 pr-4 2xl:pr-10 h-[calc(100vh-64px)] z-10">
                     <ScrollArea className="h-[calc(100vh-100px)] !scroll-area">
                         <Rightbar />
-
                     </ScrollArea>
                 </div>
 
@@ -67,13 +83,21 @@ export const Layout = (props: Props) => {
             </div>
             <div className={cn('pt-10', !router.pathname.includes('/onboard') && 'pt-[100px] lg:!pt-[70px]')}>
                 {props.children}
+                {timeLeft.days > 0 && (
+                    <div className='fixed bottom-5 left-0 w-full h-10 z-[999] flex items-center justify-center'>
+                        <p className='text-center bg-hot max-w-4xl mx-auto rounded-full h-full px-5 w-full flex items-center justify-center text-xl text-white'>
+                            ৭ দিন ফ্রি ট্রায়াল বাকি আছে
+                        </p>
+                    </div>
+                )}
             </div>
         </div>
+
     )
 }
 
 export const BasicLayout = (props: Props) => {
-    
+
     const { user } = useUser()
 
     return (

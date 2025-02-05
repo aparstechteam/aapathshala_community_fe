@@ -88,7 +88,6 @@ export const ProfileEdit = (props: Props) => {
                                 <SelectContent>
                                     <SelectItem value="HSC 26">HSC 26</SelectItem>
                                     <SelectItem value="HSC 25">HSC 25</SelectItem>
-                                    <SelectItem value="HSC 24">HSC 24</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>

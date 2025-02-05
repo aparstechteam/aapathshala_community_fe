@@ -380,7 +380,7 @@ const OnboardPage = () => {
         if (!myinfo.phone || myinfo.phone.length !== 11) {
             toast({
                 title: "দুঃখিত",
-                description: "ফোন নম্বর দিতে হবে",
+                description: "সঠিক ফোন নম্বর দিতে হবে!",
                 variant: "destructive",
             });
             setError("d");

@@ -32,6 +32,7 @@ import {
   AvatarImage,
   AvatarFallback,
   RtxEditor,
+  formatBnNumber,
 } from "@/components";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import Image from "next/image";
@@ -218,7 +219,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
         return;
       }
       const batchName = localStorage.getItem("hsc_batch") || user?.hsc_batch;
-      
+
       const data = {
         category: category.value,
         body: prompt,
@@ -1447,7 +1448,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                               {user?.is_paid ? (
                                 <span className="text-xl">∞</span>
                               ) : (
-                                <span>{`${limitRemaining}/ ${limit} left`}</span>
+                                <span>Free Trial {`${limitRemaining}/ ${limit} left`}</span>
                               )}
                               <Switch checked={ai} onCheckedChange={setAi} />
                               <Label>
@@ -1535,7 +1536,9 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                               {user?.is_paid ? (
                                 <span className="text-xl">∞</span>
                               ) : (
-                                <span>{`${limitRemaining}/ ${limit} left`}</span>
+                                <span>
+                                  Free Trial
+                                  {`${limitRemaining}/ ${limit} left`}</span>
                               )}
                               <Switch disabled={true} checked={ai} onCheckedChange={setAi} />
                               <Label>
@@ -1582,9 +1585,10 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
           </Dialog>
         )}
 
-        <div className="pt-4 relative z-[2]">
+        <div className="py-4 space-y-4 relative z-[2]">
           <div className="p-4 ring-0 shadow dark:shadow-purple-800 shadow-elegant/20 bg-white dark:bg-gradient-to-r dark:bg-neutral-950/70 md:rounded-xl">
             <div
+
               onClick={() => {
                 setIsOpen(true);
                 setCategory({ name: "বিষয়ভিত্তিক প্রশ্ন", value: "subject" });
@@ -1741,6 +1745,14 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
             </div>
           </div>
         </div>
+        {timeLeft.days > 0 && (
+          <div className='z-[2] relative bg-white rounded-lg'>
+            <p className='text-center bg-hot/20 max-w-4xl py-2 mx-auto rounded-lg h-full px-5 w-full flex items-center justify-center text-base font-semibold text-hot'>
+              {formatBnNumber(timeLeft.days)} দিন ফ্রি ট্রায়াল বাকি আছে
+            </p>
+          </div>
+
+        )}
       </div>
     </>
   );

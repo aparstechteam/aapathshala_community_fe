@@ -207,7 +207,7 @@ const HomePage: NextPage = () => {
                   {tutorial}
 
                   <div className="w-full z-[2] relative bg-white rounded-lg">
-                    <button type="button" onClick={() => setTutorialOpen(true)} className="w-full z-[2] relative text-hot bg-hot/15 rounded-lg py-2 px-4 flex justify-between items-center">
+                    <button type="button" onClick={() => setTutorialOpen(true)} className="w-full z-[2] relative text-olive bg-olive/20 rounded-lg py-2 px-4 flex justify-between items-center">
                       <span>
                         <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M16.8751 14H1.12515C0.845584 14 0.618896 14.2267 0.618896 14.5062C0.618896 14.7858 0.845584 15.0125 1.12515 15.0125H16.8751C17.1547 15.0125 17.3814 14.7858 17.3814 14.5062C17.3814 14.2267 17.1547 14 16.8751 14Z" fill="currentColor" />

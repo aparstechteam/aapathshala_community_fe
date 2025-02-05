@@ -367,7 +367,7 @@ export default function SignUpForm() {
                                                     <SelectContent>
                                                         <SelectGroup>
                                                             {/* <SelectLabel>Select Batch</SelectLabel> */}
-                                                            {['HSC 24', 'HSC 25', 'HSC 26', 'HSC 27'].map(batch => (
+                                                            {['HSC 25', 'HSC 26', 'HSC 27'].map(batch => (
                                                                 <SelectItem key={batch} value={batch}>
                                                                     {batch}
                                                                 </SelectItem>

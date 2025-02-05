@@ -64,7 +64,7 @@ type Creator = {
 };
 
 const OnboardPage = () => {
-    const { user } = useUser();
+    const { user, setUser } = useUser();
     const { uploadImage } = useCloudflareImage();
     const router = useRouter();
     const tab = router.query.tab as string;
@@ -114,7 +114,7 @@ const OnboardPage = () => {
         if (tab === 'info') {
             setOpenInfo(true);
         }
-      }, [tab]);
+    }, [tab]);
 
     const [friends, setFriends] = useState<UserData[]>([]);
     const [followLoading, setFollowLoading] = useState(false);
@@ -427,8 +427,35 @@ const OnboardPage = () => {
                 description: "তোমার প্রোফাইল সম্পন্ন হয়েছে।",
                 variant: "success",
             });
+            localStorage.removeItem("user");
+            await getme();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function getme() {
+
+        const batch = localStorage.getItem('hsc_batch') || ''
+
+        try {
+            const response = await axios.get(`${secondaryAPI}/api/auth/user`, {
+
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                }
+            });
+            setUser(response.data.user as UserData)
+            localStorage.setItem('user', JSON.stringify(response.data.user))
             setInfoStep(infoStep + 1);
-        } catch { }
+            if (!batch) {
+                localStorage.setItem('hsc_batch', response.data.user?.hsc_batch || 'HSC 25')
+            }
+        } catch (error) {
+            handleError(error as AxiosError, getme)
+        }
+
     }
 
     const titles = [

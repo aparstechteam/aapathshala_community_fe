@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Avatar, AvatarFallback, AvatarImage, Badge, Button, copyLink, DialogContent, DialogFooter, DialogHeader, DialogTitle, GroupSkeleton, PinnedPosts, useDebounce, useUser } from '@/components'
 import { Check, Plus } from 'lucide-react';
 import Image from 'next/image';
@@ -283,7 +284,6 @@ export const ClubComponent = (props: Props) => {
 
     return !!club?.id ? (
         <div className='w-full min-h-screen bg-[#F5F6F7] dark:bg-[#171717] z-0 text-black dark:text-white'>
-
             <div className='max-w-screen-2xl gap-4 px-0 lg:px-4 w-full mx-auto flex'>
                 {leaveDialog}
                 {joining_rules}
@@ -321,14 +321,15 @@ export const ClubComponent = (props: Props) => {
                 </div>
                 <div className='w-full pt-0 lg:pt-4'>
                     {/* cover image  */}
-                    <div className='relative h-[200px] md:h-[300px] w-full bg-ice/20' style={{ maxHeight: "200px", paddingBottom: aspectRatio ? `${aspectRatio * 100}%` : '56.25%' }}>
+                    <div className='relative h-[200px] md:h-[300px] w-full bg-ice/20'
+                        // style={{ maxHeight: "200px", paddingBottom: aspectRatio ? `${aspectRatio * 100}%` : '56.25%' }}
+                    >
                         {!!club?.image ? (
                             <Image onLoad={handleImageLoad} objectFit="cover" src={club?.image} alt='cover-image' fill className='!z-[0] object-contain object-center lg:rounded-t-xl bg-[blue] backdrop-blur-sm bg-opacity-20' />
                         ) : (club?.cover &&
                             <Image onLoad={handleImageLoad} objectFit="cover" src={club?.cover as string} alt='cover-image' fill className='!z-[0] object-cover object-center lg:rounded-t-xl bg-[blue] backdrop-blur-sm bg-opacity-20' />
                         )}
                     </div>
-
 
                     {/* Group Informations  */}
                     <div className='py-3 grid w-full lg:grid-cols-2 justify-start bg-white dark:bg-gray-600/20 lg:rounded-b-xl px-3 shadow-sm lg:justify-between'>

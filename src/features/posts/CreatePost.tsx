@@ -816,7 +816,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                           destinationType === "COURSE" ? 'grid-cols-3' : 'grid-cols-2'
                         )}
                       >
-                        <h2 className={cn("text-base font-medium", destinationType === "CLASS" ? 'col-span-3' : 'col-span-2')}>
+                        <h2 className={cn("text-base font-medium", destinationType === "COURSE" ? 'col-span-3' : 'col-span-2')}>
                           প্রশ্নের ধরণ সিলেক্ট করো
                         </h2>
                         <button

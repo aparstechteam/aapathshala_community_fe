@@ -7,7 +7,6 @@ import Cookies from 'js-cookie';
 
 export const handleError = async (error: AxiosError, refetch?: () => void) => {
 
-    
 
     if (error.response && error.response.status === 402) {
         toast({
@@ -15,8 +14,13 @@ export const handleError = async (error: AxiosError, refetch?: () => void) => {
             description: 'No Token Found',
             variant: 'destructive'
         })
+        localStorage.clear()
+        Cookies.remove('accessToken')
+        Cookies.remove('refreshToken')
+        Router.push('/auth')
         return
     }
+
 
     if (error.response && error.response.status === 404) {
         Router.push('/auth')
@@ -39,8 +43,6 @@ export const handleError = async (error: AxiosError, refetch?: () => void) => {
 
             if (refetch) {
                 refetch()
-            } else {
-                Router.reload()
             }
         } catch {
             Router.push('/auth')

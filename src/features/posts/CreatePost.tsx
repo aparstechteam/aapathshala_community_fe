@@ -92,6 +92,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
   // const [imgSrc, setImgSrc] = useState<File | null>(null);
   // const [file, setFile] = useState<File | null>(null);
   const [limit, setLimit] = useState<number>(0);
+  const [canUseAi, setCanUseAi] = useState<boolean>(false);
   const [limitRemaining, setLimitRemaining] = useState<number>(0);
   const [communityOpen, setCommunityOpen] = useState(false);
   const [poll, setPoll] = useState(false);
@@ -164,11 +165,13 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
         });
         setLimit(Number(res.data.limit));
         setLimitRemaining(Number(res.data.remaining));
+        setCanUseAi(res.data.canUseAi);
         setTimeLeft({
           days: res.data.trialDaysRemaining,
           hours: 0,
           minutes: 1,
         });
+
       } catch (error) {
         handleError(error as AxiosError, () => getlimit());
       }
@@ -1061,20 +1064,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                               setError({ ...error, prompt: "" });
                             }}
                           />
-                          {/* <Textarea
-                            required
-                            value={prompt}
-                            onChange={(e) => {
-                              setPrompt(e.target.value);
-                              setError({ ...error, prompt: "" });
-                            }}
-                            rows={preview ? 1 : 4}
-                            className={cn(
-                              "!rounded-lg !px-4 !bg-transparent !text-base !ring-2 ring-ash !border-0 dark:text-white text-gray-900",
-                              error.prompt && !prompt && "ring-hot ring-2"
-                            )}
-                            placeholder="তোমার প্রশ্ন বা সমস্যা লিখো..."
-                          /> */}
+
                           {error && !prompt && (
                             <p className="text-hot text-xs mt-2">
                               {error.prompt}
@@ -1285,6 +1275,9 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                         </div>
 
                         <div className="flex items-center gap-1 text-black">
+                          {!canUseAi && (
+                            <span className="text-xs text-white px-2.5 py-0.5 bg-hot rounded-lg">Free Trial</span>
+                          )}
                           {group_type === "SUBJECT" ? (
                             <>
                               <svg
@@ -1369,7 +1362,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                                 </span>
                               </Label>
                             </>
-                          ) : !group_id && Number(user.level) !== 0 && limitRemaining > 0 ? (
+                          ) : !group_id && limitRemaining > 0 ? (
                             <>
                               <svg
                                 width="12"
@@ -1448,7 +1441,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                               {user?.is_paid ? (
                                 <span className="text-xl">∞</span>
                               ) : (
-                                <span>Free Trial {`${limitRemaining}/ ${limit} left`}</span>
+                                <span>{`${limitRemaining}/ ${limit} left`}</span>
                               )}
                               <Switch checked={ai} onCheckedChange={setAi} />
                               <Label>
@@ -1537,7 +1530,6 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                                 <span className="text-xl">∞</span>
                               ) : (
                                 <span>
-                                  Free Trial
                                   {`${limitRemaining}/ ${limit} left`}</span>
                               )}
                               <Switch disabled={true} checked={ai} onCheckedChange={setAi} />

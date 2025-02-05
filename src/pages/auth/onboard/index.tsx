@@ -47,7 +47,7 @@ import {
     X,
 } from "lucide-react";
 import Head from "next/head";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import React, { ChangeEvent, useEffect, useState } from "react";
 
 type City = {
@@ -66,6 +66,8 @@ type Creator = {
 const OnboardPage = () => {
     const { user } = useUser();
     const { uploadImage } = useCloudflareImage();
+    const router = useRouter();
+    const tab = router.query.tab as string;
 
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [subject, setSubject] = useState<string[]>([]);
@@ -105,7 +107,14 @@ const OnboardPage = () => {
         gender: "",
         religion: "",
         hsc_batch: "",
+        phone: "",
     });
+
+    useEffect(() => {
+        if (tab === 'info') {
+            setOpenInfo(true);
+        }
+      }, [tab]);
 
     const [friends, setFriends] = useState<UserData[]>([]);
     const [followLoading, setFollowLoading] = useState(false);
@@ -151,7 +160,7 @@ const OnboardPage = () => {
                         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
                     },
                 });
-                setFriends(res.data.following);
+                setFriends(res.data.suggestions);
             } catch (err) {
                 handleError(err as AxiosError, fetchFriends);
             }
@@ -269,7 +278,6 @@ const OnboardPage = () => {
                 life_goals: lifeGoal,
                 personality_type: personality,
             };
-            console.log(data);
             const res = await axios.post(
                 `${secondaryAPI}/api/auth/onboarding`,
                 data,
@@ -289,6 +297,7 @@ const OnboardPage = () => {
             if (res.data.message === "Onboarding data updated successfully") {
                 if (!user?.religion) {
                     setOpenInfo(true);
+                    router.push("/auth/onboard?tab=info");
                 } else {
                     Router.push("/");
                 }
@@ -368,6 +377,15 @@ const OnboardPage = () => {
     async function handleInfoSubmit(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         console.log(myinfo);
+        if (!myinfo.phone || myinfo.phone.length !== 11) {
+            toast({
+                title: "দুঃখিত",
+                description: "ফোন নম্বর দিতে হবে",
+                variant: "destructive",
+            });
+            setError("d");
+            return;
+        }
         if (!myinfo.gender) {
             toast({
                 title: "দুঃখিত",
@@ -473,6 +491,28 @@ const OnboardPage = () => {
                             </div>
                         </div>
                         <div className="w-full  ">
+                            <Label>তোমার ফোন নম্বর</Label>
+                            <Input required
+                                className={cn(
+                                    "w-full !px-4 !pb-1 focus:!ring-2 !rounded-lg !border-0 !ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-ash/20",
+                                    error && !myinfo.phone && "ring-hot ring-2"
+                                )}
+                                type='tel'
+                                value={myinfo.phone}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Only allow valid phone number formats
+                                    const phoneRegex = /^[0-9]*$/;
+                                    if (phoneRegex.test(value) || value === "") {
+                                        setMyInfo({ ...myinfo, phone: value });
+                                    }
+                                }}
+                                placeholder="ফোন নম্বর"
+
+                            />
+                        </div>
+
+                        <div className="w-full  ">
                             <Label>নিজের সম্পর্কে লিখো</Label>
                             <Input
                                 className="w-full !rounded-lg !h-10"
@@ -480,7 +520,7 @@ const OnboardPage = () => {
                                 onChange={(e) => setMyInfo({ ...myinfo, bio: e.target.value })}
                                 placeholder="বায়ো"
                             />
-                            <span className="text-xs text-light flex justify-end text-end py-2">
+                            <span className="text-xs text-light flex justify-end text-end pt-2">
                                 {myinfo.bio.length}/100
                             </span>
                         </div>
@@ -526,7 +566,7 @@ const OnboardPage = () => {
                             <div className="flex flex-col gap-3">
                                 <Label>তোমার ধর্ম কী?</Label>
                                 <Select
-                                    value={myinfo.religion}
+                                    value={myinfo?.religion}
                                     required
                                     onValueChange={(value) => {
                                         setMyInfo({ ...myinfo, religion: value });
@@ -588,7 +628,7 @@ const OnboardPage = () => {
                             <div className="flex flex-col gap-3">
                                 <Label>তোমার ব্যাচ সিলেক্ট করো</Label>
                                 <Select
-                                    value={myinfo.hsc_batch}
+                                    value={myinfo?.hsc_batch}
                                     required
                                     onValueChange={(value) => {
                                         setMyInfo({ ...myinfo, hsc_batch: value });
@@ -601,7 +641,7 @@ const OnboardPage = () => {
                                             error && !myinfo.hsc_batch && "ring-hot ring-2"
                                         )}
                                     >
-                                        <SelectValue placeholder={"তুমি কোন ধর্মের অনুসারী?"} />
+                                        <SelectValue placeholder={"তুমি কোন ব্যাচে পড়ো?"} />
                                     </SelectTrigger>
                                     <SelectContent
                                         align="start"
@@ -655,7 +695,7 @@ const OnboardPage = () => {
                 )}
                 {infoStep === 2 && (
                     <ScrollArea className="overflow-y-auto h-[400px]">
-                       
+
                         {/* <h2 className="font-medium py-2 w-full">তোমার সহপাঠীদের ফলো করো</h2> */}
                         <div className="flex flex-wrap items-center justify-center  pb-4 gap-2">
                             {friends?.map((x, i) => (

@@ -120,9 +120,9 @@ export const ProfileComponent = (props: Props) => {
   const [name, setName] = useState(userProfile.userData?.name || "");
   const [fb, setFb] = useState(userProfile.userData?.facebook || "");
   const [insta, setInsta] = useState(userProfile.userData?.instagram || "");
-  const [gender, setGender] = useState(user?.gender || "");
-  const [religion, setReligion] = useState(user?.religion || "");
-  const [hscBatch, setHscBatch] = useState(user?.hsc_batch || "");
+  const [gender, setGender] = useState(user?.gender);
+  const [religion, setReligion] = useState(user?.religion);
+  const [hscBatch, setHscBatch] = useState(user?.hsc_batch);
   const [editOpen, setEditOpen] = useState(false);
   const [preview, setPreview] = useState(userProfile?.userData?.image || "");
 
@@ -134,7 +134,16 @@ export const ProfileComponent = (props: Props) => {
     if (tab === 'courses') {
       setOpenCourse(true);
     }
-  }, [tab]);
+    if (user?.religion) {
+      setReligion(user?.religion);
+    }
+    if (user?.gender) {
+      setGender(user?.gender);
+    }
+
+  }, [tab, user]);
+
+
 
   useEffect(() => {
     async function getcollections() {
@@ -539,7 +548,7 @@ export const ProfileComponent = (props: Props) => {
 
             <div className='flex flex-col gap-3'>
               <Label>তোমার ধর্ম কী?</Label>
-              <Select disabled value={religion}
+              <Select disabled value={userProfile?.userData?.religion}
                 onValueChange={(value) => {
                   setReligion(value)
                   setError('')

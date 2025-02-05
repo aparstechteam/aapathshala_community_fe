@@ -323,7 +323,7 @@ export const contentCreators = [
 ]
 
 export const lifeGoals = [
-    { id: 1, name: 'মেডিক্যাল' },
+    { id: 1, name: 'মেডিকেল' },
     { id: 2, name: 'ইঞ্জিনিয়ারিং' },
     { id: 3, name: 'ভার্সিটি' },
 ]

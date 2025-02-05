@@ -12,6 +12,7 @@ import { AddComment, CommentComponent, PostComponent, QuizComponent, SummaryComp
 import { secondaryAPI } from "@/configs"
 import { handleError } from "@/hooks/error-handle"
 import { Loader2 } from "lucide-react"
+import Image from "next/image"
 
 const PostDetailsPage: NextPage = () => {
 
@@ -189,10 +190,9 @@ const PostDetailsPage: NextPage = () => {
 
                                             {/* Comments List */}
                                             {aiLoading ? (
-                                                <div className="text-center py-8">
-                                                    <span className="text-2xl animate-pulse text-green-600 dark:text-green-400">🤖</span>
-                                                    <span className="text-lg font-semibold text-gray-800 animate-pulse dark:text-gray-200">Curiosity is generating your answer...</span>
-                                                    <span className="text-2xl animate-pulse text-green-600 dark:text-green-400">🤖</span>
+                                                <div className="text-center justify-center grid py-8">
+                                                    <Image src={'/ai.png'} alt='ai' width={100} height={100} className='mx-auto animate-bounce' />
+                                                    <span className="text-base font-medium text-light animate-pulse dark:text-gray-200">কিউরিওসিটি তোমার উত্তর প্রস্তুত করছে...</span>
                                                 </div>
                                             ) : (comments.length === 0 && cmntLoading && (
                                                 <div className="flex justify-center items-center py-8">

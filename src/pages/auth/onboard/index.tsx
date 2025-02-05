@@ -458,7 +458,6 @@ const OnboardPage = () => {
         } catch (error) {
             handleError(error as AxiosError, getme)
         }
-
     }
 
     const titles = [

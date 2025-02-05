@@ -291,7 +291,7 @@ export const ClubComponent = (props: Props) => {
                 {/* My clubs */}
                 <div className={cn(clubs?.length > 0 ? 'hidden lg:block' : 'hidden')}>
                     <div className="min-h-[300px] w-[320px] bg-white dark:bg-gray-600/20 rounded-xl ring-1 ring-ash dark:ring-ash/20 mt-4 p-3">
-                        <h2 className='text-base font-semibold py-3'>আমার ক্লাব এবং গ্রুপ সমূহ</h2>
+                        <h2 className='text-base font-semibold py-3'>আমার গ্রুপ সমূহ</h2>
                         {clubs?.map((g) => (
                             <div
                                 key={g.group_id}

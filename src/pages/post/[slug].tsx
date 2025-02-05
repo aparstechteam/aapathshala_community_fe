@@ -174,8 +174,8 @@ const PostDetailsPage: NextPage = () => {
 
                                 <Tabs defaultValue='discussion'>
                                     <TabsList className={cn('w-full items-center flex justify-between !bg-white ring-1 !ring-ash dark:!ring-ash/20 dark:!bg-[#202127] !rounded-full',
-                                        post?.category !== 'course' && 'flex',
-                                        post?.category === 'course' && 'hidden'
+                                        post.ai_enabled && post?.category === 'subject' && 'flex',
+                                        !post.ai_enabled && post?.category !== 'subject' && 'hidden'
                                     )}>
                                         <TabsTrigger className='w-full pb-1 !rounded-full' value={'discussion'}>ডিসকাশন</TabsTrigger>
                                         <TabsTrigger className='w-full pb-1 !rounded-full' value={'summary'}>বিস্তারিত</TabsTrigger>

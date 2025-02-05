@@ -718,7 +718,6 @@ export const ProfileComponent = (props: Props) => {
               </Button>
           </div>
         </DialogFooter>
-
       </DialogContent>
     </Dialog>
   );

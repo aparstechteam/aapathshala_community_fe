@@ -813,7 +813,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                           Number(user?.level) === 0 && "hidden",
                           poll && "hidden",
                           !poll && "grid",
-                          destinationType === "CLASS" ? 'grid-cols-3' : 'grid-cols-2'
+                          destinationType === "COURSE" ? 'grid-cols-3' : 'grid-cols-2'
                         )}
                       >
                         <h2 className={cn("text-base font-medium", destinationType === "CLASS" ? 'col-span-3' : 'col-span-2')}>

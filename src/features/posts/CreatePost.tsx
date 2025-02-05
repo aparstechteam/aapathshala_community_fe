@@ -885,7 +885,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                             বিষয়ভিত্তিক
                           </span>
                         </button>
-                        {destinationType === "CLASS" && (
+                        {destinationType === "COURSE" && (
                           <button type='button'
                             onClick={() => {
                               setIsOpen(true)
@@ -939,7 +939,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                       </div>
 
                       {/* Select Subject  */}
-                      {category.value === "subject" && (
+                      {category.value !== "other" && (
                         <div
                           className={cn(
                             "w-full gap-4 py-4 justify-between grid-cols-2",

@@ -453,10 +453,8 @@ const OnboardPage = () => {
             });
             setUser(response.data.user as UserData)
             localStorage.setItem('user', JSON.stringify(response.data.user))
+            localStorage.setItem('hsc_batch', response.data.user?.hsc_batch)
             setInfoStep(infoStep + 1);
-            if (!batch) {
-                localStorage.setItem('hsc_batch', response.data.user?.hsc_batch || 'HSC 25')
-            }
         } catch (error) {
             handleError(error as AxiosError, getme)
         }
@@ -845,7 +843,7 @@ const OnboardPage = () => {
                                 if (infoStep === 2) Router.push("/");
                             }}
                         >
-                            {infoStep === 2 ? "শেষ করো" : "এগিয়ে যাও"} 
+                            {infoStep === 2 ? "শেষ করো" : "এগিয়ে যাও"}
                             {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ChevronRight />}
                         </Button>
                     </div>
@@ -1230,7 +1228,6 @@ const OnboardPage = () => {
                                 ques="তোমার শখ কী কী?"
                             />
                         )}
-
                         {currentStep === 5 && (
                             <Step2
                                 icon={

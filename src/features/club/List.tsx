@@ -230,7 +230,7 @@ export function ClubListCard(props: Propss) {
                     <span className="text-hot text-xs flex items-center gap-1 px-2 py-0.5 rounded-full bg-hot/10">
                       <span>Inactive</span>
                     </span>
-                  ) : (g?.is_eligiable && (
+                  ) : (!g?.is_eligiable && (
                     <p className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-elegant/10 text-elegant text-xs">
                       <span className="pt-0.5 font-medium">Paid</span>
                       <span>

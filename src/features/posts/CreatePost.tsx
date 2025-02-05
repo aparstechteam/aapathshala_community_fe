@@ -116,7 +116,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
   const { subjects, subLoading } = useSubject();
   const [subjectDisabled, setSubjectDisabled] = useState(false)
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    days: 8,
+    days: 0,
     hours: 12,
     minutes: 1,
   });
@@ -1577,7 +1577,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
           </Dialog>
         )}
 
-        <div className="py-4 space-y-4 relative z-[2]">
+        <div className="pt-4 space-y-4 relative z-[2]">
           <div className="p-4 ring-0 shadow dark:shadow-purple-800 shadow-elegant/20 bg-white dark:bg-gradient-to-r dark:bg-neutral-950/70 md:rounded-xl">
             <div
 
@@ -1737,8 +1737,8 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
             </div>
           </div>
         </div>
-        {timeLeft.days > 0 && (
-          <div className='z-[2] relative bg-white rounded-lg'>
+        {timeLeft?.days !== 0 && (
+          <div className='z-[2] relative bg-white rounded-lg my-2'>
             <p className='text-center bg-hot/20 max-w-4xl py-2 mx-auto rounded-lg h-full px-5 w-full flex items-center justify-center text-base font-semibold text-hot'>
               {formatBnNumber(timeLeft.days)} দিন ফ্রি ট্রায়াল বাকি আছে
             </p>

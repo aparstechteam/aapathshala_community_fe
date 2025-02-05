@@ -449,7 +449,8 @@ export const ProfileComponent = (props: Props) => {
         description: "You have been added to the course",
         variant: "default",
       });
-
+      setOpenCourse(false)
+      router.replace(`/profile`)
     } catch (error) {
       handleError(error as AxiosError);
       if (axios.isAxiosError(error)) {

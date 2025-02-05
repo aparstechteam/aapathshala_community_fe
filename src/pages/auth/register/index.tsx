@@ -239,7 +239,7 @@ export default function SignUpForm() {
                                                 {joiningIdLoading ? 'ভেরিফাইং...' : 'সাবমিট করুন'}
                                             </Button>
                                             <Button className='w-full bg-gradient-to-r from-light !rounded-full to-light/70 text-white' onClick={() => router.push('/auth/onboard')} disabled={joiningIdLoading}>
-                                                {joiningIdLoading ? 'ভেরিফাইং...' : '৭ দিনের ফ্রি ট্রায়াল দিয়ে দেখো'}
+                                                {'৭ দিনের ফ্রি ট্রায়াল দিয়ে দেখো'}
                                             </Button>
                                         </div>
                                     </FormProvider>

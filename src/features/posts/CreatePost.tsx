@@ -115,6 +115,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
   const [destinationType, setDestinationType] = useState(group_type || "");
   const { subjects, subLoading } = useSubject();
   const [subjectDisabled, setSubjectDisabled] = useState(false)
+  const [isPaid, setIsPaid] = useState(false);
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
     hours: 12,
@@ -166,6 +167,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
         setLimit(Number(res.data.limit));
         setLimitRemaining(Number(res.data.remaining));
         setCanUseAi(res.data.canUseAi);
+        setIsPaid(res.data.isPaid);
         setTimeLeft({
           days: res.data.trialDaysRemaining,
           hours: 0,
@@ -1275,7 +1277,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                         </div>
 
                         <div className="flex items-center gap-1 text-black">
-                          {!canUseAi && (
+                          {!isPaid && (
                             <span className="text-xs text-white px-2.5 py-0.5 bg-hot rounded-lg">Free Trial</span>
                           )}
                           {group_type === "SUBJECT" ? (

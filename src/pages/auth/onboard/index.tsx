@@ -100,6 +100,7 @@ const OnboardPage = () => {
     const [imgloading, setImgLoading] = useState<boolean>(false);
     const [preview, setPreview] = useState<string>(user?.image || "");
     const [infoStep, setInfoStep] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const [myinfo, setMyInfo] = useState({
         bio: "",
@@ -166,7 +167,7 @@ const OnboardPage = () => {
             }
         }
         fetchFriends();
-    }, []);
+    }, [user]);
 
     useEffect(() => {
         async function fetchCities() {
@@ -413,6 +414,7 @@ const OnboardPage = () => {
         //     return
         // }
         try {
+            setIsLoading(true);
             const res = await axios.put(`${secondaryAPI}/api/auth/update`,
                 myinfo,
                 {
@@ -429,9 +431,12 @@ const OnboardPage = () => {
             });
             localStorage.removeItem("user");
             await getme();
+            setIsLoading(false);
         } catch (error) {
             console.log(error)
+            setIsLoading(false);
         }
+
     }
 
     async function getme() {
@@ -840,10 +845,12 @@ const OnboardPage = () => {
                                 if (infoStep === 2) Router.push("/");
                             }}
                         >
-                            {infoStep === 2 ? "শেষ করো" : "এগিয়ে যাও"} <ChevronRight />
+                            {infoStep === 2 ? "শেষ করো" : "এগিয়ে যাও"} 
+                            {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ChevronRight />}
                         </Button>
                     </div>
                 </DialogFooter>
+
             </DialogContent>
         </Dialog>
     );

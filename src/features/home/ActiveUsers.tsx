@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 import { UserData } from "@/@types";
-import { Button } from "@/components";
+import { Button, useUser } from "@/components";
 import { ValidImage } from "@/components/shared/ValidImage";
 import { secondaryAPI } from "@/configs";
 import { handleError } from "@/hooks/error-handle";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import axios, { AxiosError } from "axios";
-import { UserPlus, UserRoundCheck } from "lucide-react";
+import { Loader2, UserPlus, UserRoundCheck } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -19,7 +19,9 @@ type Props = {
 
 export const ActiveUsers = (props: Props) => {
   const { users, setUsers } = props;
+  const { user } = useUser();
   const [followLoading, setFollowLoading] = useState(false);
+
 
   const toggleFollow = async (id: string) => {
     // if (isFollowing) return;
@@ -87,17 +89,9 @@ export const ActiveUsers = (props: Props) => {
                 <span className="text-sm capitalize truncate font-medium dark:text-gray-200">
                   {x.name}
                 </span>
-                {Number(x.level) === 0 ? (
-                  <span className="text-xs font-medium px-3 h-4 text-center flex items-center justify-center pt-0.5 bg-indigo-500/10 text-indigo-600 rounded-full">
-                    Guardian
-                  </span>
-                ) : x.role !== "USER" ? (
+                {!!x?.role && (
                   <span className="text-xs font-medium px-3 h-4 flex items-center text-center bg-olive/20 text-olive pt-0.5 rounded-full capitalize">
                     {x?.role?.toLowerCase()}
-                  </span>
-                ) : (
-                  <span className="text-xs font-medium min-w-12 h-4 items-center text-center bg-elegant/10 text-elegant pt-0.5 rounded-full">
-                    Class {x.level}
                   </span>
                 )}
               </p>
@@ -108,16 +102,18 @@ export const ActiveUsers = (props: Props) => {
             <div>
               <button
                 onClick={() => toggleFollow(x.id)}
-                className={cn(
+                className={cn(x.id === user.id && 'hidden',
                   "!rounded-lg py-1 px-2",
                   x.isFollowing ? "text-olive" : "text-black"
                 )}
               >
-                {x.isFollowing ? (
+                {followLoading ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (x.isFollowing ? (
                   <UserRoundCheck size={16} />
                 ) : (
                   <UserPlus size={16} />
-                )}
+                ))}
               </button>
             </div>
           </div>

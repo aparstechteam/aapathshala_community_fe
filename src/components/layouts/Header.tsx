@@ -358,26 +358,29 @@ export const Header = () => {
                       >
                         <WandSparkles size={16} /> Feedback
                       </Link>
-                      <Select value={batchName || user?.hsc_batch} onValueChange={(value) => {
-                        localStorage.setItem('hsc_batch', value)
-                        if (batchName !== value) {
-                          setBatchName(value)
-                          router.reload()
-                        }
-                      }}>
-                        <SelectTrigger className="flex items-center justify-start gap-2 px-2 py-2 !border-0 hover:bg-gray-100 !rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">
-                          <h2 className="flex items-center text-base gap-2">
-                            <UserRound size={16} />
-                            <span>
-                              Switch Batch
-                            </span>
-                          </h2>
-                        </SelectTrigger>
-                        <SelectContent className="z-[9999] relative !bg-ash/40 grid gap-2">
-                          <SelectItem value="HSC 25">HSC 25</SelectItem>
-                          <SelectItem value="HSC 26">HSC 26</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <div className={cn(user.role === "USER" ? "hidden" : "block")}>
+                        <Select value={batchName || user?.hsc_batch} onValueChange={(value) => {
+                          localStorage.setItem('hsc_batch', value)
+                          if (batchName !== value) {
+
+                            setBatchName(value)
+                            router.reload()
+                          }
+                        }}>
+                          <SelectTrigger className="flex items-center justify-start gap-2 px-2 py-2 !border-0 hover:bg-gray-100 !rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">
+                            <h2 className="flex items-center text-base gap-2">
+                              <UserRound size={16} />
+                              <span>
+                                Switch Batch
+                              </span>
+                            </h2>
+                          </SelectTrigger>
+                          <SelectContent className="z-[9999] relative !bg-ash/40 grid gap-2">
+                            <SelectItem value="HSC 25">HSC 25</SelectItem>
+                            <SelectItem value="HSC 26">HSC 26</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
 
                     <div className="grid gap-1 pt-3">

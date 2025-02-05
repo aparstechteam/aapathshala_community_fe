@@ -124,7 +124,7 @@ export const ProfileComponent = (props: Props) => {
   const [religion, setReligion] = useState(user?.religion || "");
   const [hscBatch, setHscBatch] = useState(user?.hsc_batch || "");
   const [editOpen, setEditOpen] = useState(false);
-  const [preview, setPreview] = useState(user?.image || "");
+  const [preview, setPreview] = useState(userProfile?.userData?.image || "");
 
   const [collections, setCollections] = useState<Collection[]>([]);
 
@@ -577,7 +577,7 @@ export const ProfileComponent = (props: Props) => {
 
             <div className='flex flex-col gap-3'>
               <Label>তোমার ব্যাচ কী?</Label>
-              <Select value={hscBatch}
+              <Select value={hscBatch} disabled={!!user?.hsc_batch}
                 onValueChange={(value) => {
                   setHscBatch(value)
                   setError('')

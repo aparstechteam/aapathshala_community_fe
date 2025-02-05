@@ -896,8 +896,9 @@ export const PostComponent: React.FC<PostShowProps> = ({
               />
             )}
             {post?.category === 'homework' &&
-              <h2 className="text-sm font-medium text-start text-olive">#{post?.category}</h2>
+              <Link href={`/search?q=homework`} className="text-sm font-medium text-start text-olive">#{post?.category}</Link>
             }
+
 
             {!!post?.image ? (
               <button type="button" onClick={() => {

@@ -125,7 +125,7 @@ export const ProfileComponent = (props: Props) => {
   const [hscBatch, setHscBatch] = useState(user?.hsc_batch);
   const [editOpen, setEditOpen] = useState(false);
   const [preview, setPreview] = useState(userProfile?.userData?.image || "");
-
+  const [isFTLoading, setIsFTLoading] = useState<boolean>(false);
   const [collections, setCollections] = useState<Collection[]>([]);
 
   const [openCourse, setOpenCourse] = useState(false);
@@ -435,6 +435,7 @@ export const ProfileComponent = (props: Props) => {
       return;
     }
     try {
+      setIsFTLoading(true)
       await axios.post(`${secondaryAPI}/api/auth/verify-joining-id`, {
         joiningId: course
       }, {
@@ -451,7 +452,9 @@ export const ProfileComponent = (props: Props) => {
       });
       setOpenCourse(false)
       router.replace(`/profile`)
+      setIsFTLoading(false)
     } catch (error) {
+      setIsFTLoading(false)
       handleError(error as AxiosError);
       if (axios.isAxiosError(error)) {
         toast({
@@ -706,9 +709,16 @@ export const ProfileComponent = (props: Props) => {
               onClick={(e) => {
                 e.preventDefault()
                 handleAddCourse()
-              }}>Add</Button>
+              }}>
+                {isFTLoading ? (
+                  <Loader2 className="animate-spin text-center" />
+                ) : (
+                  "Add"
+                )}
+              </Button>
           </div>
         </DialogFooter>
+
       </DialogContent>
     </Dialog>
   );

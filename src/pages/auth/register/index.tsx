@@ -112,7 +112,6 @@ export default function SignUpForm() {
 
     }, [step])
 
-
     useEffect(() => {
         const getThanas = async () => {
             setLoading(true);

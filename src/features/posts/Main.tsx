@@ -29,7 +29,7 @@ import dynamic from "next/dynamic";
 import { useToast } from "@/hooks/use-toast";
 import { secondaryAPI } from "@/configs";
 import { handleError } from "@/hooks/error-handle";
-import { ChevronLeft, ChevronRight, EllipsisVertical } from "lucide-react";
+import { ChevronLeft, ChevronRight, EllipsisVertical, Flag } from "lucide-react";
 import { useRouter } from "next/router";
 import { PollComponent, VideoComponent } from "./index";
 import { reactionTabs } from "@/data/reactions";
@@ -731,9 +731,11 @@ export const PostComponent: React.FC<PostShowProps> = ({
                 </svg>
               </button>
 
+
               <Popover>
                 <PopoverTrigger>
                   <span className="!rounded-full !bg-green-100 dark:!bg-green-500 !bg-opacity-50 dark:!bg-opacity-20 hover:!bg-opacity-70 dark:hover:!bg-opacity-20 duration-300">
+
                     <EllipsisVertical size={20} />
                   </span>
                 </PopoverTrigger>
@@ -742,7 +744,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
                   className="!p-0 relative z-[2] rounded-lg !bg-white dark:!bg-gray-900 !min-w-[200px] border-gray-200 dark:border-0"
                 >
                   <div className="py-2 grid ring-1 ring-gray-200 dark:ring-green-800 rounded-lg">
-                    {(user?.id === post?.user.id || user?.role !== "USER") && (
+                    {/* {(user?.id === post?.user.id || user?.role !== "USER") && (
                       <button className="text-start text-gray-900 dark:text-white flex gap-2 justify-start items-center duration-300 hover:bg-gray-100 dark:hover:bg-green-800 px-3 py-2">
                         <svg
                           width="20"
@@ -758,7 +760,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
                         </svg>
                         <span className="leading-none text-sm pt-1">Suspend</span>
                       </button>
-                    )}
+                    )} */}
                     {(user?.id === post?.user.id || user?.role === "ADMIN") && (
                       <button
                         type="button"
@@ -780,38 +782,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
                         <span className="leading-none text-sm pt-1">Delete</span>
                       </button>
                     )}
-                    <button
-                      type="button"
-                      className="!text-start flex justify-start items-center gap-2 px-3 py-2 text-gray-900 dark:text-white duration-300 hover:bg-gray-100 dark:hover:bg-green-800"
-                    >
-                      <svg
-                        width="17"
-                        height="17"
-                        viewBox="0 0 17 17"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clipPath="url(#clip0_726_35923)">
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M16.4997 8.5001C16.4997 10.4767 15.7213 12.3554 14.3239 13.7529C12.9265 15.1503 11.0477 15.9287 9.07115 15.9287C7.09456 15.9287 5.21582 15.1503 3.8184 13.7529C2.42095 12.3554 1.64258 10.4767 1.64258 8.5001C1.64258 6.52351 2.42095 4.64477 3.8184 3.24735C5.21582 1.8499 7.09456 1.07153 9.07115 1.07153C11.0477 1.07153 12.9265 1.84991 14.3239 3.24735C15.7213 4.64477 16.4997 6.52351 16.4997 8.5001ZM12.8874 3.74315C11.8095 2.87669 10.4707 2.40198 9.07115 2.40198C7.44801 2.40198 5.90662 3.04045 4.75905 4.18801C3.61149 5.33557 2.97302 6.87697 2.97302 8.5001C2.97302 9.89968 3.44774 11.2384 4.31419 12.3164L12.8874 3.74315ZM13.8281 4.6838L5.25485 13.2571C6.33281 14.1235 7.67157 14.5982 9.07115 14.5982C10.6943 14.5982 12.2357 13.9598 13.3832 12.8122C14.5308 11.6646 15.1693 10.1232 15.1693 8.5001C15.1693 7.10053 14.6946 5.76176 13.8281 4.6838Z"
-                            fill="#575757"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_726_35923">
-                            <rect
-                              width="16"
-                              height="16"
-                              fill="white"
-                              transform="translate(0.5 0.5)"
-                            />
-                          </clipPath>
-                        </defs>
-                      </svg>
-                      <span className="leading-none text-sm pt-1">Ban Post</span>
-                    </button>
+
 
                     {user?.role === "ADMIN" && (
                       <button
@@ -848,42 +819,23 @@ export const PostComponent: React.FC<PostShowProps> = ({
                       </button>
                     )}
 
-                    <button
+                    <button disabled
                       type="button"
-                      onClick={() => {
-                        if (isSaved) {
-                          handleUnsave();
-                        } else {
-                          setShowSaveTypes(true);
-                        }
-                      }}
-                      className="!text-start flex justify-start items-center gap-2 px-3 py-2 text-gray-900 dark:text-white duration-300 hover:bg-gray-100 dark:hover:bg-green-800"
+                      className="!text-start flex justify-start items-center gap-2 px-3 py-2 text-gray-600 cursor-not-allowed dark:text-white duration-300 hover:bg-gray-100 dark:hover:bg-green-800"
                     >
                       {" "}
-                      <svg
-                        width="14"
-                        height="16"
-                        viewBox="0 0 16 18"
-                        fill={isSaved ? "green" : "none"}
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M1.3335 13.9841V7.08969C1.3335 4.06189 1.3335 2.54798 2.30981 1.60737C3.28612 0.666748 4.85747 0.666748 8.00016 0.666748C11.1429 0.666748 12.7142 0.666748 13.6905 1.60737C14.6668 2.54798 14.6668 4.06189 14.6668 7.08969V13.9841C14.6668 15.9056 14.6668 16.8664 14.0228 17.2103C12.7756 17.8763 10.4362 15.6544 9.32516 14.9854C8.68083 14.5974 8.35866 14.4034 8.00016 14.4034C7.64167 14.4034 7.3195 14.5974 6.67517 14.9854C5.56416 15.6544 3.22472 17.8763 1.97754 17.2103C1.3335 16.8664 1.3335 15.9056 1.3335 13.9841Z"
-                          stroke={isSaved ? "green" : "#575757"}
-                          strokeWidth="1.25"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      <Flag size={17} strokeWidth={1.1} />
                       <span className="leading-none text-sm pt-1">
-                        {isSaved ? "Saved" : "Save Post"}
+                        Report
                       </span>
                     </button>
                   </div>
                 </PopoverContent>
               </Popover>
+
             </div>
           </div>
+
 
           {/* image & post body  */}
           <div className="grid gap-2 text-gray-900 dark:text-white">

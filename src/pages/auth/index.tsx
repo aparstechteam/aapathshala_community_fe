@@ -33,7 +33,7 @@ const LoginPage = () => {
       if (!data?.user?.onboarding_complete) {
         Router.push("/auth/register");
       } else {
-        localStorage.setItem('hsc_batch', JSON.stringify(data.user.hsc_batch))
+        localStorage.setItem('hsc_batch', data.user.hsc_batch as string)
         Router.push("/");
       }
 

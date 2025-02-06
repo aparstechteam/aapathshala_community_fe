@@ -123,7 +123,7 @@ export const Layout = (props: Props) => {
             });
             setUser(response.data.user as UserData)
             localStorage.setItem('user', JSON.stringify(response.data.user))
-            localStorage.setItem('hsc_batch', response.data.user?.hsc_batch)
+            localStorage.setItem('hsc_batch', response.data.user.hsc_batch as string)
             setOpenInfo(false)
         } catch (error) {
             handleError(error as AxiosError, getme)

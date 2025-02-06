@@ -433,7 +433,7 @@ const OnboardPage = () => {
             });
             setUser(response.data.user as UserData)
             localStorage.setItem('user', JSON.stringify(response.data.user))
-            localStorage.setItem('hsc_batch', response.data.user?.hsc_batch)
+            localStorage.setItem('hsc_batch', response.data.user.hsc_batch as string)
             setInfoStep(infoStep + 1);
         } catch (error) {
             handleError(error as AxiosError, getme)

@@ -449,10 +449,11 @@ export const ProfileComponent = (props: Props) => {
         description: "You have been added to the course",
         variant: "default",
       });
-      setOpenCourse(false)
+      await getme()
       router.replace(`/profile`)
       if (refetch) refetch()
       setIsFTLoading(false)
+
     } catch (error) {
       setIsFTLoading(false)
       handleError(error as AxiosError);
@@ -463,6 +464,25 @@ export const ProfileComponent = (props: Props) => {
           variant: "destructive",
         });
       }
+    }
+  }
+
+  async function getme() {
+
+    try {
+      const response = await axios.get(`${secondaryAPI}/api/auth/user`, {
+
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+        }
+      });
+      setUser(response.data.user)
+      localStorage.setItem('user', JSON.stringify(response.data.user))
+      localStorage.setItem('hsc_batch', response.data.user?.hsc_batch)
+      setOpenCourse(false)
+    } catch (error) {
+      handleError(error as AxiosError, getme)
     }
   }
 
@@ -710,12 +730,12 @@ export const ProfileComponent = (props: Props) => {
                 e.preventDefault()
                 handleAddCourse()
               }}>
-                {isFTLoading ? (
-                  <Loader2 className="animate-spin text-center" />
-                ) : (
-                  "Add"
-                )}
-              </Button>
+              {isFTLoading ? (
+                <Loader2 className="animate-spin text-center" />
+              ) : (
+                "Add"
+              )}
+            </Button>
           </div>
         </DialogFooter>
       </DialogContent>

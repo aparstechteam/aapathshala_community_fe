@@ -155,14 +155,13 @@ export const Layout = (props: Props) => {
         if (user?.image) {
             setPreview(user?.image)
         }
-        if (user.id && !user?.onboarding_complete) {
+        if (user.id && !user?.hsc_batch) {
             if (!router.pathname.includes('/auth')) {
                 setTimeout(() => {
                     setOpenInfo(true)
                 }, 4000)
             }
         }
-
     }, [user, router])
 
     const userinfo = (

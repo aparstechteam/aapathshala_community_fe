@@ -92,11 +92,14 @@ export const FeatureRequest = () => {
                 <header className="space-y-2 text-center">
                     <h1 className="text-xl font-bold text-clip text-transparent bg-clip-text bg-gradient-to-r from-hot via-olive to-blue-600">তোমার অভিজ্ঞতা শেয়ার করো</h1>
                     <p className="text-light !text-sm dark:text-gray-400">
-                        AFS কমিউনিটি সম্পর্কে তোমার অভিজ্ঞতা শেয়ার করো। <br /> তোমার দেয়া মতামতের উপর ভিত্তি করে আমরা কাজ করবো।
+                        ACS কমিউনিটি সম্পর্কে তোমার অভিজ্ঞতা শেয়ার করো। <br /> তোমার দেয়া মতামতের উপর ভিত্তি করে আমরা পদক্ষেপ গ্রহণ করবো।
                     </p>
                 </header>
 
-                <form onSubmit={(e) => { e.preventDefault(); submitFeatureRequest(); }} className="space-y-6">
+                <form onSubmit={(e) => {
+                    e.preventDefault()
+                    submitFeatureRequest();
+                }} className="space-y-6">
                     <div className="space-y-4">
                         <div>
                             <Label htmlFor="section">ফিডব্যাক সম্পর্কিত সেকশন</Label>

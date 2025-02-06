@@ -19,6 +19,7 @@ type Props = {
   data: {
     leaderboard: LeaderboardEntry[] | []
     pagination: Pagination
+    first_3: LeaderboardEntry[] | []
   }
   page: number
   setPage: (p: number) => void
@@ -32,7 +33,6 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
   const { limit, nextMonth, prevMonth, currentMonthIndex, currentMonth, data, page, setPage, loading, error } = props
 
   const totalPages = data?.pagination?.totalPages || 1
-  const cs = page === 1 ? 3 : 0
 
   const [open, setOpen] = useState(false)
 
@@ -65,12 +65,13 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
           </Button>
         </div>
       </div>
-      {!loading && data.leaderboard.length > 0 && (
+      {!loading && data.first_3.length > 0 && (
         <div className='grid grid-cols-3 sm:h-[240px] h-[170px] py-5'>
-          {swap(data?.leaderboard, 0, 1).slice(0, 3)?.map((l, index) => {
-            return data.leaderboard.length === 1 ? (
+          {swap(data?.first_3, 1, 0, 2)?.map((l, index) => {
+            return data.first_3.length === 1 ? (
               <>
                 <div></div>
+
                 <div key={l?.id} className={cn("grid items-start relative")}>
                   <div className='grid justify-items-center'>
                     <div className='relative'>
@@ -412,10 +413,10 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
         <div className='text-center py-4 text-gray-500 w-full flex justify-center'>
           <Loader2 className='animate-spin text-life' />
         </div>
-      ) : data.leaderboard.length > 3 ? (
+      ) : data.leaderboard.length > 0 ? (
         <div className="divide-y dark:divide-gray-700 divide-gray-200">
           {data.leaderboard.length > 0 ? (
-            data.leaderboard.slice(cs).map((l: LeaderboardEntry, index: number) => (
+            data.leaderboard.map((l: LeaderboardEntry, index: number) => (
               <div key={l.id} className="flex items-center justify-between p-2 gap-2 transition-colors duration-200 hover:bg-green-500 hover:bg-opacity-10">
                 <div className='flex items-center gap-3'>
                   <p className='text-gray-800 dark:text-gray-400'>{index + 4}.</p>
@@ -453,7 +454,7 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
             </div>
           )}
         </div>
-      ) : (
+      ) : (loading &&
         <div className="space-y-2">
           {[...Array(3)].map((_, i) => (
             <div key={i} className="flex items-center space-x-2">

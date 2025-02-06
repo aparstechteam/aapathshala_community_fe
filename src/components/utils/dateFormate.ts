@@ -1,9 +1,26 @@
 import moment from "moment";
+// export const fromNow = (date: Date) => {
+//     // const adjustedDate = moment(date).add(6, 'hours');
+//     // return adjustedDate.fromNow();
+//     return moment(date).fromNow();
+// };
+
 export const fromNow = (date: Date) => {
-    // const adjustedDate = moment(date).add(6, 'hours');
-    // return adjustedDate.fromNow();
-    return moment(date).fromNow();
+    const duration = moment.duration(moment().diff(moment(date)));
+
+    if (duration.asMinutes() < 60) {
+        return `${Math.floor(duration.asMinutes())}m`;
+    } else if (duration.asHours() < 24) {
+        return `${Math.floor(duration.asHours())}h`;
+    } else if (duration.asDays() < 7) {
+        return `${Math.floor(duration.asDays())}d`;
+    } else if (duration.asWeeks() < 4) {
+        return `${Math.floor(duration.asWeeks())}w`;
+    } else {
+        return `${Math.floor(duration.asMonths())}month`;
+    }
 };
+
 
 export const fromNowShort = (date: Date) => {
     return moment(date).fromNow(true);

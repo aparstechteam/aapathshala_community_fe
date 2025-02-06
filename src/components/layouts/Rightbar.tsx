@@ -17,7 +17,9 @@ export const Rightbar = () => {
   const [data, setData] = useState<{
     leaderboard: LeaderboardEntry[] | [];
     pagination: Pagination;
+    first_3: LeaderboardEntry[] | [];
   }>();
+
 
   const [activeUsers, setActiveUsers] = useState<UserData[]>([]);
 
@@ -119,6 +121,7 @@ export const Rightbar = () => {
                 data as {
                   leaderboard: LeaderboardEntry[] | [];
                   pagination: Pagination;
+                  first_3: LeaderboardEntry[] | [];
                 }
               }
               page={page}

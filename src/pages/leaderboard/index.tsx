@@ -12,8 +12,9 @@ import React, { useEffect, useState } from 'react'
 const LeaderBoardPage: NextPage = () => {
 
     const [currentMonthIndex, setCurrentMonthIndex] = useState(new Date().getMonth());
-    const [data, setData] = useState<{ leaderboard: LeaderboardEntry[], pagination: Pagination }>({
+    const [data, setData] = useState<{ leaderboard: LeaderboardEntry[], pagination: Pagination, first_3: LeaderboardEntry[] }>({
         leaderboard: [],
+        first_3: [],
         pagination: {
             currentPage: 1,
             totalPages: 1,
@@ -88,7 +89,7 @@ const LeaderBoardPage: NextPage = () => {
                         merit={firstThree}
                         limit={12} nextMonth={nextMonth} prevMonth={prevMonth}
                         currentMonthIndex={currentMonthIndex} currentMonth={currentMonth}
-                        data={data as { leaderboard: LeaderboardEntry[], pagination: Pagination }}
+                        data={data as { leaderboard: LeaderboardEntry[], pagination: Pagination, first_3: LeaderboardEntry[] }}
                         page={page}
                         setPage={setPage}
                         loading={loading}

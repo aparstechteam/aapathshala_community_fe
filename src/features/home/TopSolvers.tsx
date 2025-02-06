@@ -20,6 +20,7 @@ type Props = {
   data: {
     leaderboard: LeaderboardEntry[] | []
     pagination: Pagination
+    first_3: LeaderboardEntry[] | []
   }
   page: number
   setPage: (p: number) => void
@@ -45,10 +46,10 @@ export const TopSolvers: React.FC<Props> = (props) => {
             <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
-        {data.leaderboard.length > 0 && (
+        {data.first_3.length > 0 && (
           <div className='grid grid-cols-3 h-[160px] py-5'>
-            {swap(data.leaderboard, 0, 1)?.slice(0, 3).map((l, index) => {
-              return data.leaderboard.length === 1 ? (
+            {swap(data.first_3, 1, 0, 2)?.map((l, index) => {
+              return data.first_3.length === 1 ? (
                 <React.Fragment key={l.id}>
                   <div></div>
                   <div key={l.id} className={
@@ -359,9 +360,15 @@ export const TopSolvers: React.FC<Props> = (props) => {
         )}
 
         {!loading && data.leaderboard.length === 0 && (
-          <div className="py-4 text-sm text-center text-gray-500">
-            No data found
-          </div>
+          data.first_3.length === 0 ? (
+            <div className="py-2 text-sm text-center text-gray-500">
+              No data found
+            </div>
+          ) : (
+            <div className="py-2 text-sm text-center text-gray-500">
+              No more data found
+            </div>
+          )
         )}
 
         <div className="mt-2 text-sm text-[#008643] hover:text-life transition-colors duration-200 text-center">

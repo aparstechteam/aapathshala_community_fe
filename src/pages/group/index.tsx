@@ -75,35 +75,20 @@ const GroupPage = () => {
             </Head>
             <Layout>
                 <div className='px-2 grid w-full gap-4 pt-6 lg:pt-4 pb-5 max-w-5xl mx-auto min-h-[calc(100vh-80px)] !text-black dark:!text-white'>
-                    {groups?.length > 0 && (
-                        <div className='w-full'>
-                            <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
-                                <h2 className='text-lg font-medium'>গ্রুপ সমূহ</h2>
-                                <GroupLists className="max-h-full" groups={groups} loading={loading} />
-                            </div>
-                        </div>
-                    )}
-                    {/* {clubs?.filter((c) => c.is_member)?.length > 0 && (
-                        <div className='w-full'>
-                            <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
-                                <h2 className='text-lg font-medium'>জয়েন্ড ক্লাব সমূহ</h2>
-                                <GroupLists groups={clubs.filter((c) => c.is_member)} loading={loading} />
-                            </div>
-                        </div>
-                    )} */}
-                    {/* {groups?.filter((g) => !g.is_member)?.length > 0 && (
-                        <div className='w-full space-y-4 h-full'>
-                            <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
-                                <h2 className='text-lg font-medium'>অন্যান্য গ্রুপ সমূহ</h2>
-                                <ClubListCard clubs={groups.filter((g) => !g.is_member)} loading={loading} className="min-h-[250px]" />
-                            </div>
-                        </div>
-                    )} */}
                     {courses?.filter((c) => !c.is_member)?.length > 0 && (
                         <div className='w-full space-y-4 h-full'>
                             <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
                                 <h2 className='text-lg font-medium'>কোর্স সমূহ</h2>
                                 <ClubListCard clubs={courses} loading={loading} className="min-h-[250px]" />
+                            </div>
+                        </div>
+                    )}
+
+                    {groups?.length > 0 && (
+                        <div className='w-full'>
+                            <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
+                                <h2 className='text-lg font-medium'>গ্রুপ সমূহ</h2>
+                                <GroupLists className="max-h-full" groups={groups} loading={loading} />
                             </div>
                         </div>
                     )}

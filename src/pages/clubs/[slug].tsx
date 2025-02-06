@@ -19,7 +19,9 @@ const ClubPage = () => {
 
     const [club, setClub] = useState<Club | null>(null)
     const [clubs, setClubs] = useState<Club[]>([])
+    const [courses, setCourses] = useState<Club[]>([])
     const [loading, setLoading] = useState<boolean>(false)
+
 
     useEffect(() => {
         async function getGroup() {
@@ -53,6 +55,7 @@ const ClubPage = () => {
                     }
                 });
                 setClubs(response.data.groups);
+                setCourses(response.data.courseGroups);
                 setLoading(false);
             } catch (err) {
                 setLoading(false);
@@ -69,8 +72,6 @@ const ClubPage = () => {
             </Head>
             <Layout>
                 <div className='min-h-[calc(100vh-80px)] flex flex-col justify-center gap-4'>
-
-                
                     <GoogleReCaptchaProvider
                         reCaptchaKey={recaptchaKey ?? "NOT DEFINED"}
                         scriptProps={{
@@ -80,7 +81,7 @@ const ClubPage = () => {
                             nonce: undefined,
                         }}
                     >
-                        <ClubComponent club={club as Club} id={user.id} clubs={clubs} />
+                        <ClubComponent club={club as Club} id={user.id} clubs={clubs} courses={courses} />
                     </GoogleReCaptchaProvider>
                 </div>
             </Layout>

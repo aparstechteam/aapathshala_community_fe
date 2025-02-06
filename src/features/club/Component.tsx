@@ -21,10 +21,11 @@ type Props = {
     club: Club
     id: string
     clubs: Club[]
+    courses: Club[]
 }
 
 export const ClubComponent = (props: Props) => {
-    const { club, id, clubs } = props
+    const { club, id, clubs, courses } = props
     const { toast } = useToast()
     const { user } = useUser()
     const router = useRouter()
@@ -289,40 +290,75 @@ export const ClubComponent = (props: Props) => {
                 {joining_rules}
                 {gorib}
                 {/* My clubs */}
-                <div className={cn(clubs?.length > 0 ? 'hidden lg:block' : 'hidden')}>
-                    <div className="min-h-[300px] w-[320px] bg-white dark:bg-gray-600/20 rounded-xl ring-1 ring-ash dark:ring-ash/20 mt-4 p-3">
-                        <h2 className='text-base font-semibold py-3'>আমার গ্রুপ সমূহ</h2>
-                        {clubs?.map((g) => (
-                            <div
-                                key={g.group_id}
-                                className={cn(g?.slug === club?.slug && "bg-elegant/10 !text-elegant",
-                                    "flex rounded-xl items-center justify-between gap-4 p-1")}
-                            >
-                                <div className="flex items-center gap-4">
-                                    <Avatar className="!rounded-xl">
-                                        <AvatarImage src={g.image as string} alt={g.name} />
-                                        <AvatarFallback className="!rounded-xl dark:bg-gray-700/20 bg-elegant/20 pt-1">ME</AvatarFallback>
-                                    </Avatar>
-                                    <div className="space-y-1">
-                                        <Link href={g.disabled ? '#' : `/clubs/${g.slug}`} className="font-medium text-sm leading-none">{g.name}</Link>
-                                        <p className="text-xs text-muted-foreground">
-                                            {g.member_count} {Number(g?.member_count) > 1 ? " Members" : "Member"}
-                                        </p>
+                <div className='hidden lg:block'>
+                    {courses?.length > 0 && (
+                        <div className="w-[320px] bg-white dark:bg-gray-600/20 rounded-xl ring-1 ring-ash dark:ring-ash/20 mt-4 p-3">
+
+                            <h2 className='text-base font-semibold py-3'>জয়েন্ড কোর্স সমূহ</h2>
+                            {courses?.map((g) => (
+                                <div
+                                    key={g.group_id}
+                                    className={cn(g?.slug === club?.slug && "bg-elegant/10 !text-elegant",
+                                        "flex rounded-xl items-center justify-between gap-4 p-1")}
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <Avatar className="!rounded-xl">
+                                            <AvatarImage src={g.image as string} alt={g.name} />
+                                            <AvatarFallback className="!rounded-xl dark:bg-gray-700/20 bg-elegant/20 pt-1">ME</AvatarFallback>
+                                        </Avatar>
+                                        <div className="space-y-1">
+                                            <Link href={g.disabled ? '#' : `/clubs/${g.slug}`} className="font-medium text-sm leading-none">{g.name}</Link>
+                                            <p className="text-xs text-muted-foreground">
+                                                {g.member_count} {Number(g?.member_count) > 1 ? " Members" : "Member"}
+                                            </p>
+                                        </div>
                                     </div>
+                                    {g.is_member && (
+                                        <Badge variant="secondary" className="ml-auto">
+                                            Joined
+                                        </Badge>
+                                    )}
                                 </div>
-                                {g.is_member && (
-                                    <Badge variant="secondary" className="ml-auto">
-                                        Joined
-                                    </Badge>
-                                )}
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {clubs?.length > 0 && (
+                        <div className="w-[320px] bg-white dark:bg-gray-600/20 rounded-xl ring-1 ring-ash dark:ring-ash/20 mt-4 p-3">
+                            <h2 className='text-base font-semibold py-3'>জয়েন্ড গ্রুপ সমূহ</h2>
+                            {clubs?.map((g) => (
+                                <div
+                                    key={g.group_id}
+                                    className={cn(g?.slug === club?.slug && "bg-elegant/10 !text-elegant",
+                                        "flex rounded-xl items-center justify-between gap-4 p-1")}
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <Avatar className="!rounded-xl">
+                                            <AvatarImage src={g.image as string} alt={g.name} />
+                                            <AvatarFallback className="!rounded-xl dark:bg-gray-700/20 bg-elegant/20 pt-1">ME</AvatarFallback>
+                                        </Avatar>
+                                        <div className="space-y-1">
+                                            <Link href={g.disabled ? '#' : `/clubs/${g.slug}`} className="font-medium text-sm leading-none">{g.name}</Link>
+                                            <p className="text-xs text-muted-foreground">
+                                                {g.member_count} {Number(g?.member_count) > 1 ? " Members" : "Member"}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {g.is_member && (
+                                        <Badge variant="secondary" className="ml-auto">
+                                            Joined
+                                        </Badge>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
                 <div className='w-full pt-0 lg:pt-4'>
                     {/* cover image  */}
+
                     <div className='relative h-[200px] md:h-[300px] w-full bg-ice/20'
-                        // style={{ maxHeight: "200px", paddingBottom: aspectRatio ? `${aspectRatio * 100}%` : '56.25%' }}
+                    // style={{ maxHeight: "200px", paddingBottom: aspectRatio ? `${aspectRatio * 100}%` : '56.25%' }}
                     >
                         {!!club?.image ? (
                             <Image onLoad={handleImageLoad} objectFit="cover" src={club?.image} alt='cover-image' fill className='!z-[0] object-contain object-center lg:rounded-t-xl bg-[blue] backdrop-blur-sm bg-opacity-20' />

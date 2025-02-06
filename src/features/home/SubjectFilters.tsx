@@ -55,12 +55,12 @@ export const SubjectFilters = (props: Props) => {
     return user.level !== 0 ? (
         <div className="w-full p-4 relative z-[3] flex justify-between items-center rounded-xl ring-1 ring-ash dark:ring-elegant/40 bg-white dark:bg-elegant/10">
 
-            <div className='flex items-center'>
+            <div className='flex items-center gap-2'>
                 <Popover>
                     <PopoverTrigger>
                         <p className='flex text-sm md:text-base items-center gap-2'>
                             {filterIcon}
-                            <span className="font-medium">{sortbySelected}</span>
+                            <span className="font-medium hidden sm:block">{sortbySelected}</span>
                         </p>
                     </PopoverTrigger>
                     <PopoverContent align="start" className='z-[3] bg-white dark:text-white dark:bg-gray-900 w-[200px] grid'>
@@ -79,9 +79,9 @@ export const SubjectFilters = (props: Props) => {
                         </PopoverClose>
                     </PopoverContent>
                 </Popover>
+                <div className='text-xs font-medium lg:hidden ring-ash ring-2 rounded-full py-0.5 px-2'>{batchName || user?.hsc_batch}</div>
             </div>
 
-            <div className='text-sm font-medium'>{batchName || user?.hsc_batch}</div>
 
             {filterSubjects}
         </div >

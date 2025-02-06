@@ -155,7 +155,7 @@ export const Layout = (props: Props) => {
         if (user?.image) {
             setPreview(user?.image)
         }
-        if (user.id && !user?.hsc_batch) {
+        if (user.id && !user?.religion) {
             if (!router.pathname.includes('/auth')) {
                 setTimeout(() => {
                     setOpenInfo(true)
@@ -476,7 +476,7 @@ export const Layout = (props: Props) => {
             <div className={cn("fixed top-0 left-0 w-full z-10", router.pathname.includes('/onboard') && 'hidden md:block')}>
                 <Header />
             </div>
-            <div className={cn('pt-10', !router.pathname.includes('/onboard') && 'pt-[100px] lg:!pt-[70px]')}>
+            <div className={cn('pt-10', !router.pathname.includes('/onboard') && 'pt-[80px] lg:!pt-[70px]')}>
                 {props.children}
                 {timeLeft.days > 0 && (
                     <div className='fixed bottom-5 left-0 w-full h-10 z-[999] flex items-center justify-center'>
@@ -487,7 +487,6 @@ export const Layout = (props: Props) => {
                 )}
             </div>
         </div>
-
     )
 }
 

@@ -488,11 +488,11 @@ export const ProfileComponent = (props: Props) => {
 
   const editprofile = (
     <Dialog open={editOpen} onOpenChange={setEditOpen}>
-      <DialogContent className="w-full max-w-md text-black bg-white rounded-xl shadow-md shadow-ash p-4">
-        <DialogHeader>
+      <DialogContent className="w-full max-w-md text-black bg-white rounded-xl shadow-md shadow-ash p-2">
+        <DialogHeader className="p-4">
           <DialogTitle>Edit Profile</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 max-h-[80vh] px-2 overflow-y-auto">
           <div className="relative flex items-center justify-center cursor-pointer duration-300 hover:text-elegant text-light">
             <Input
               disabled={imgloading}
@@ -529,6 +529,17 @@ export const ProfileComponent = (props: Props) => {
               placeholder="Name"
             />
           </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="phone">ফোন নম্বর</Label>
+            <Input
+              disabled={true}
+              value={user?.phone}
+              id="phone"
+              placeholder="Phone"
+            />
+          </div>
+
           <div className="flex flex-col gap-2">
             <Label htmlFor="bio">Update Bio</Label>
             <Textarea
@@ -750,25 +761,11 @@ export const ProfileComponent = (props: Props) => {
         <div className="max-w-6xl grid grid-cols-1 px-0 md:px-4 w-full mx-auto">
           {/* Cover & Profile Photo  */}
           <div className="w-full p-5 bg-white dark:bg-gray-800/20 rounded-xl shadow-md shadow-ash dark:shadow-ash/20 mt-4">
-            <button
-              type="button"
-              onClick={() => Router.back()}
+            <div
               className="flex items-center gap-2 text-base sm:text-lg font-semibold text-black/80 dark:text-white mb-4"
             >
-              <svg
-                width="18"
-                height="16"
-                viewBox="0 0 18 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.29492 15.7162C7.68833 16.1038 8.32148 16.0991 8.7091 15.7057C9.09672 15.3123 9.09203 14.6792 8.69862 14.2915L3.32827 9.00014H16.9995C17.5517 9.00014 17.9995 8.55243 17.9995 8.00014C17.9995 7.44786 17.5517 7.00014 16.9995 7.00014H3.33488L8.69862 1.71525C9.09203 1.32763 9.09672 0.694485 8.7091 0.301079C8.32148 -0.0923269 7.68833 -0.0970152 7.29492 0.290606L0.370733 7.11299C-0.126181 7.6026 -0.126182 8.40419 0.370733 8.8938L7.29492 15.7162Z"
-                  fill="currentColor"
-                />
-              </svg>
               <span>কমিউনিটি প্রোফাইল</span>
-            </button>
+            </div>
             <div className="z-[2] sm:flex grid items-center gap-4">
               <div className="max-w-[100px]">
                 <div className="h-[100px] w-[100px] relative">
@@ -934,6 +931,18 @@ export const ProfileComponent = (props: Props) => {
                     {bio || "[ No bio added yet ]"}
                   </span>
                 </h2>
+
+                <h4 className="text-base text-black font-medium flex items-start gap-2">
+                  <span className="text-[#757575]">
+                    <BookOpenText size={20} />
+                  </span>
+                  <div>
+                    <span>
+                      {" "}
+                      Student of {userProfile.userData?.hsc_batch}
+                    </span>
+                  </div>
+                </h4>
 
                 <h4 className="text-base text-black font-medium flex items-start gap-2">
                   <span>

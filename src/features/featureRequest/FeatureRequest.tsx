@@ -92,7 +92,7 @@ export const FeatureRequest = () => {
                 <header className="space-y-2 text-center">
                     <h1 className="text-xl font-bold text-clip text-transparent bg-clip-text bg-gradient-to-r from-hot via-olive to-blue-600">তোমার অভিজ্ঞতা শেয়ার করো</h1>
                     <p className="text-light !text-sm dark:text-gray-400">
-                        ACS কমিউনিটি সম্পর্কে তোমার অভিজ্ঞতা শেয়ার করো। <br /> তোমার দেয়া মতামতের উপর ভিত্তি করে আমরা পদক্ষেপ গ্রহণ করবো।
+                        ACS স্মার্ট কমিউনিটি সম্পর্কে তোমার অভিজ্ঞতা শেয়ার করো। <br /> তোমার দেয়া মতামতের উপর ভিত্তি করে আমরা পদক্ষেপ গ্রহণ করবো।
                     </p>
                 </header>
 
@@ -117,7 +117,7 @@ export const FeatureRequest = () => {
                                     <SelectItem value="post">পোস্ট সম্পর্কিত সমস্যা</SelectItem>
                                     <SelectItem value="comment">কমেন্ট সম্পর্কিত সমস্যা</SelectItem>
                                     <SelectItem value="profile"> প্রোফাইল আপডেটে সম্পর্কিত সমস্যা</SelectItem>
-                                    <SelectItem value="school">স্কুল আপডেট করতে চাই</SelectItem>
+                                    <SelectItem value="school">কলেজ আপডেট করতে চাই</SelectItem>
                                     <SelectItem value="ai">কিউরিওসিটি Ai সম্পর্কিত সমস্যা</SelectItem>
                                     <SelectItem value="other">অন্যান্য</SelectItem>
                                 </SelectContent>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Input, Textarea, Button, Badge, Label } from '@/components/ui';
+import { Input, Textarea, Button, Badge, Label, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui';
 import { useToast } from '@/hooks/use-toast';
 import { useUser } from '@/components';
 import { feedbackAPI } from '@/configs';
@@ -12,7 +12,8 @@ export const FeatureRequest = () => {
         title: '',
         description: '',
         priority: 'medium',
-        section: user?.level
+        level: user?.level,
+        section: 'feature'
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,7 +31,7 @@ export const FeatureRequest = () => {
             const data = {
                 name: user?.name,
                 phone: user?.phone,
-                instituteName: user?.institute_name,
+                instituteName: user?.school,
                 ...featureRequest
             };
 
@@ -49,7 +50,8 @@ export const FeatureRequest = () => {
                 title: '',
                 description: '',
                 priority: 'medium',
-                section: user?.level
+                level: user?.level,
+                section: 'feature'
             });
             setIsSubmitting(false);
         } catch (error) {
@@ -97,18 +99,40 @@ export const FeatureRequest = () => {
                 <form onSubmit={(e) => { e.preventDefault(); submitFeatureRequest(); }} className="space-y-6">
                     <div className="space-y-4">
                         <div>
+                            <Label htmlFor="section">ফিডব্যাক সম্পর্কিত সেকশন</Label>
+                            <Select required name="section" value={featureRequest.section} onValueChange={(value) => handleChange({ name: 'section', value })}>
+                                <SelectTrigger className='!ring-1 !ring-ash focus:!ring-olive/40 duration-300 focus:outline-none focus:ring-offset-0 focus:border-0 focus:!ring-2'>
+                                    <SelectValue placeholder="Select section" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="feature">ফিচার রিকোয়েক্ট করতে চাই</SelectItem>
+                                    <SelectItem value="group">গ্রুপ সম্পর্কিত সমস্যা</SelectItem>
+                                    <SelectItem value="club">ক্লাব সম্পর্কিত সমস্যা</SelectItem>
+                                    <SelectItem value="teacher">অভিভাবক প্রোগ্রাইল সম্পর্কিত সমস্যা</SelectItem>
+                                    <SelectItem value="notification">নোটিফিকেশন সম্পর্কিত সমস্যা</SelectItem>
+                                    <SelectItem value="top_solver">টপ সল্ভারস র‍্যাংকিং সম্পর্কিত সমস্যা</SelectItem>
+                                    <SelectItem value="post">পোস্ট সম্পর্কিত সমস্যা</SelectItem>
+                                    <SelectItem value="comment">কমেন্ট সম্পর্কিত সমস্যা</SelectItem>
+                                    <SelectItem value="profile"> প্রোফাইল আপডেটে সম্পর্কিত সমস্যা</SelectItem>
+                                    <SelectItem value="school">স্কুল আপডেট করতে চাই</SelectItem>
+                                    <SelectItem value="ai">কিউরিওসিটি Ai সম্পর্কিত সমস্যা</SelectItem>
+                                    <SelectItem value="other">অন্যান্য</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div>
                             <Label htmlFor="title">শিরোনাম</Label>
-                            <Input className='!ring-1 !ring-ash focus:!ring-green-500/40 duration-300 focus:outline-none focus:ring-offset-0 focus:border-0 focus:!ring-2' id="title" value={featureRequest.title} onChange={(e) => handleChange({ name: 'title', value: e.target.value })} placeholder="Brief title for your feature request" />
+                            <Input className='!ring-1 !ring-ash !h-10 border-0 focus:!ring-olive/40 duration-300 focus:outline-none focus:ring-offset-0 focus:border-0 focus:!ring-2' id="title" value={featureRequest.title} onChange={(e) => handleChange({ name: 'title', value: e.target.value })} placeholder="Brief title for your feature request" />
                         </div>
                         <div>
                             <Label htmlFor="description">তোমার অভিজ্ঞতা</Label>
-                            <Textarea className='!ring-1 focus:!ring-2 focus:!ring-green-500/40 duration-300 !ring-ash' id="description" value={featureRequest.description} onChange={(e) => handleChange({ name: 'description', value: e.target.value })} placeholder="Detailed description of your feature request" rows={4} />
+                            <Textarea className='!ring-1 focus:!ring-2 !rounded-xl focus:!ring-olive/40 duration-300 !ring-ash' id="description" value={featureRequest.description} onChange={(e) => handleChange({ name: 'description', value: e.target.value })} placeholder="Detailed description of your feature request" rows={4} />
                         </div>
-                        {/* <div className="grid grid-cols-2 gap-4">
-                            <div>
+                        <div className="hidden gap-4">
+                            {/* <div>
                                 <Label htmlFor="priority">Priority</Label>
                                 <Select required name="priority" value={featureRequest.priority} onValueChange={(value) => handleChange({ name: 'priority', value })}>
-                                    <SelectTrigger className="w-full !ring-1 !ring-ash focus:!ring-2 focus:!ring-green-500/40 duration-300">
+                                    <SelectTrigger className="w-full !ring-1 !ring-ash focus:!ring-2 focus:!ring-olive/40 duration-300">
                                         <SelectValue placeholder="Select priority" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -117,28 +141,11 @@ export const FeatureRequest = () => {
                                         <SelectItem value="high">High</SelectItem>
                                     </SelectContent>
                                 </Select>
-                            </div>
-                            <div>
-                                <Label htmlFor="section">Section</Label>
-                                <Select required name="section" value={featureRequest.section} onValueChange={(value) => handleChange({ name: 'section', value })}>
-                                    <SelectTrigger className="w-full !ring-1 !ring-ash focus:!ring-2 focus:!ring-green-500/40 duration-300">
-                                        <SelectValue placeholder="Select section" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="post">Post</SelectItem>
-                                        <SelectItem value="comment">Comment</SelectItem>
-                                        <SelectItem value="profile">Profile</SelectItem>
-                                        <SelectItem value="reaction">Reaction</SelectItem>
-                                        <SelectItem value="searching">Searching</SelectItem>
-                                        <SelectItem value="group">Group</SelectItem>
-                                        <SelectItem value="ai">AI</SelectItem>
-                                        <SelectItem value="other">Other</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div> */}
+                            </div> */}
+
+                        </div>
                     </div>
-                    <Button type="submit" disabled={isSubmitting} className="w-full !bg-gradient-to-r from-hot/55 via-elegant/70 to-blue-600/70 !text-white">
+                    <Button type="submit" disabled={isSubmitting} className="w-full !bg-olive !text-white">
                         {isSubmitting ? 'Submitting...' : 'Submit Request'}
                     </Button>
                 </form>

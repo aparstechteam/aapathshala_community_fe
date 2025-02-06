@@ -95,6 +95,7 @@ export type UserData = {
     bio?: string
     institute_name?: string
     course_enrolled?: string[]
+    onboarding_complete?: boolean
 };
 
 export type Club = {

@@ -183,26 +183,6 @@ const OnboardPage = () => {
         fetchCities();
     }, []);
 
-    // useEffect(() => {
-    //     async function fetchSubjects() {
-    //         try {
-    //             setSubjects([]);
-    //             const res = await axios.get(
-    //                 `${secondaryAPI}/api/subjects`,
-    //                 {
-    //                     headers: {
-    //                         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    //                     },
-    //                 }
-    //             );
-    //             setSubjects(res.data);
-    //         } catch (error) {
-    //             // handleError(error as AxiosError)
-    //         }
-    //     }
-    //     fetchSubjects();
-    // }, [user]);
-
     useEffect(() => {
         async function fetchCities() {
             try {

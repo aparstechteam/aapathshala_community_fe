@@ -29,11 +29,14 @@ const LoginPage = () => {
       const data = await response.data;
       setUser(data.user)
       localStorage.setItem('user', JSON.stringify(data.user))
-      if (!data?.user?.status) {
+
+      if (!data?.user?.onboarding_complete) {
         Router.push("/auth/register");
       } else {
+        localStorage.setItem('hsc_batch', JSON.stringify(data.user.hsc_batch))
         Router.push("/");
       }
+
     } catch (error) {
       console.error("Error assigning user:", error);
       localStorage.removeItem('user')
@@ -82,8 +85,6 @@ const LoginPage = () => {
         <title>Login</title>
         <meta name="description" content="Login to Smart Community" />
       </Head>
-      {/* bg-[url("/cover/cover-3.jpg")] */}
-
 
       <div className='bg-white flex flex-col items-center justify-center min-h-screen w-full'>
 

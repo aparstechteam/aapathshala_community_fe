@@ -1,4 +1,16 @@
 
+export interface CreatePostProps {
+    group_id?: string;
+    group_type?: string;
+    subject_id?: string;
+}
+
+export interface TimeLeft {
+    days: number;
+    hours: number;
+    minutes: number;
+}
+
 export type Comment = {
     id: string;
     post_id: string;

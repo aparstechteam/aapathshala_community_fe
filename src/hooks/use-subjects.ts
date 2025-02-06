@@ -12,8 +12,7 @@ export const useSubject = () => {
     const [subLoading, setSubLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        const fetchSubjectsAndChapters = async () => {
-
+        const fetchSubjects = async () => {
             try {
                 setSubLoading(true);
                 const subjectResponse = await axios.get(`${secondaryAPI}/api/subjects`, {
@@ -25,13 +24,13 @@ export const useSubject = () => {
                 setSubjects(subjectResponse.data);
 
             } catch (err) {
-                handleError(err as AxiosError, fetchSubjectsAndChapters);
+                handleError(err as AxiosError, fetchSubjects);
             } finally {
                 setSubLoading(false);
             }
         };
 
-        fetchSubjectsAndChapters();
+        fetchSubjects();
     }, [user]);
 
     async function getChapters(subjectId: string) {

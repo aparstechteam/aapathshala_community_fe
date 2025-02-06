@@ -4,7 +4,7 @@ import { ProfileComponent } from "@/features";
 import { handleError } from "@/hooks/error-handle";
 import axios, { AxiosError } from "axios";
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 type UserData = {
   id: string;
@@ -51,31 +51,34 @@ const MyProfilePage = () => {
 
   const { user } = useUser();
 
-  useEffect(() => {
-    async function getProfile() {
-      try {
-        setLoading(true);
-        if (!user?.id) return;
-        const response = await axios.get(
-          `${secondaryAPI}/api/auth/profile/${user.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
+  const getProfile = useCallback(async () => {
+    try {
+      setLoading(true);
 
-        setIsFollowing(response?.data?.userData?.isFollowing);
-        setUserProfile(response.data);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        handleError(error as AxiosError, () => getProfile());
-      }
+      if (!user?.id) return;
+      const response = await axios.get(
+        `${secondaryAPI}/api/auth/profile/${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+
+      setIsFollowing(response?.data?.userData?.isFollowing);
+      setUserProfile(response.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      handleError(error as AxiosError, () => getProfile());
     }
+  }, [user]);
+
+  useEffect(() => {
     if (user?.id)
       getProfile();
-  }, [user]);
+  }, [user, getProfile]);
+
 
   return (
     <>
@@ -91,8 +94,10 @@ const MyProfilePage = () => {
             id={user.id as string}
             isFollowing={isFollowing}
             setIsFollowing={setIsFollowing}
+            refetch={getProfile}
           />
         )}
+
       </Layout>
     </>
   );

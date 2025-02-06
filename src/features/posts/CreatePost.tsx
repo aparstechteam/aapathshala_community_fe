@@ -3,64 +3,23 @@ import { useState, FormEvent, ChangeEvent, useEffect, useRef } from "react";
 import axios, { AxiosError } from "axios";
 import Router from "next/router";
 import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  Label,
-  Textarea,
-  useUser,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  DialogFooter,
-  useDebounce,
-  DialogTrigger,
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-  ScrollArea,
-  RadioGroup,
-  RadioGroupItem,
-  Input,
-  ScrollBar,
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-  RtxEditor,
-  formatBnNumber,
+  Button, Switch, Dialog, DialogContent, DialogHeader, DialogTitle, Label, Textarea, useUser, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, DialogFooter, useDebounce, DialogTrigger, Accordion, AccordionItem, AccordionTrigger, AccordionContent, ScrollArea, RadioGroup, RadioGroupItem, Input, ScrollBar, Avatar, AvatarImage, AvatarFallback, formatBnNumber, Jhikimiki
 } from "@/components";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import Image from "next/image";
-import { useCloudflareImage, useSubject } from "@/hooks";
+import { handleError, useCloudflareImage, useSubject, useToast } from "@/hooks";
 import { ClipboardPlus, Loader2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Switch } from "@/components";
 import { ImageCropper } from "@/lib/imageCrop";
-import { useToast } from "@/hooks/use-toast";
 import { secondaryAPI } from "@/configs";
-import { handleError } from "@/hooks/error-handle";
+
 import Link from "next/link";
 import { guidelines } from "@/data/community";
-import { Chapter, Group } from "@/@types";
-
-interface CreatePostProps {
-  group_id?: string;
-  group_type?: string;
-  subject_id?: string;
-}
-
-interface TimeLeft {
-  days: number;
-  hours: number;
-  minutes: number;
-}
+import { Chapter, CreatePostProps, Group, TimeLeft } from "@/@types";
+import { Err, WritePost } from "./sections";
 
 export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, subject_id }) => {
+
   const { user } = useUser();
   const { toast } = useToast();
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -82,15 +41,8 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
 
   const [ai, setAi] = useState(false);
 
-  const [error, setError] = useState<{
-    subject: string;
-    chapter: string;
-    prompt: string;
-    destination: string;
-  }>({ subject: "", chapter: "", prompt: "", destination: "" });
+  const [error, setError] = useState<Err>({ subject: "", chapter: "", prompt: "", destination: "" });
 
-  // const [imgSrc, setImgSrc] = useState<File | null>(null);
-  // const [file, setFile] = useState<File | null>(null);
   const [limit, setLimit] = useState<number>(0);
   const [canUseAi, setCanUseAi] = useState<boolean>(false);
   const [limitRemaining, setLimitRemaining] = useState<number>(0);
@@ -341,7 +293,8 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
         setTopicLoading(false);
       }
     };
-    getChapters();
+    if (dsubject)
+      getChapters();
   }, [dsubject]);
 
   const cropperModal = (
@@ -1051,30 +1004,14 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                       )}
 
                       {/* Write Post */}
-                      <div
-                        className={cn(
-                          "gap-2",
-                          poll && "hidden",
-                          !poll && "grid"
-                        )}
-                      >
-                        <div>
-                          <RtxEditor
-                            content={prompt}
-                            onUpdate={(value) => {
-                              setPrompt(value);
-                              setError({ ...error, prompt: "" });
-                            }}
-                          />
-
-                          {error && !prompt && (
-                            <p className="text-hot text-xs mt-2">
-                              {error.prompt}
-                            </p>
-                          )}
-                        </div>
-                        {communityModal}
-                      </div>
+                      <WritePost
+                        prompt={prompt}
+                        setPrompt={setPrompt}
+                        error={error}
+                        setError={setError}
+                        poll={poll}
+                      />
+                      {communityModal}
 
                       {/* Video  */}
 
@@ -1282,80 +1219,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                           )}
                           {group_type === "SUBJECT" ? (
                             <>
-                              <svg
-                                width="12"
-                                height="13"
-                                viewBox="0 0 12 13"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <g clipPath="url(#clip0_636_75093)">
-                                  <path
-                                    d="M3.83578 7.37277L4.90924 5.40988L6.87177 4.33624C6.98456 4.27463 7.0546 4.15634 7.0546 4.0278C7.0546 3.89935 6.98456 3.78107 6.87177 3.71936L4.90924 2.64581L3.83578 0.682922C3.77408 0.570129 3.65579 0.5 3.52734 0.5C3.3988 0.5 3.28052 0.570129 3.2189 0.682922L2.14545 2.64581L0.182831 3.71945C0.0701294 3.78107 0 3.89935 0 4.02789C0 4.15634 0.0701294 4.27463 0.182831 4.33633L2.14545 5.40988L3.2189 7.37277C3.28052 7.48557 3.3988 7.55569 3.52734 7.55569C3.65588 7.55569 3.77408 7.48557 3.83578 7.37277Z"
-                                    fill="url(#paint0_linear_636_75093)"
-                                  />
-                                  <path
-                                    d="M11.8161 7.13547L10.5091 6.42053L9.79422 5.11334C9.7326 5.00055 9.61432 4.93042 9.48578 4.93042C9.35724 4.93042 9.23895 5.00055 9.17734 5.11334L8.46249 6.42053L7.15549 7.13547C7.04269 7.19717 6.97266 7.31546 6.97266 7.44391C6.97266 7.57245 7.04269 7.69073 7.15549 7.75235L8.46249 8.46729L9.17734 9.77457C9.23895 9.88727 9.35724 9.9574 9.48578 9.9574C9.61432 9.9574 9.7326 9.88727 9.79422 9.77457L10.5091 8.46729L11.8161 7.75235C11.9288 7.69073 11.9989 7.57245 11.9989 7.44391C11.9989 7.31546 11.9288 7.19717 11.8161 7.13547Z"
-                                    fill="url(#paint1_linear_636_75093)"
-                                  />
-                                  <path
-                                    d="M6.88412 10.4277L6.06143 9.97772L5.61145 9.15485C5.54984 9.04205 5.43155 8.97192 5.30301 8.97192C5.17447 8.97192 5.05618 9.04205 4.99457 9.15485L4.54459 9.97772L3.72189 10.4277C3.60919 10.4894 3.53906 10.6077 3.53906 10.7361C3.53906 10.8647 3.60919 10.9829 3.72189 11.0446L4.54459 11.4947L4.99457 12.3174C5.05618 12.4302 5.17447 12.5004 5.30301 12.5004C5.43155 12.5004 5.54984 12.4302 5.61145 12.3174L6.06143 11.4947L6.88412 11.0446C6.99683 10.9829 7.06696 10.8647 7.06696 10.7361C7.06696 10.6077 6.99683 10.4894 6.88412 10.4277Z"
-                                    fill="url(#paint2_linear_636_75093)"
-                                  />
-                                </g>
-                                <defs>
-                                  <linearGradient
-                                    id="paint0_linear_636_75093"
-                                    x1="0"
-                                    y1="4.02785"
-                                    x2="7.0546"
-                                    y2="4.02785"
-                                    gradientUnits="userSpaceOnUse"
-                                  >
-                                    <stop stop-color="#8A00CA" />
-                                    <stop offset="0.3" stop-color="#8B0DC5" />
-                                    <stop offset="0.53" stop-color="#BC37FA" />
-                                    <stop offset="0.755" stop-color="#B142E5" />
-                                    <stop offset="1" stop-color="#440064" />
-                                  </linearGradient>
-                                  <linearGradient
-                                    id="paint1_linear_636_75093"
-                                    x1="6.97266"
-                                    y1="7.44391"
-                                    x2="11.9989"
-                                    y2="7.44391"
-                                    gradientUnits="userSpaceOnUse"
-                                  >
-                                    <stop stop-color="#8A00CA" />
-                                    <stop offset="0.3" stop-color="#8B0DC5" />
-                                    <stop offset="0.53" stop-color="#BC37FA" />
-                                    <stop offset="0.755" stop-color="#B142E5" />
-                                    <stop offset="1" stop-color="#440064" />
-                                  </linearGradient>
-                                  <linearGradient
-                                    id="paint2_linear_636_75093"
-                                    x1="3.53906"
-                                    y1="10.7361"
-                                    x2="7.06696"
-                                    y2="10.7361"
-                                    gradientUnits="userSpaceOnUse"
-                                  >
-                                    <stop stop-color="#8A00CA" />
-                                    <stop offset="0.3" stop-color="#8B0DC5" />
-                                    <stop offset="0.53" stop-color="#BC37FA" />
-                                    <stop offset="0.755" stop-color="#B142E5" />
-                                    <stop offset="1" stop-color="#440064" />
-                                  </linearGradient>
-                                  <clipPath id="clip0_636_75093">
-                                    <rect
-                                      width="12"
-                                      height="12"
-                                      fill="white"
-                                      transform="translate(0 0.5)"
-                                    />
-                                  </clipPath>
-                                </defs>
-                              </svg>
+                              <Jhikimiki />
                               <span>{`${limitRemaining}/ ${limit} left`}</span>
                               <Switch checked={ai} onCheckedChange={setAi} />
                               <Label>
@@ -1366,80 +1230,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                             </>
                           ) : !group_id && limitRemaining > 0 ? (
                             <>
-                              <svg
-                                width="12"
-                                height="13"
-                                viewBox="0 0 12 13"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <g clipPath="url(#clip0_636_75093)">
-                                  <path
-                                    d="M3.83578 7.37277L4.90924 5.40988L6.87177 4.33624C6.98456 4.27463 7.0546 4.15634 7.0546 4.0278C7.0546 3.89935 6.98456 3.78107 6.87177 3.71936L4.90924 2.64581L3.83578 0.682922C3.77408 0.570129 3.65579 0.5 3.52734 0.5C3.3988 0.5 3.28052 0.570129 3.2189 0.682922L2.14545 2.64581L0.182831 3.71945C0.0701294 3.78107 0 3.89935 0 4.02789C0 4.15634 0.0701294 4.27463 0.182831 4.33633L2.14545 5.40988L3.2189 7.37277C3.28052 7.48557 3.3988 7.55569 3.52734 7.55569C3.65588 7.55569 3.77408 7.48557 3.83578 7.37277Z"
-                                    fill="url(#paint0_linear_636_75093)"
-                                  />
-                                  <path
-                                    d="M11.8161 7.13547L10.5091 6.42053L9.79422 5.11334C9.7326 5.00055 9.61432 4.93042 9.48578 4.93042C9.35724 4.93042 9.23895 5.00055 9.17734 5.11334L8.46249 6.42053L7.15549 7.13547C7.04269 7.19717 6.97266 7.31546 6.97266 7.44391C6.97266 7.57245 7.04269 7.69073 7.15549 7.75235L8.46249 8.46729L9.17734 9.77457C9.23895 9.88727 9.35724 9.9574 9.48578 9.9574C9.61432 9.9574 9.7326 9.88727 9.79422 9.77457L10.5091 8.46729L11.8161 7.75235C11.9288 7.69073 11.9989 7.57245 11.9989 7.44391C11.9989 7.31546 11.9288 7.19717 11.8161 7.13547Z"
-                                    fill="url(#paint1_linear_636_75093)"
-                                  />
-                                  <path
-                                    d="M6.88412 10.4277L6.06143 9.97772L5.61145 9.15485C5.54984 9.04205 5.43155 8.97192 5.30301 8.97192C5.17447 8.97192 5.05618 9.04205 4.99457 9.15485L4.54459 9.97772L3.72189 10.4277C3.60919 10.4894 3.53906 10.6077 3.53906 10.7361C3.53906 10.8647 3.60919 10.9829 3.72189 11.0446L4.54459 11.4947L4.99457 12.3174C5.05618 12.4302 5.17447 12.5004 5.30301 12.5004C5.43155 12.5004 5.54984 12.4302 5.61145 12.3174L6.06143 11.4947L6.88412 11.0446C6.99683 10.9829 7.06696 10.8647 7.06696 10.7361C7.06696 10.6077 6.99683 10.4894 6.88412 10.4277Z"
-                                    fill="url(#paint2_linear_636_75093)"
-                                  />
-                                </g>
-                                <defs>
-                                  <linearGradient
-                                    id="paint0_linear_636_75093"
-                                    x1="0"
-                                    y1="4.02785"
-                                    x2="7.0546"
-                                    y2="4.02785"
-                                    gradientUnits="userSpaceOnUse"
-                                  >
-                                    <stop stop-color="#8A00CA" />
-                                    <stop offset="0.3" stop-color="#8B0DC5" />
-                                    <stop offset="0.53" stop-color="#BC37FA" />
-                                    <stop offset="0.755" stop-color="#B142E5" />
-                                    <stop offset="1" stop-color="#440064" />
-                                  </linearGradient>
-                                  <linearGradient
-                                    id="paint1_linear_636_75093"
-                                    x1="6.97266"
-                                    y1="7.44391"
-                                    x2="11.9989"
-                                    y2="7.44391"
-                                    gradientUnits="userSpaceOnUse"
-                                  >
-                                    <stop stop-color="#8A00CA" />
-                                    <stop offset="0.3" stop-color="#8B0DC5" />
-                                    <stop offset="0.53" stop-color="#BC37FA" />
-                                    <stop offset="0.755" stop-color="#B142E5" />
-                                    <stop offset="1" stop-color="#440064" />
-                                  </linearGradient>
-                                  <linearGradient
-                                    id="paint2_linear_636_75093"
-                                    x1="3.53906"
-                                    y1="10.7361"
-                                    x2="7.06696"
-                                    y2="10.7361"
-                                    gradientUnits="userSpaceOnUse"
-                                  >
-                                    <stop stop-color="#8A00CA" />
-                                    <stop offset="0.3" stop-color="#8B0DC5" />
-                                    <stop offset="0.53" stop-color="#BC37FA" />
-                                    <stop offset="0.755" stop-color="#B142E5" />
-                                    <stop offset="1" stop-color="#440064" />
-                                  </linearGradient>
-                                  <clipPath id="clip0_636_75093">
-                                    <rect
-                                      width="12"
-                                      height="12"
-                                      fill="white"
-                                      transform="translate(0 0.5)"
-                                    />
-                                  </clipPath>
-                                </defs>
-                              </svg>
+                              <Jhikimiki />
                               {user?.is_paid ? (
                                 <span className="text-xl">∞</span>
                               ) : (
@@ -1454,80 +1245,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                             </>
                           ) : (
                             <>
-                              <svg
-                                width="12"
-                                height="13"
-                                viewBox="0 0 12 13"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <g clipPath="url(#clip0_636_75093)">
-                                  <path
-                                    d="M3.83578 7.37277L4.90924 5.40988L6.87177 4.33624C6.98456 4.27463 7.0546 4.15634 7.0546 4.0278C7.0546 3.89935 6.98456 3.78107 6.87177 3.71936L4.90924 2.64581L3.83578 0.682922C3.77408 0.570129 3.65579 0.5 3.52734 0.5C3.3988 0.5 3.28052 0.570129 3.2189 0.682922L2.14545 2.64581L0.182831 3.71945C0.0701294 3.78107 0 3.89935 0 4.02789C0 4.15634 0.0701294 4.27463 0.182831 4.33633L2.14545 5.40988L3.2189 7.37277C3.28052 7.48557 3.3988 7.55569 3.52734 7.55569C3.65588 7.55569 3.77408 7.48557 3.83578 7.37277Z"
-                                    fill="url(#paint0_linear_636_75093)"
-                                  />
-                                  <path
-                                    d="M11.8161 7.13547L10.5091 6.42053L9.79422 5.11334C9.7326 5.00055 9.61432 4.93042 9.48578 4.93042C9.35724 4.93042 9.23895 5.00055 9.17734 5.11334L8.46249 6.42053L7.15549 7.13547C7.04269 7.19717 6.97266 7.31546 6.97266 7.44391C6.97266 7.57245 7.04269 7.69073 7.15549 7.75235L8.46249 8.46729L9.17734 9.77457C9.23895 9.88727 9.35724 9.9574 9.48578 9.9574C9.61432 9.9574 9.7326 9.88727 9.79422 9.77457L10.5091 8.46729L11.8161 7.75235C11.9288 7.69073 11.9989 7.57245 11.9989 7.44391C11.9989 7.31546 11.9288 7.19717 11.8161 7.13547Z"
-                                    fill="url(#paint1_linear_636_75093)"
-                                  />
-                                  <path
-                                    d="M6.88412 10.4277L6.06143 9.97772L5.61145 9.15485C5.54984 9.04205 5.43155 8.97192 5.30301 8.97192C5.17447 8.97192 5.05618 9.04205 4.99457 9.15485L4.54459 9.97772L3.72189 10.4277C3.60919 10.4894 3.53906 10.6077 3.53906 10.7361C3.53906 10.8647 3.60919 10.9829 3.72189 11.0446L4.54459 11.4947L4.99457 12.3174C5.05618 12.4302 5.17447 12.5004 5.30301 12.5004C5.43155 12.5004 5.54984 12.4302 5.61145 12.3174L6.06143 11.4947L6.88412 11.0446C6.99683 10.9829 7.06696 10.8647 7.06696 10.7361C7.06696 10.6077 6.99683 10.4894 6.88412 10.4277Z"
-                                    fill="url(#paint2_linear_636_75093)"
-                                  />
-                                </g>
-                                <defs>
-                                  <linearGradient
-                                    id="paint0_linear_636_75093"
-                                    x1="0"
-                                    y1="4.02785"
-                                    x2="7.0546"
-                                    y2="4.02785"
-                                    gradientUnits="userSpaceOnUse"
-                                  >
-                                    <stop stop-color="#8A00CA" />
-                                    <stop offset="0.3" stop-color="#8B0DC5" />
-                                    <stop offset="0.53" stop-color="#BC37FA" />
-                                    <stop offset="0.755" stop-color="#B142E5" />
-                                    <stop offset="1" stop-color="#440064" />
-                                  </linearGradient>
-                                  <linearGradient
-                                    id="paint1_linear_636_75093"
-                                    x1="6.97266"
-                                    y1="7.44391"
-                                    x2="11.9989"
-                                    y2="7.44391"
-                                    gradientUnits="userSpaceOnUse"
-                                  >
-                                    <stop stop-color="#8A00CA" />
-                                    <stop offset="0.3" stop-color="#8B0DC5" />
-                                    <stop offset="0.53" stop-color="#BC37FA" />
-                                    <stop offset="0.755" stop-color="#B142E5" />
-                                    <stop offset="1" stop-color="#440064" />
-                                  </linearGradient>
-                                  <linearGradient
-                                    id="paint2_linear_636_75093"
-                                    x1="3.53906"
-                                    y1="10.7361"
-                                    x2="7.06696"
-                                    y2="10.7361"
-                                    gradientUnits="userSpaceOnUse"
-                                  >
-                                    <stop stop-color="#8A00CA" />
-                                    <stop offset="0.3" stop-color="#8B0DC5" />
-                                    <stop offset="0.53" stop-color="#BC37FA" />
-                                    <stop offset="0.755" stop-color="#B142E5" />
-                                    <stop offset="1" stop-color="#440064" />
-                                  </linearGradient>
-                                  <clipPath id="clip0_636_75093">
-                                    <rect
-                                      width="12"
-                                      height="12"
-                                      fill="white"
-                                      transform="translate(0 0.5)"
-                                    />
-                                  </clipPath>
-                                </defs>
-                              </svg>
+                              <Jhikimiki />
                               {user?.is_paid ? (
                                 <span className="text-xl">∞</span>
                               ) : (

@@ -33,7 +33,7 @@ import {
     sources,
 } from "@/data/subjects";
 import { Step2, Steps } from "@/features";
-import { useCloudflareImage } from "@/hooks";
+import { useCloudflareImage, useSubject } from "@/hooks";
 import { handleError } from "@/hooks/error-handle";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -83,7 +83,7 @@ const OnboardPage = () => {
     const [cities, setCities] = useState<City[]>([]);
     const [thanas, setThanas] = useState<City[]>([]);
     const [schools, setSchools] = useState<City[]>([]);
-    const [subjects, setSubjects] = useState<Subject[]>([]);
+    const { subjects } = useSubject();
     const [city, setCity] = useState<string>("");
     const [area, setArea] = useState<string>("");
     const [school, setSchool] = useState<string>("");
@@ -183,25 +183,25 @@ const OnboardPage = () => {
         fetchCities();
     }, []);
 
-    useEffect(() => {
-        async function fetchSubjects() {
-            try {
-                setSubjects([]);
-                const res = await axios.get(
-                    `${secondaryAPI}/api/subjects`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                        },
-                    }
-                );
-                setSubjects(res.data);
-            } catch (error) {
-                // handleError(error as AxiosError)
-            }
-        }
-        fetchSubjects();
-    }, [user]);
+    // useEffect(() => {
+    //     async function fetchSubjects() {
+    //         try {
+    //             setSubjects([]);
+    //             const res = await axios.get(
+    //                 `${secondaryAPI}/api/subjects`,
+    //                 {
+    //                     headers: {
+    //                         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    //                     },
+    //                 }
+    //             );
+    //             setSubjects(res.data);
+    //         } catch (error) {
+    //             // handleError(error as AxiosError)
+    //         }
+    //     }
+    //     fetchSubjects();
+    // }, [user]);
 
     useEffect(() => {
         async function fetchCities() {

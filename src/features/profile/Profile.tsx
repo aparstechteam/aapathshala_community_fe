@@ -95,11 +95,12 @@ type Props = {
   id: string;
   isFollowing?: boolean;
   setIsFollowing?: (f: boolean) => void;
+  refetch?: () => void;
 };
 
 export const ProfileComponent = (props: Props) => {
 
-  const { userProfile, id, isFollowing, setIsFollowing } = props;
+  const { userProfile, id, isFollowing, setIsFollowing, refetch } = props;
 
   const { uploadImage } = useCloudflareImage();
   const { toast } = useToast();
@@ -142,8 +143,6 @@ export const ProfileComponent = (props: Props) => {
     }
 
   }, [tab, user]);
-
-
 
   useEffect(() => {
     async function getcollections() {
@@ -452,6 +451,7 @@ export const ProfileComponent = (props: Props) => {
       });
       setOpenCourse(false)
       router.replace(`/profile`)
+      if (refetch) refetch()
       setIsFTLoading(false)
     } catch (error) {
       setIsFTLoading(false)

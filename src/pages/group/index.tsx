@@ -88,7 +88,7 @@ const GroupPage = () => {
                         <div className='w-full'>
                             <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
                                 <h2 className='text-lg font-medium'>গ্রুপ সমূহ</h2>
-                                <GroupLists className="max-h-full" groups={groups} loading={loading} />
+                                <ClubListCard className="min-h-[250px]" clubs={groups} loading={loading} />
                             </div>
                         </div>
                     )}

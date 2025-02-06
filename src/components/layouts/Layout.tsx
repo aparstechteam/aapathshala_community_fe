@@ -156,11 +156,14 @@ export const Layout = (props: Props) => {
             setPreview(user?.image)
         }
         if (user.id && !user?.onboarding_complete) {
-            setTimeout(() => {
-                setOpenInfo(true)
-            }, 4000)
+            if (!router.pathname.includes('/auth')) {
+                setTimeout(() => {
+                    setOpenInfo(true)
+                }, 4000)
+            }
         }
-    }, [user])
+
+    }, [user, router])
 
     const userinfo = (
         <Dialog

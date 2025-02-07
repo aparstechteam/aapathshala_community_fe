@@ -789,7 +789,7 @@ export const ProfileComponent = (props: Props) => {
 
                           {userProfile.userData.name}
                           <span>
-                            <Image src={userProfile.userData.gender === 'MALE' ?
+                            <Image src={userProfile.userData.gender === 'boy' ?
                               'https://img.icons8.com/officel/80/male.png' :
                               'https://img.icons8.com/officel/80/female.png'} alt="gender" width={20} height={20} />
                           </span>

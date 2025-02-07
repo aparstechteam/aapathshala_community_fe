@@ -74,7 +74,7 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
                 <div key={l?.id} className={cn("grid items-start relative")}>
                   <div className='grid justify-items-center'>
                     <div className='relative'>
-                      <span className={cn(index !== 1 && "hidden", index === 1 && "flex", 'absolute -top-3 sm:-top-5 w-full justify-center')}>
+                      <span className={cn(index !== 0 && "hidden", index === 0 && "flex", 'absolute -top-3 sm:-top-5 w-full justify-center')}>
                         <svg className='w-5 h-5 sm:w-8 sm:h-8' viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <g clipPath="url(#clip0_4_2711)">
                             <path
@@ -261,7 +261,7 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
                     <ValidImage className='rounded-full sm:hidden block' src={l?.profilePic} alt={l?.name} width={60} height={60} />
                     <ValidImage className='rounded-full hidden sm:block' src={l?.profilePic} alt={l?.name} width={100} height={100} />
                     <span className='absolute -bottom-1 -right-1'>
-                      {index === 0 && (
+                      {index === 1 && (
                         <svg className='w-5 h-5 sm:w-8 sm:h-8' viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <g clipPath="url(#clip0_4_2619)">
                             <path
@@ -306,7 +306,7 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
                           </defs>
                         </svg>
                       )}
-                      {index === 1 && (
+                      {index === 0 && (
                         <svg className='w-5 h-5 sm:w-8 sm:h-8' viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M5.47262 11.1428L3.12617 10.3313L2.60846 10.384L1.48959 13.5987C1.45394 13.7011 1.5369 13.8058 1.64474 13.7945L3.21311 13.6302C3.25692 13.6257 3.30048 13.6408 3.33198 13.6716L4.45943 14.7742C4.53694 14.85 4.66698 14.8194 4.70261 14.717L5.82881 11.4814L5.47262 11.1428Z"

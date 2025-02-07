@@ -79,6 +79,25 @@ const LoginPage = () => {
     setView(true);
   }, []);
 
+  const openInChrome = () => {
+    if (typeof window === 'undefined') return
+
+    const userAgent = navigator.userAgent.toLowerCase()
+    const isAndroid = userAgent.includes('android')
+    const isIOS = /iphone|ipad|ipod/.test(userAgent)
+    const currentUrl = window.location.origin + window.location.pathname + window.location.search
+
+    if (isAndroid) {
+      window.location.href = `intent://${currentUrl}#Intent;scheme=https;package=com.android.chrome;end`
+    } else if (isIOS) {
+      window.location.href = `googlechrome://${currentUrl}`
+
+      setTimeout(() => {
+        window.location.href = 'https://apps.apple.com/us/app/google-chrome/id535886823'
+      }, 2000)
+    }
+  }
+
   return view ? (
     <>
       <Head>
@@ -122,16 +141,17 @@ const LoginPage = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <p className="text-yellow-500/90 text-center text-sm">
+                  <p className="text-yellow-800 text-center text-sm">
                     {`[বি:দ্র: এই ব্রাউজারে ওয়েবসাইটটি সাপোর্টেড না। নিচের কপি বাটনে ক্লিক করে ওয়েবসাইটের লিংকটি কপি করে ক্রোম ব্রাউজারে ওপেন করবে।]`}
                   </p>
                   <div className="flex justify-center">
                     <Button
-                      variant="secondary"
-                      onClick={() => copyLink("/login")}
+                      size="sm"
+                      onClick={() => openInChrome()}
                       className="bg-zinc-800 hover:bg-zinc-700 text-light border-0 transition-colors"
                     >
-                      <svg
+
+                      {/* <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -144,8 +164,8 @@ const LoginPage = () => {
                           strokeLinejoin="round"
                           d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
                         />
-                      </svg>
-                      লিঙ্ক কপি করুন
+                      </svg> */}
+                      Open in Chrome
                     </Button>
                   </div>
                 </div>

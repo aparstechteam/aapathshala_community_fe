@@ -1,3 +1,3 @@
-export const community_video = 'https://www.youtube.com/embed/Zo0Sjoe-kZU?si=VY6WRi_BzFCvmHTA'
+export const community_video = 'https://www.youtube.com/embed/5DWynd8Rx4E?si=7D0NiTX5GxyUlGaC'
 
 export const curicity_id = 12

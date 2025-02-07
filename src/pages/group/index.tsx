@@ -70,24 +70,26 @@ const GroupPage = () => {
             </Head>
             <Layout>
                 <div className='px-2 grid w-full gap-4 pt-6 lg:pt-4 pb-5 max-w-5xl mx-auto min-h-[calc(100vh-80px)] !text-black dark:!text-white'>
-                    {courses?.filter((c) => !c.is_member)?.length > 0 && (
-                        <div className='w-full space-y-4 h-full'>
-                            <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
-                                <h2 className='text-lg font-medium'>কোর্স সমূহ</h2>
-                                <ClubListCard clubs={courses} loading={loading} className="min-h-[250px]" />
+                    <div className='flex flex-col gap-4'>
+                        {courses?.length > 0 && (
+                            <div className='w-full space-y-4'>
+                                <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
+                                    <h2 className='text-lg font-medium'>কোর্স সমূহ</h2>
+                                    <ClubListCard clubs={courses} loading={loading} className='w-full' />
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
 
-                    {groups?.length > 0 && (
-                        <div className='w-full'>
-                            <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
-                                <h2 className='text-lg font-medium'>গ্রুপ সমূহ</h2>
-                                <ClubListCard className="min-h-[250px]" clubs={groups} loading={loading} />
+                        {groups?.length > 0 && (
+                            <div className='w-full'>
+                                <div className='p-4 grid gap-4 rounded-xl ring-ash dark:ring-ash/20 ring-1 bg-white dark:bg-gray-600/20'>
+                                    <h2 className='text-lg font-medium'>গ্রুপ সমূহ</h2>
+                                    <ClubListCard clubs={groups} loading={loading} className='w-full' />
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
 
+                    </div>
                 </div>
             </Layout>
         </>

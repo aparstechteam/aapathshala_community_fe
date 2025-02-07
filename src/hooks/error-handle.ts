@@ -42,11 +42,17 @@ export const handleError = async (error: AxiosError, refetch?: () => void) => {
             Cookies.set('refreshToken', refreshResponse.data.refreshToken)
 
             if (refetch) {
-                refetch()
+                // refetch()
+                Router.reload()
             }
+
         } catch {
+            localStorage.clear()
+            Cookies.remove('accessToken')
+            Cookies.remove('refreshToken')
             Router.push('/auth')
         }
     }
+
 
 };

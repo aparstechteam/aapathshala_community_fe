@@ -54,5 +54,4 @@ export const handleError = async (error: AxiosError, refetch?: () => void) => {
         }
     }
 
-
 };

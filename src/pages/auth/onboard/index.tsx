@@ -107,7 +107,7 @@ const OnboardPage = () => {
         image: preview ?? preview,
         gender: "",
         religion: "",
-        hsc_batch: "",
+        hsc_batch: user?.hsc_batch,
         phone: "",
     });
 

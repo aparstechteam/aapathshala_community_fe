@@ -1,72 +1,67 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Group } from '@/@types'
-import { Layout } from '@/components'
+import { Layout, useUser } from '@/components'
 import { secondaryAPI } from '@/configs'
 import { ClubListCard, GroupLists } from '@/features'
-import axios from 'axios'
+import { handleError } from '@/hooks'
+import axios, { AxiosError } from 'axios'
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 
 const GroupPage = () => {
 
+    const { user } = useUser();
     const [groups, setGroups] = useState<Group[]>([])
     const [courses, setCourses] = useState<Group[]>([])
     const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
-        async function getGroups() {
-            try {
-                setLoading(true)
-                const batch = localStorage.getItem("hsc_batch")
-                const response = await axios.get(`${secondaryAPI}/api/group/mygroups?hsc_batch=${batch}`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-                    }
-                })
-
-                setGroups(response.data.groups)
-                setLoading(false)
-            } catch {
-                setLoading(false)
-            }
-        }
-        getGroups()
-    }, [])
-
-
-
-    // useEffect(() => {
-    //     async function fetchClubs() {
-    //         const response = await axios.get(`${secondaryAPI}/api/group?group_type=CLUB`, {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-    //             }
-    //         })
-    //         if (response.data.groups)
-    //             setClubs(response.data.groups)
-    //     }
-    //     fetchClubs()
-    // }, [])
 
     useEffect(() => {
-        const fetchCourses = async () => {
+        const getClubs = async () => {
             try {
+                const batchName = localStorage.getItem('hsc_batch') || user.hsc_batch;
                 setLoading(true);
-                const batch = localStorage.getItem("hsc_batch")
-                const response = await axios.get(`${secondaryAPI}/api/group?group_type=COURSE&hsc_batch=${batch}`, {
+                const response = await axios.get(`${secondaryAPI}/api/group/mygroups?hsc_batch=${batchName}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                     }
                 });
-                setCourses(response.data.groups);
+                if (response.data.groups.length > 0) {
+                    setGroups(response.data.groups);
+                }
                 setLoading(false);
-            } catch {
+            } catch (err) {
                 setLoading(false);
+                handleError(err as AxiosError, () => getClubs())
             }
         };
-        fetchCourses();
-    }, []);
+
+        getClubs();
+    }, [user.hsc_batch]);
+
+    useEffect(() => {
+
+        const getGroups = async () => {
+            try {
+                const batchName = localStorage.getItem('hsc_batch') || user.hsc_batch;
+                setLoading(true);
+                const response = await axios.get(`${secondaryAPI}/api/group/?group_type=COURSE&hsc_batch=${batchName}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                    }
+                });
+                if (response.data.groups.length > 0) {
+                    setCourses(response.data.groups);
+                }
+                setLoading(false);
+            } catch (err) {
+                setLoading(false);
+                handleError(err as AxiosError, () => getGroups())
+            }
+        };
+
+        getGroups();
+    }, [user.hsc_batch]);
 
     return (
         <>

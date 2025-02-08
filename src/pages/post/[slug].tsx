@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { memo, useEffect, useState } from "react"
 import { useComments } from "@/hooks"
 import { cn } from "@/lib/utils"
@@ -185,10 +184,9 @@ const PostDetailsPage: NextPage = () => {
                                     <TabsContent value={'discussion'}>
                                         <div className='p-4 rounded-lg bg-white dark:bg-[#202127] shadow-sm'>
 
-                                            {/* Add Comment  */}
+                                           
                                             <AddComment loading={cmntFetching} commentText={commentText} setCommentText={setCommentText} submitComment={(i: string | null) => submitComment(i)} />
 
-                                            {/* Comments List */}
                                             {aiLoading ? (
                                                 <div className="text-center justify-center grid py-8">
                                                     <Image src={'/ai.png'} alt='ai' width={100} height={100} className='mx-auto animate-bounce' />

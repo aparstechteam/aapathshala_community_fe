@@ -1144,7 +1144,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                                     strokeWidth="1.5"
                                   />
                                 </svg>
-                                {/* <span className='text-base'>ছবি যুক্ত করো</span> */}
+
                               </p>
                             )}
                           </div>
@@ -1231,11 +1231,9 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                           ) : !group_id && limitRemaining > 0 ? (
                             <>
                               <Jhikimiki />
-                              {user?.is_paid ? (
-                                <span className="text-xl">∞</span>
-                              ) : (
-                                <span>{`${limitRemaining}/ ${limit} left`}</span>
-                              )}
+
+                              <span>{`${limitRemaining}/ ${limit} left`}</span>
+
                               <Switch checked={ai} onCheckedChange={setAi} />
                               <Label>
                                 <span className="font-semibold text-sm">
@@ -1246,12 +1244,9 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                           ) : (
                             <>
                               <Jhikimiki />
-                              {user?.is_paid ? (
-                                <span className="text-xl">∞</span>
-                              ) : (
-                                <span>
-                                  {`${limitRemaining}/ ${limit} left`}</span>
-                              )}
+
+                              <span>{`${limitRemaining}/ ${limit} left`}</span>
+
                               <Switch disabled={true} checked={ai} onCheckedChange={setAi} />
                               <Label>
                                 <span className="font-semibold text-sm text-gray-500">
@@ -1463,7 +1458,6 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
               {formatBnNumber(timeLeft.days)} দিন ফ্রি ট্রায়াল বাকি আছে
             </p>
           </div>
-
         )}
       </div>
     </>

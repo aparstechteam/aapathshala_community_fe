@@ -219,8 +219,12 @@ export default function SignUpForm() {
                                     <h2 className='text-center text-2xl font-semibold'>
                                         এক্সেস কোড ভেরিফাই
                                     </h2>
+                                    <h3 className='text-center text-sm text-light'>
+                                        কোর্স কেনার সময় ASG Shop থেকে প্রাপ্ত Access Code দিতে হবে
+                                    </h3>
                                     <FormProvider {...methods}>
                                         <FormItem className='w-full grid'>
+
 
                                             <FormLabel>এক্সেস কোড</FormLabel>
                                             <FormControl className='w-full'>

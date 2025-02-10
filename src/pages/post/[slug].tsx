@@ -74,7 +74,7 @@ const PostDetailsPage: NextPage = () => {
                 if (response.data.data.length === 0 && !!aiok) {
                     setTimeout(() => {
                         getAiReply()
-                    }, 300)
+                    }, 150)
                 }
                 setCmntLoading(false)
             } catch (err) {
@@ -82,6 +82,7 @@ const PostDetailsPage: NextPage = () => {
                 handleError(err as AxiosError)
             }
         }
+
         async function getAiReply() {
             try {
                 setAiLoading(true)
@@ -95,9 +96,10 @@ const PostDetailsPage: NextPage = () => {
                 if (res.status === 200) {
                     setTimeout(() => {
                         getComments(false)
-                    }, 300)
+                    }, 150)
                 }
                 setAiLoading(false)
+
             } catch (err) {
                 setAiLoading(false)
                 handleError(err as AxiosError)

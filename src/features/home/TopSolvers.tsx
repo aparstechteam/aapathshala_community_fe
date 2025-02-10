@@ -50,9 +50,9 @@ export const TopSolvers: React.FC<Props> = (props) => {
           <div className='grid grid-cols-3 h-[160px] py-5'>
             {swap(data.first_3, 1, 0, 2)?.map((l, index) => {
               return data.first_3.length === 1 ? (
-                <React.Fragment key={l.id}>
+                <React.Fragment key={l?.id}>
                   <div></div>
-                  <div key={l.id} className={
+                  <div key={l?.id} className={
                     cn('grid relative',
                       index === 1 && "items-start",
                       index !== 1 && "items-end"
@@ -141,7 +141,7 @@ export const TopSolvers: React.FC<Props> = (props) => {
                   <div></div>
                 </React.Fragment>
               ) : (
-                <div key={l.id} className={
+                <div key={l?.id} className={
                   cn('grid relative',
                     index === 1 && "items-start",
                     index !== 1 && "items-end"
@@ -291,7 +291,7 @@ export const TopSolvers: React.FC<Props> = (props) => {
                         )}
                       </span>
                     </div>
-                    <h4 className='text-sm capitalize font-semibold'>{l.name.split(' ')[0]}</h4>
+                    <h4 className='text-sm capitalize font-semibold'>{l?.name.split(' ')[0]}</h4>
                     <h4 className='flex items-center gap-1 text-sm'>
                       <svg className='h-3 w-3' viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -301,7 +301,7 @@ export const TopSolvers: React.FC<Props> = (props) => {
                           d="M6.37096 5.01729L4.87633 2.85415C4.86638 2.83964 4.85305 2.82778 4.83749 2.81959C4.82192 2.81139 4.8046 2.80711 4.78701 2.80711C4.76943 2.80711 4.7521 2.81139 4.73654 2.81959C4.72098 2.82778 4.70765 2.83964 4.6977 2.85415L3.20307 5.01729C3.18875 5.03816 3.1676 5.05337 3.14326 5.06031C3.11892 5.06724 3.09293 5.06546 3.06976 5.05528L0.948945 4.11317C0.930009 4.10486 0.909098 4.1021 0.888653 4.10522C0.868208 4.10835 0.849074 4.11723 0.833487 4.13082C0.8179 4.14442 0.806504 4.16217 0.80063 4.182C0.794756 4.20183 0.794646 4.22292 0.800314 4.24281L2.03002 8.45379C2.03658 8.47638 2.0503 8.49622 2.06911 8.51034C2.08792 8.52446 2.1108 8.5321 2.13432 8.5321H7.44004C7.46356 8.5321 7.48644 8.52446 7.50525 8.51034C7.52406 8.49622 7.53778 8.47638 7.54435 8.45379L8.77405 4.24281C8.77972 4.22292 8.77961 4.20183 8.77373 4.182C8.76786 4.16217 8.75646 4.14442 8.74088 4.13082C8.72529 4.11723 8.70616 4.10835 8.68571 4.10522C8.66527 4.1021 8.64435 4.10486 8.62542 4.11317L6.5046 5.05528C6.48136 5.06536 6.45536 5.06708 6.431 5.06015C6.40664 5.05323 6.38542 5.03808 6.37096 5.01729Z"
                           fill="#575757" />
                       </svg>
-                      <span className='pt-1'>{l.satisfied_count}</span>
+                      <span className='pt-1'>{l?.satisfied_count}</span>
                     </h4>
                   </div>
                   <Link href={`/users/${l?.id}`} className='absolute inset-0'></Link>
@@ -315,28 +315,28 @@ export const TopSolvers: React.FC<Props> = (props) => {
           <div className="divide-y-0 dark:divide-ash/10 divide-gray-200">
             {data.leaderboard.length > 3 ? (
               data.leaderboard.slice(3, 6).map((l: LeaderboardEntry) => (
-                <div key={l.id} className="flex items-center justify-between p-2 gap-2 transition-colors duration-200">
+                <div key={l?.id} className="flex items-center justify-between p-2 gap-2 transition-colors duration-200">
                   <div className='flex items-center gap-3'>
-                    <button className="w-9 h-9 cursor-pointer" onClick={() => Router.push(`/users/${l.id}`)}>
+                    <button className="w-9 h-9 cursor-pointer" onClick={() => Router.push(`/users/${l?.id}`)}>
                       <ValidImage className='rounded-full w-9 h-9' src={l?.image} alt={l?.name} width={50} height={50} />
                     </button>
                     <div className="flex flex-col justify-start flex-1 min-w-0 line-clamp-2">
-                      <h3 className="text-sm text-gray-600 dark:text-gray-400 text-start font-medium truncate cursor-pointer hover:text-life" onClick={() => Router.push(`/users/${l.id}`)}>
+                      <h3 className="text-sm text-gray-600 dark:text-gray-400 text-start font-medium truncate cursor-pointer hover:text-life" onClick={() => Router.push(`/users/${l?.id}`)}>
                         {l?.name}
                       </h3>
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
-                            <p className="text-xs text-start dark:text-gray-400 text-gray-500 truncate max-w-36">{l.institute_name}</p>
+                            <p className="text-xs text-start dark:text-gray-400 text-gray-500 truncate max-w-36">{l?.institute_name}</p>
                           </TooltipTrigger>
-                          <TooltipContent className='bg-life text-white'>{l.institute_name}</TooltipContent>
+                          <TooltipContent className='bg-life text-white'>{l?.institute_name}</TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
 
                     </div>
                   </div>
                   <span className='!rounded-full px-3 pt-0.5 text-xs font-medium bg-life/20 text-olive'>
-                    {l.satisfied_count}
+                    {l?.satisfied_count}
                   </span>
                 </div>
               ))

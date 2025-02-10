@@ -122,7 +122,7 @@ const LoginPage = () => {
             </CardHeader>
 
             <CardContent className="space-y-4">
-              {!isLoginSupported ? (
+              {isLoginSupported ? (
                 <div className="py-4">
                   {!isLoadingGoogle ? (
                     <div className="flex justify-center">

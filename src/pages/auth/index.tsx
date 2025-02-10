@@ -147,7 +147,7 @@ const LoginPage = () => {
                   <div className="flex justify-center">
                     <Button
                       size="sm"
-                      onClick={() => copyLink('https://community.acsfutureschool.com')}
+                      onClick={() => copyLink('https://community.apars.tech')}
                       className="bg-zinc-800 hover:bg-zinc-700 text-light border-0 transition-colors"
                     >
 

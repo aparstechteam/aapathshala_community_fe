@@ -217,22 +217,25 @@ export default function SignUpForm() {
                                         <Logo2 />
                                     </div>
                                     <h2 className='text-center text-2xl font-semibold'>
-                                        গ্রুপ জয়েনিং আইডি ভেরিফাই
+                                        এক্সেস কোড ভেরিফাই
                                     </h2>
                                     <FormProvider {...methods}>
                                         <FormItem className='w-full grid'>
-                                            <FormLabel>গ্রুপ জয়েনিং আইডি</FormLabel>
+
+                                            <FormLabel>এক্সেস কোড</FormLabel>
                                             <FormControl className='w-full'>
+
                                                 <Input className={cn('!w-full !rounded-full !px-4 !ring-1 ring-life/30', !!error && '!ring-hot')}
                                                     onChange={(e) => {
                                                         setError('')
                                                         setJoiningId(e.target.value)
                                                         setValue("joiningId", e.target.value);
                                                     }}
-                                                    id='joiningId' placeholder="গ্রুপ জয়েনিং আইডি" />
+                                                    id='joiningId' placeholder="আক্সেস কোড" />
                                             </FormControl>
                                         </FormItem>
                                         <div className='grid gap-2 py-2'>
+
 
                                             <Button className='w-full bg-gradient-to-r from-elegant !rounded-full to-elegant/70 text-white' onClick={verifyJoiningId} disabled={joiningIdLoading}>
                                                 {joiningIdLoading ? 'ভেরিফাইং...' : 'সাবমিট করুন'}

@@ -183,7 +183,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
         }
       );
 
-      copyLink(`${router.basePath}/posts/${post?.id}`);
+      copyLink(`${router.basePath}/post/${post?.id}`);
 
       if (response.data)
         toast({

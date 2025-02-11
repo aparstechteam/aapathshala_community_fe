@@ -3270,6 +3270,11 @@ marked@^6.0.0:
   resolved "https://registry.yarnpkg.com/marked/-/marked-6.0.0.tgz#80cd7f51145437cffe9f541a318b9882f75601df"
   integrity sha512-7E3m/xIlymrFL5gWswIT4CheIE3fDeh51NV09M4x8iOc7NDYlyERcQMLAIHcSlrvwliwbPQ4OGD+MpPSYiQcqw==
 
+markerjs2@^2.32.3:
+  version "2.32.3"
+  resolved "https://registry.yarnpkg.com/markerjs2/-/markerjs2-2.32.3.tgz#e98e0242613673ab15fe30af97a8150d672bba42"
+  integrity sha512-D7oD4BT5NOsQbugdcO2TFmcw9ZMHp96Ih09A5f0UndxiQNWuz+j5zymtkTHs0WU+oOR8K6dyTufv4KtfJ6diBg==
+
 math-intrinsics@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/math-intrinsics/-/math-intrinsics-1.1.0.tgz#a0dd74be81e2aa5c2f27e65ce283605ee4e2b7f9"

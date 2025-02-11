@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Avatar, AvatarFallback, AvatarImage, Badge, Button, copyLink, DialogContent, DialogFooter, DialogHeader, DialogTitle, GroupSkeleton, PinnedPosts, useDebounce, useUser } from '@/components'
+import { Avatar, AvatarFallback, AvatarImage, Badge, Button, copyLink, DialogContent, DialogFooter, DialogHeader, DialogTitle, GroupSkeleton, PinnedPosts, useDebounce, useUser, Whiteboard } from '@/components'
 import { Check, Plus } from 'lucide-react';
 import Image from 'next/image';
 import React, { FormEvent, useEffect, useState } from 'react'
@@ -43,6 +43,8 @@ export const ClubComponent = (props: Props) => {
     const [searchQuery, setSearchQuery] = useState('')
     const [totalPages, setTotalPages] = useState(0)
     const [goribOpen, setGoribOpen] = useState(false)
+
+    const [tab, setTab] = useState<'posts' | 'members' | 'homework'>('posts')
 
     useEffect(() => {
         setIsJoined(club?.is_member)
@@ -374,7 +376,7 @@ export const ClubComponent = (props: Props) => {
                                 <span className='pt-1'>{club?.name}</span>
                             </h1>
                             <div className='flex items-center gap-2'>
-                                <button onClick={() => setShowMembers(!showMembers)} className='text-sm font-medium text-light dark:text-gray-400 flex items-center gap-2'>
+                                <button onClick={() => setTab('posts')} className='text-sm font-medium hover:text-olive text-light dark:text-gray-400 flex items-center gap-2'>
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <g clipPath="url(#clip0_6_2345)">
                                             <path
@@ -397,7 +399,7 @@ export const ClubComponent = (props: Props) => {
                                         {club?.visibility === 'PUBLIC' ? "পাবলিক গ্রুপ" : "প্রাইভেট গ্রুপ"}
                                     </span>
                                 </button>
-                                <button onClick={() => setShowMembers(!showMembers)} className='text-sm font-medium text-light dark:text-gray-400 flex items-center gap-2'>
+                                <button onClick={() => setTab('members')} className='text-sm font-medium hover:text-olive text-light dark:text-gray-400 flex items-center gap-2'>
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
                                             d="M3.66626 12.3329V10.3329C3.66496 9.64754 3.82695 8.97171 4.13881 8.36138C4.45066 7.75105 4.90342 7.2238 5.45959 6.82326C5.08452 6.38392 4.83084 5.85415 4.72372 5.28651C4.6166 4.71886 4.65976 4.13307 4.84893 3.58726C4.36359 3.32835 3.79789 3.26395 3.26678 3.40715C2.73567 3.55035 2.27901 3.8904 1.98962 4.3582C1.70022 4.82599 1.5998 5.38643 1.70877 5.9256C1.81774 6.46478 2.12791 6.94223 2.57626 7.26093C2.00953 7.50655 1.52687 7.91235 1.18756 8.42848C0.848254 8.9446 0.667069 9.54859 0.66626 10.1663V11.6663C0.666789 12.1081 0.842554 12.5317 1.155 12.8442C1.46745 13.1566 1.89106 13.3324 2.33293 13.3329H3.89459C3.74474 13.0208 3.66672 12.6791 3.66626 12.3329Z"
@@ -465,7 +467,7 @@ export const ClubComponent = (props: Props) => {
 
                     <div className='flex gap-4'>
                         <div className='w-full space-y-2'>
-                            {showMembers ? (
+                            {tab === 'members' && (
                                 <MembersComponent
                                     group={club as Club}
                                     members={members as Memberr[]}
@@ -477,7 +479,8 @@ export const ClubComponent = (props: Props) => {
                                     setSearchQuery={setSearchQuery}
                                     totalPages={totalPages}
                                 />
-                            ) : (
+                            )}
+                            {tab === 'posts' && (
                                 <>
                                     {club?.is_member && (
                                         <CreatePost group_type={club?.type} group_id={club?.id as string} subject_id={club?.data?.subject as string} />
@@ -507,7 +510,9 @@ export const ClubComponent = (props: Props) => {
                                     )}
                                 </>
                             )}
-
+                            {tab === 'homework' && (
+                                <Whiteboard image={'/whiteboard.png'} />
+                            )}
 
 
                         </div>

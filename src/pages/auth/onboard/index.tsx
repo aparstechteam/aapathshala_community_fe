@@ -57,6 +57,10 @@ type City = {
     thana_name: string;
     school_name: string;
 };
+type College = {
+    id: string;
+    school_name: string;
+};
 
 type Creator = {
     id: number;
@@ -82,7 +86,7 @@ const OnboardPage = () => {
     const [error, setError] = useState<string>("");
     const [cities, setCities] = useState<City[]>([]);
     const [thanas, setThanas] = useState<City[]>([]);
-    const [schools, setSchools] = useState<City[]>([]);
+    const [schools, setSchools] = useState<College[]>([]);
     const { subjects } = useSubject();
     const [city, setCity] = useState<string>("");
     const [area, setArea] = useState<string>("");
@@ -324,8 +328,9 @@ const OnboardPage = () => {
                     },
                 }
             );
-            setSchools([...schools, res.data]);
-            setSchool(res.data.id);
+            console.log(res.data.data)
+            setSchools([...schools, { id: res.data.data.id as string, school_name: res.data.data.name as string }]);
+            setSchool(res.data.data.id);
             setAddSchool(false);
             setSLoading(false);
             setDisabledNext(false);

@@ -309,11 +309,11 @@ const OnboardPage = () => {
         }
     }
 
-    async function handleAddSchool() {
+    async function handleAddCollege() {
         try {
             setSLoading(true);
             const res = await axios.post(
-                `${secondaryAPI}/api/location/create-school`,
+                `${secondaryAPI}/api/location/create-college`,
                 {
                     name: schoolName,
                     thana_id: area,
@@ -1047,16 +1047,16 @@ const OnboardPage = () => {
                                     </div>
                                     {addSchool ? (
                                         <div className="flex flex-col gap-2">
-                                            <Label className="text-base w-full">তোমার স্কুল যোগ করো</Label>
+                                            <Label className="text-base w-full">তোমার কলেজ যোগ করো</Label>
                                             <div className="flex gap-2 items-center justify-center">
                                                 <Input
-                                                    className="w-full !h-10 !rounded-lg !text-black !ring-0 ring-olive !shadow-none !bg-white !border-none !outline-none"
+                                                    className="w-full !h-10 !rounded-lg !text-black !ring-2 !duration-300 transition-all focus:ring-olive/50 !shadow-none !bg-white !border-none !outline-none"
                                                     value={schoolName}
                                                     onChange={(e) => setSchoolName(e.target.value)}
-                                                    placeholder="স্কুল নাম"
+                                                    placeholder="কলেজের নাম লিখো"
                                                 />
                                                 <Button
-                                                    onClick={handleAddSchool}
+                                                    onClick={handleAddCollege}
                                                     size="sm"
                                                     className="w-10 rounded-full !h-10 !ring-0 !shadow-none !bg-olive/20 !border-none !outline-none"
                                                 >
@@ -1082,7 +1082,7 @@ const OnboardPage = () => {
                                             >
                                                 <SelectTrigger
                                                     className={cn(
-                                                        "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-green-200/20",
+                                                        "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-green-200 dark:hover:bg-green-200/20",
                                                         error && !school && "ring-hot ring-2"
                                                     )}
                                                 >
@@ -1100,7 +1100,7 @@ const OnboardPage = () => {
                                                     align="start"
                                                     className="dark:!bg-gray-800 text-light dark:text-gray-200 !bg-white max-h-[250px]"
                                                 >
-                                                    <div className="px-2 hidden">
+                                                    <div className="px-2">
                                                         {!addSchool && (
                                                             <button
                                                                 type="button"
@@ -1119,7 +1119,7 @@ const OnboardPage = () => {
                                                                 <SelectItem
                                                                     key={x.id}
                                                                     value={x.id}
-                                                                    className="hover:!text-white hover:!bg-ice"
+                                                                    className="hover:!text-white"
                                                                 >
                                                                     {x.school_name}
                                                                 </SelectItem>

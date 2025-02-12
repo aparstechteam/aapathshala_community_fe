@@ -200,6 +200,7 @@ export type Post = {
     pollType?: string;
     video_url?: string;
     totalVotes: number;
+    costing: number;
     pollOptions?: PollOption[];
     ai_enabled: boolean;
     subject?: {

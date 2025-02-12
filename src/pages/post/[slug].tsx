@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { memo, useEffect, useState } from "react"
 import { useComments } from "@/hooks"
 import { cn } from "@/lib/utils"
@@ -74,7 +75,7 @@ const PostDetailsPage: NextPage = () => {
                 if (response.data.data.length === 0 && !!aiok) {
                     setTimeout(() => {
                         getAiReply()
-                    }, 150)
+                    }, 300)
                 }
                 setCmntLoading(false)
             } catch (err) {
@@ -96,17 +97,16 @@ const PostDetailsPage: NextPage = () => {
                 if (res.status === 200) {
                     setTimeout(() => {
                         getComments(false)
-                    }, 150)
+                    }, 300)
+                    return
                 }
-                setAiLoading(false)
-
             } catch (err) {
                 setAiLoading(false)
                 handleError(err as AxiosError)
             }
         }
 
-        if (!!id && !!post?.id) {
+        if (!!id && !!post?.id && !!user?.id) {
             getComments(post?.ai_enabled)
         }
     }, [id, post, user])
@@ -117,7 +117,6 @@ const PostDetailsPage: NextPage = () => {
                 if (!!id) {
                     setSummaryLoading(true)
                     const res = await axios.get(`${secondaryAPI}/api/post/${id}/summary`, {
-                        // withCredentials: true,
                         headers: {
                             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                             'Content-Type': 'application/json',
@@ -133,7 +132,7 @@ const PostDetailsPage: NextPage = () => {
             }
         }
         getSummary()
-    }, [id, comments, post])
+    }, [id, post])
 
     const submitComment = async (image: string | null) => {
         try {
@@ -174,21 +173,24 @@ const PostDetailsPage: NextPage = () => {
                                 <PostComponent post={post as Post} setSuccess={() => setSuccess(!success)} />
 
                                 <Tabs defaultValue='discussion'>
-                                    <TabsList className={cn('w-full items-center flex justify-between !bg-white ring-1 !ring-ash dark:!ring-ash/20 dark:!bg-[#202127] !rounded-full',
-                                        post.ai_enabled && post?.category === 'subject' && 'flex',
-                                      post?.category !== 'subject' && 'hidden'
+                                    <TabsList className={cn('w-full items-center hidden justify-between !bg-white ring-1 !ring-ash dark:!ring-ash/20 dark:!bg-[#202127] !rounded-full',
+                                        post?.category !== 'course' && 'flex',
+                                        post?.category === 'course' && 'hidden'
                                     )}>
                                         <TabsTrigger className='w-full pb-1 !rounded-full' value={'discussion'}>ডিসকাশন</TabsTrigger>
-                                        <TabsTrigger className='w-full pb-1 !rounded-full' value={'summary'}>বিস্তারিত</TabsTrigger>
-                                        <TabsTrigger className='w-full pb-1 !rounded-full' value={'quiz'}>কুইজ</TabsTrigger>
+                                        <TabsTrigger disabled className='w-full pb-1 !rounded-full cursor-not-allowed' value={'summary'}>বিস্তারিত</TabsTrigger>
+                                        <TabsTrigger disabled className='w-full pb-1 cursor-not-allowed !rounded-full' value={'quiz'}>কুইজ</TabsTrigger>
                                     </TabsList>
 
                                     <TabsContent value={'discussion'}>
                                         <div className='p-4 rounded-lg bg-white dark:bg-[#202127] shadow-sm'>
 
-                                           
-                                            <AddComment loading={cmntFetching} commentText={commentText} setCommentText={setCommentText} submitComment={(i: string | null) => submitComment(i)} />
+                                            {/* Add Comment  */}
+                                            {post?.canComment && (
+                                                <AddComment loading={cmntFetching} commentText={commentText} setCommentText={setCommentText} submitComment={(i: string | null) => submitComment(i)} />
+                                            )}
 
+                                            {/* Comments List */}
                                             {aiLoading ? (
                                                 <div className="text-center justify-center grid py-8">
                                                     <Image src={'/ai.png'} alt='ai' width={100} height={100} className='mx-auto animate-bounce' />

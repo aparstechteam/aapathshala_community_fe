@@ -903,7 +903,12 @@ export const PostComponent: React.FC<PostShowProps> = ({
           <VideoComponent videoUrl={post?.video_url || ""} />
 
           {/* Reaction & comments counts */}
-          <div className="flex justify-between items-center gap-2 -mb-2 px-4 md:px-0">
+          <div className="grid grid-cols-2 justify-between items-center gap-2 -mb-2 px-4 md:px-0">
+            {user.role === 'ADMIN' && router.pathname === '/post/[slug]' && (
+              <div className="flex text-sm font-medium col-span-2 items-center gap-2 w-full justify-end">
+                <span className="rounded-full px-4 py-0.5 bg-yellow-500/20 text-yellow-700">{post?.costing?.toFixed(2)} BDT</span>
+              </div>
+            )}
             <button
               disabled={!post?.reactions.length}
               type="button"
@@ -913,7 +918,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
               {post.reactions.length > 0 && <ReactCounts reacts={post.reactions} />}
               <span>{post?.reactions.length || 0} Reactions</span>
             </button>
-            <div className='flex items-center gap-2'>
+            <div className='flex items-center gap-2 justify-end'>
               {post.ai_enabled && (
                 <span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="5" height="6" viewBox="0 0 10 12" fill="none" className="animate-pulse animate-delay-500 absolute -left-[3px] -top-[3px]">

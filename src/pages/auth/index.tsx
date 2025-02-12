@@ -29,6 +29,10 @@ const LoginPage = () => {
       const data = await response.data;
       setUser(data.user)
       localStorage.setItem('user', JSON.stringify(data.user))
+      if (data.user.role === 'ADMIN' && !data.user.onboarding_complete) {
+        Router.push('/auth/onboard/admin')
+        return
+      }
 
       if (!data.user.is_paid) {
         if (!data?.user?.onboarding_complete) {

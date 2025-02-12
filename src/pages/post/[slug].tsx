@@ -98,6 +98,7 @@ const PostDetailsPage: NextPage = () => {
                     setTimeout(() => {
                         getComments(false)
                     }, 300)
+                    setAiLoading(false)
                     return
                 }
             } catch (err) {

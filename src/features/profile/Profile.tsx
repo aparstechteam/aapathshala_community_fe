@@ -688,7 +688,7 @@ export const ProfileComponent = (props: Props) => {
 
         </div>
         <DialogFooter className="!flex !items-center !justify-end gap-2">
-          <Button className="w-20" variant="destructive" size="sm">
+          <Button onClick={() => setEditOpen(false)} className="w-20" variant="destructive" size="sm">
             Cancel
           </Button>
           <Button

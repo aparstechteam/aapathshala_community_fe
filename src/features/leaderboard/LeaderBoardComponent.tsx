@@ -89,8 +89,12 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
                           </defs>
                         </svg>
                       </span>
-                      <ValidImage className='rounded-full sm:hidden block' src={l?.image} alt={l?.name} width={60} height={60} />
-                      <ValidImage className='rounded-full hidden sm:block' src={l?.image} alt={l?.name} width={100} height={100} />
+                      {l.image && (
+                        <>
+                          <ValidImage className='rounded-full sm:hidden block' src={l.image} alt={l?.name} width={60} height={60} />
+                          <ValidImage className='rounded-full hidden sm:block' src={l.image} alt={l?.name} width={100} height={100} />
+                        </>
+                      )}
                       <span className='absolute -bottom-1 -right-1'>
                         {index === 0 && (
                           <svg className='w-5 h-5 sm:w-8 sm:h-8' viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -258,8 +262,8 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
                         </defs>
                       </svg>
                     </span>
-                    <ValidImage className='rounded-full sm:hidden block' src={l?.profilePic} alt={l?.name} width={60} height={60} />
-                    <ValidImage className='rounded-full hidden sm:block' src={l?.profilePic} alt={l?.name} width={100} height={100} />
+                    <ValidImage className='rounded-full h-[60px] w-[60px] sm:hidden block' src={l?.image} alt={l?.name} width={60} height={60} />
+                    <ValidImage className='rounded-full h-[100px] w-[100px] hidden sm:block' src={l?.image} alt={l?.name} width={100} height={100} />
                     <span className='absolute -bottom-1 -right-1'>
                       {index === 1 && (
                         <svg className='w-5 h-5 sm:w-8 sm:h-8' viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -420,7 +424,7 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
                 <div className='flex items-center gap-3'>
                   <p className='text-gray-800 dark:text-gray-400'>{index + 1}.</p>
 
-                  <ValidImage src={l?.image} alt={l?.name} width={60} height={60} className="w-8 h-8 bg-gray-200 text-gray-400 dark:bg-gray-700 sm:w-12 sm:h-12 cursor-pointer" />
+                  <ValidImage src={l?.image as string} alt={l?.name} width={60} height={60} className="w-8 h-8 bg-gray-200 text-gray-400 dark:bg-gray-700 sm:w-12 sm:h-12 cursor-pointer" />
 
                   {/* <Avatar className="w-8 h-8 bg-gray-200 text-gray-400 dark:bg-gray-700 sm:w-12 sm:h-12 cursor-pointer" onClick={() => Router.push(`/users/${l.id}`)}>
                     <AvatarImage src={l?.profilePic} alt={l?.name} referrerPolicy="no-referrer" />

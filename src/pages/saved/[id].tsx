@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { Post } from '@/@types'
 import { Layout, PostSkeleton, useUser } from '@/components'
 import { secondaryAPI } from '@/configs'
@@ -49,7 +51,7 @@ const SavedPage = () => {
                         setPosts((prevPosts) => [...prevPosts, ...newPosts]);
                     }
                     setIsFetching(false)
-                    setHasMore(newPosts.length > 0);
+                    // setHasMore(newPosts.length > 0);
                 }
                 setLoading(false);
             } catch (err) {

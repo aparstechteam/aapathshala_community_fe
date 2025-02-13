@@ -314,7 +314,7 @@ export const TopSolvers: React.FC<Props> = (props) => {
         {data.leaderboard.length > 3 ? (
           <div className="divide-y-0 dark:divide-ash/10 divide-gray-200">
             {data.leaderboard.length > 3 ? (
-              data.leaderboard.slice(3, 6).map((l: LeaderboardEntry) => (
+              data.leaderboard?.map((l: LeaderboardEntry) => (
                 <div key={l?.id} className="flex items-center justify-between p-2 gap-2 transition-colors duration-200">
                   <div className='flex items-center gap-3'>
                     <button className="w-9 h-9 cursor-pointer" onClick={() => Router.push(`/users/${l?.id}`)}>

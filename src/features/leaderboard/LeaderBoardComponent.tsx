@@ -418,7 +418,7 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
             data.leaderboard.map((l: LeaderboardEntry, index: number) => (
               <div key={l.id} className="flex items-center justify-between p-2 gap-2 transition-colors duration-200 hover:bg-green-500 hover:bg-opacity-10">
                 <div className='flex items-center gap-3'>
-                  <p className='text-gray-800 dark:text-gray-400'>{index + 4}.</p>
+                  <p className='text-gray-800 dark:text-gray-400'>{index + 1}.</p>
 
                   <ValidImage src={l?.image} alt={l?.name} width={60} height={60} className="w-8 h-8 bg-gray-200 text-gray-400 dark:bg-gray-700 sm:w-12 sm:h-12 cursor-pointer" />
 

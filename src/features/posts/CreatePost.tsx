@@ -1463,7 +1463,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
           </div>
         </div>
         {timeLeft?.days !== 0 && (
-          <div className='z-[2] relative bg-white rounded-lg my-2'>
+          <div className={cn('z-[2] relative bg-white rounded-lg my-2', user.role === 'ADMIN' && 'hidden')}>
             <p className='text-center bg-hot/20 max-w-4xl py-2 mx-auto rounded-lg h-full px-5 w-full flex items-center justify-center text-base font-semibold text-hot'>
               {formatBnNumber(timeLeft.days)} দিন ফ্রি ট্রায়াল বাকি আছে
             </p>

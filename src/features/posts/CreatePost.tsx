@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, FormEvent, ChangeEvent, useEffect, useRef } from "react";
 import axios, { AxiosError } from "axios";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import {
   Button, Switch, Dialog, DialogContent, DialogHeader, DialogTitle, Label, Textarea, useUser, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, DialogFooter, useDebounce, DialogTrigger, Accordion, AccordionItem, AccordionTrigger, AccordionContent, ScrollArea, RadioGroup, RadioGroupItem, Input, ScrollBar, Avatar, AvatarImage, AvatarFallback, formatBnNumber, Jhikimiki
 } from "@/components";
@@ -24,6 +24,8 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
   const { toast } = useToast();
   const { executeRecaptcha } = useGoogleReCaptcha();
   const { uploadImage } = useCloudflareImage();
+  const router = useRouter();
+  const open = router.query.open;
 
   const [isOpen, setIsOpen] = useState(false);
   const [prompt, setPrompt] = useState<string>("");
@@ -99,6 +101,14 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
 
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (!!open) {
+      setTimeout(() => {
+        setIsOpen(true);
+      }, 1000);
+    }
+  }, [open]);
 
   const addOption = () => {
     setOptions([...options, { name: "", is_correct: false }]);

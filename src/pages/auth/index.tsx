@@ -34,18 +34,14 @@ const LoginPage = () => {
         return
       }
 
-      if (!data?.user?.onboarding_complete) {
-        if (data.user.is_paid) {
-          localStorage.setItem('hsc_batch', data.user.hsc_batch as string)
-          Router.push("/");
-        } else {
-          Router.push("/auth/register");
-        }
-      } else {
+      if (data.user.is_paid && !data.user.onboarding_complete) {
         localStorage.setItem('hsc_batch', data.user.hsc_batch as string)
         Router.push("/");
+        return
+      } else if (!data.user.is_paid) {
+        Router.push("/auth/register");
+        return
       }
-
     } catch (error) {
       console.error("Error assigning user:", error);
       localStorage.removeItem('user')

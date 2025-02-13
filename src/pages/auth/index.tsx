@@ -34,12 +34,12 @@ const LoginPage = () => {
         return
       }
 
-      if (!data.user.is_paid) {
-        if (!data?.user?.onboarding_complete) {
-          Router.push("/auth/register");
-        } else {
+      if (!data?.user?.onboarding_complete) {
+        if (data.user.is_paid) {
           localStorage.setItem('hsc_batch', data.user.hsc_batch as string)
           Router.push("/");
+        } else {
+          Router.push("/auth/register");
         }
       } else {
         localStorage.setItem('hsc_batch', data.user.hsc_batch as string)

@@ -34,13 +34,15 @@ const LoginPage = () => {
         return
       }
 
-      if (data.user.is_paid && !data.user.onboarding_complete) {
+      if (!!data.user.onboarding_complete) {
         localStorage.setItem('hsc_batch', data.user.hsc_batch as string)
         Router.push("/");
         return
       } else if (!data.user.is_paid) {
         Router.push("/auth/register");
         return
+      } else {
+        Router.push("/auth/onboard");
       }
     } catch (error) {
       console.error("Error assigning user:", error);

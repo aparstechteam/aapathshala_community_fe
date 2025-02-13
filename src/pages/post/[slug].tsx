@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { memo, useEffect, useState } from "react"
+import React, { memo, useCallback, useEffect, useState } from "react"
 import { useComments } from "@/hooks"
 import { cn } from "@/lib/utils"
 import axios, { AxiosError } from "axios"
@@ -18,7 +18,6 @@ const PostDetailsPage: NextPage = () => {
 
     const router = useRouter()
     const id = router?.query?.slug
-
     const { user } = useUser()
 
     const [post, setPost] = useState<Post>()
@@ -58,7 +57,7 @@ const PostDetailsPage: NextPage = () => {
         getPost()
     }, [id, user, success])
 
-    useEffect(() => {
+    const fechComments = useCallback(async () => {
 
         async function getComments(aiok?: boolean) {
             try {
@@ -111,6 +110,10 @@ const PostDetailsPage: NextPage = () => {
             getComments(post?.ai_enabled)
         }
     }, [id, post, user])
+
+    useEffect(() => {
+        fechComments()
+    }, [fechComments, id, post, user])
 
     useEffect(() => {
         async function getSummary() {
@@ -187,9 +190,9 @@ const PostDetailsPage: NextPage = () => {
                                         <div className='p-4 rounded-lg bg-white dark:bg-[#202127] shadow-sm'>
 
                                             {/* Add Comment  */}
-                                            {post?.canComment && (
-                                                <AddComment loading={cmntFetching} commentText={commentText} setCommentText={setCommentText} submitComment={(i: string | null) => submitComment(i)} />
-                                            )}
+
+                                            <AddComment loading={cmntFetching} commentText={commentText} setCommentText={setCommentText} submitComment={(i: string | null) => submitComment(i)} />
+
 
                                             {/* Comments List */}
                                             {aiLoading ? (
@@ -209,7 +212,8 @@ const PostDetailsPage: NextPage = () => {
                                                     {comments?.map((c: Comment) => (
                                                         <CommentComponent key={c?.id} comment={c} authorId={post?.userId}
                                                             parentCommentId={c?.id}
-                                                            setSuccess={() => setSuccess(!success)} />
+                                                            setSuccess={() => setSuccess(!success)}
+                                                            refetch={() => fechComments()} />
                                                     ))}
                                                 </div>
                                             )}

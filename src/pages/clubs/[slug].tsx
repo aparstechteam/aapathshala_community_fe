@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import { Club, Group } from '@/@types'
+import { Club } from '@/@types'
 import { Layout, useUser } from '@/components'
 import { ClubComponent } from '@/features'
 import Head from 'next/head'
-import Image from 'next/image'
 import axios, { AxiosError } from 'axios'
 import { recaptchaKey, secondaryAPI } from '@/configs'
 import { handleError } from '@/hooks/error-handle'

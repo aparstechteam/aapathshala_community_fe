@@ -523,12 +523,6 @@ export const ClubComponent = (props: Props) => {
                                 <p className='text-sm'>
                                     <AppMath formula={club?.description || ''} />
                                 </p>
-                                {/* <Link href='#' className='leading-none hover:bg-gradientje !duration-300 hover:text-white flex items-center justify-center gap-2 text-sm text-center text-[#1C1C1C] dark:text-white transition-colors rounded-full px-2 py-2 bg-ash dark:bg-ash/10'>
-                                    <span className='pt-1'>
-                                        আরও জানো
-                                    </span>
-                                    <ArrowRight size={16} />
-                                </Link> */}
                             </div>
                         </div>
                     </div>

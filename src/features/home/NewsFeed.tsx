@@ -30,14 +30,16 @@ export function NewsFeed(props: TNewsFeed) {
 
   const loadMoreTrigger = useRef<HTMLDivElement>(null);
 
-  const dSelectedSubject = useDebounce(selectedSubject, 600)
-  const dsort = useDebounce(sort, 700)
+  const dSelectedSubject = useDebounce(selectedSubject, 300)
+  const dsort = useDebounce(sort, 300)
+  const dGroupId = useDebounce(groupId, 300)
 
   useEffect(() => {
     setTimeout(() => {
       setPosts([])
+      setPage(1)
     })
-  }, [dsort, dSelectedSubject, success])
+  }, [dsort, dSelectedSubject, success, groupId])
 
   useEffect(() => {
     const getPosts = async () => {
@@ -46,7 +48,7 @@ export function NewsFeed(props: TNewsFeed) {
         setLoading(true);
         const batchName = localStorage.getItem("hsc_batch") || user?.hsc_batch;
         if (!!user?.id) {
-          const POST_API_URL = `${secondaryAPI}/api/post?page=${page}&pageSize=10&subjectId=${dSelectedSubject || ''}&sortedBy=${dsort || ''}&group=${groupId}&hsc_batch=${batchName}`;
+          const POST_API_URL = `${secondaryAPI}/api/post?page=${page}&pageSize=10&subjectId=${dSelectedSubject || ''}&sortedBy=${dsort || ''}&group=${dGroupId}&hsc_batch=${batchName}`;
 
           const response = await axios.get(POST_API_URL, {
             headers: {
@@ -76,7 +78,7 @@ export function NewsFeed(props: TNewsFeed) {
     getPosts();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, user, groupId, dSelectedSubject, dsort, success]);
+  }, [page, user, dGroupId, dSelectedSubject, dsort, success]);
 
   useEffect(() => {
     const handleScroll = () => {

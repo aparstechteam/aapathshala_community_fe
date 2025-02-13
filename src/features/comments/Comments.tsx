@@ -20,9 +20,10 @@ interface CommentProps {
     authorId: string;
     setSuccess?: (s: boolean) => void
     parentCommentId?: string
+    refetch?: () => void
 }
 
-export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentId }: CommentProps) => {
+export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentId, refetch }: CommentProps) => {
 
     const { user } = useUser()
     const { addComment, deleteComment } = useComments()
@@ -115,8 +116,10 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
     async function cropDone() {
         try {
             setCropperOpen(false)
+            setImgUploading(true)
             const imagelink = await uploadImage(file as File)
             setPreview(imagelink as string);
+            setImgUploading(false)
         } catch {
             toast({
                 title: 'Image Upload Failed',
@@ -136,6 +139,8 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
             setReplying(false);
             setPreview('')
             setKey(key + 1)
+            if (refetch)
+                refetch()
         } catch (err) {
             setReplying(false);
             handleError(err as AxiosError)
@@ -149,7 +154,7 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
     };
 
     const cropperModal = (
-        <div className='fixed inset-0 z-50 flex items-center justify-center overflow-hidden'>
+        <div className='fixed inset-0 z-50 flex items-center justify-center overflow-y-auto'>
             <Dialog open={cropperOpen} onOpenChange={setCropperOpen}>
                 <DialogContent className='p-4 bg-white flex justify-center max-w-[500px] items-center'>
                     <DialogHeader>
@@ -348,22 +353,24 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
                                 }} placeholder={`Type your reply to ...@${mention}`} />
                             {/* <span className="text-xs font-semibold text-teal-500">Replying to @{mention}</span> */}
                             {preview && (
-                                <div className='w-full h-full flex justify-center py-4'>
-                                    <div className='max-w-[180px] min-h-[180px] relative'>
-                                        <div>
-                                            <Image src={preview as string} alt='preview' width={180} height={180} className='rounded-lg object-contain ring-1 ring-ash' />
+                                <div className='w-full h-full flex justify-center items-center py-4'>
+                                    {imgUploading ? <Loader2 className='animate-spin w-4 h-4' /> : (
+                                        <div className='max-w-[180px] min-h-[180px] relative'>
+                                            <div>
+                                                <Image src={preview as string} alt='preview' width={180} height={180} className='rounded-lg object-contain ring-1 ring-ash' />
+                                            </div>
+                                            <button type='button' className='absolute duration-300 hover:opacity-100 opacity-0 rounded-lg top-0 right-0 w-full h-full flex items-center justify-center hover:bg-black/40'
+                                                onClick={() => {
+                                                    setPreview(null)
+                                                    setFile(null)
+                                                    setImgSrc(null)
+                                                }}>
+                                                <span className='p-2 rounded-lg bg-red-500'>
+                                                    <X className='w-4 h-4 text-white' />
+                                                </span>
+                                            </button>
                                         </div>
-                                        <button type='button' className='absolute duration-300 hover:opacity-100 opacity-0 rounded-lg top-0 right-0 w-full h-full flex items-center justify-center hover:bg-black/40'
-                                            onClick={() => {
-                                                setPreview(null)
-                                                setFile(null)
-                                                setImgSrc(null)
-                                            }}>
-                                            <span className='p-2 rounded-lg bg-red-500'>
-                                                <X className='w-4 h-4 text-white' />
-                                            </span>
-                                        </button>
-                                    </div>
+                                    )}
                                 </div>
                             )}
                         </div>

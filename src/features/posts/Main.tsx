@@ -906,6 +906,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
           <div className="grid grid-cols-2 justify-between items-center gap-2 -mb-2 px-4 md:px-0">
             {user.role === 'ADMIN' && router.pathname === '/post/[slug]' && (
               <div className="flex text-sm font-medium col-span-2 items-center gap-2 w-full justify-end">
+                <span className="rounded-full px-3 py-0.5 bg-olive/20 text-olive">{post?.reachCount}</span>
                 <span className="rounded-full px-4 py-0.5 bg-yellow-500/20 text-yellow-700">{post?.costing?.toFixed(2)} BDT</span>
               </div>
             )}

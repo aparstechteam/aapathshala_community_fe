@@ -1303,14 +1303,13 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
         )}
 
         <div className="pt-4 space-y-4 relative z-[2]">
-          <div className="p-4 ring-0 shadow dark:shadow-purple-800 shadow-elegant/20 bg-white dark:bg-gradient-to-r dark:bg-neutral-950/70 md:rounded-xl">
+          <div className="p-4 grid gap-2 ring-0 md:ring-2 ring-ash bg-white md:rounded-xl">
             <div
-
               onClick={() => {
                 setIsOpen(true);
                 setCategory({ name: "বিষয়ভিত্তিক প্রশ্ন", value: "subject" });
               }}
-              className="flex items-start gap-4"
+              className="flex items-center gap-3"
             >
               {user?.image ? (
                 <Avatar>
@@ -1329,14 +1328,15 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                   <span className="absolute bottom-0 right-0 w-3 h-3 bg-life rounded-full border-2 dark:border-gray-900 border-ash"></span>
                 </div>
               )}
-              <div>
-                <h3 className="text-base font-bold">{user.name}</h3>
-                <h3 className="text-xs text-light">
-                  তোমার জিজ্ঞাসা বা সমস্যা সম্পর্কে লিখো...
+              <div className="flex flex-col gap-1">
+                <h3 className="text-base font-semibold">{user.name}</h3>
+                <h3 className="text-sm text-light">
+                  কমিউনিটিতে কিছু জিজ্ঞাসা কর...!
                 </h3>
               </div>
             </div>
-            <div className="w-full grid grid-cols-3 gap-2 pt-4 justify-between">
+            <div className="border-t border-ash border-dashed"></div>
+            <div className="w-full grid grid-cols-3 gap-2 justify-between">
               <button
                 onClick={() => {
                   setIsOpen(true);

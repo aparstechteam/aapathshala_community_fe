@@ -164,7 +164,7 @@ export const Header = () => {
 
   return (
     <div className="!z-20 relative">
-      <header className="min-h-[70px] dark:bg-gray-900 bg-white lg:dark:bg-black/25 lg:bg-white/75 backdrop-blur-lg grid items-center w-full fixed border-b dark:border-gray-800 border-gray-200">
+      <header className="h-[75px] md:h-[70px] dark:bg-gray-900 bg-white lg:dark:bg-black/25 lg:bg-white/75 backdrop-blur-lg grid items-center w-full fixed border-b dark:border-gray-800 border-gray-200">
         <div className="lg:px-10 px-2 py-2 flex items-center gap-2 justify-between">
           <div className="flex items-center gap-10">
             <Logo2 size="md" />

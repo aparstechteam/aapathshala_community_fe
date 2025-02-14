@@ -191,7 +191,7 @@ const HomePage: NextPage = () => {
       ) : (
         <Layout variant="home" selectedSubject={selectedSubject} setSelectedSubject={setSelectedSubject}>
 
-          <div className="w-full h-full pt-4 xl:pt-0 mx-auto md:px-2 max-w-5xl xl:max-w-[calc(100vw_-_750px)] 2xl:max-w-[calc(100vw_-_850px)]">
+          <div className="w-full h-full mx-auto md:px-2 max-w-5xl xl:max-w-[calc(100vw_-_750px)] 2xl:max-w-[calc(100vw_-_850px)]">
             {!!recaptchaKey ? (
               <GoogleReCaptchaProvider
                 reCaptchaKey={recaptchaKey ?? "NOT DEFINED"}

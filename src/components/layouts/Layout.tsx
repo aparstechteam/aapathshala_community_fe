@@ -433,7 +433,7 @@ export const Layout = (props: Props) => {
             </div>
 
             {/* Layout Wrapper */}
-            <div className="pt-[72px] flex w-full">
+            <div className="pt-[70px] flex w-full">
 
                 {/* Left Sidebar - Fixed */}
                 <div className="fixed hidden xl:block top-[73px] pl-4 2xl:pl-10 h-[calc(100vh-64px)] z-10">
@@ -443,7 +443,7 @@ export const Layout = (props: Props) => {
                 </div>
 
                 {/* Middle Content - Scrollable */}
-                <div className={cn('bg-[#F5F6F7] dark:bg-[#171717] relative w-full min-h-[calc(100vh_-_72px)]')}>
+                <div className={cn('bg-[#F5F6F7] dark:bg-[#171717] relative w-full min-h-[calc(100vh_-_70px)]')}>
                     <div className={cn('fixed bg-[#F5F6F7] dark:bg-[#171717] h-screen w-full z-[1]')} />
                     <div className="mx-auto w-full overflow-y-auto z-[2]">
                         {props.children}

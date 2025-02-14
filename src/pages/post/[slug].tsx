@@ -163,7 +163,7 @@ const PostDetailsPage: NextPage = () => {
                 <title>Post</title>
             </Head>
             <Layout variant="other">
-                <div className="min-h-[calc(100vh-80px)] pt-10 xl:pt-5 w-full">
+                <div className="min-h-[calc(100vh-80px)] xl:pt-5 w-full">
                     <div>
                         {!post && loading && (
                             <PageLoaders loading={loading} />

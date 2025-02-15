@@ -192,6 +192,7 @@ export type Post = {
     isFollowing: boolean;
     reach_score: number;
     user_view_count: number;
+    reach_count: number
     shareCount: number;
     reachCount: number;
     total_comments: number;
@@ -221,6 +222,7 @@ export type Post = {
         name: string;
     } | null;
     tags: string[]
+    recentComments: Comment[]
 };
 
 export type PollOption = {

@@ -3,6 +3,7 @@ import { ValidImage } from '@/components/shared/ValidImage';
 import { useCloudflareImage } from '@/hooks';
 import { useToast } from '@/hooks/use-toast';
 import { ImageCropper } from '@/lib/imageCrop';
+import { cn } from '@/lib/utils';
 import { Loader2, X } from 'lucide-react';
 import Image from 'next/image';
 import React, { ChangeEvent, useState } from 'react'
@@ -26,34 +27,31 @@ export const AddComment = (props: Props) => {
     const [file, setFile] = useState<File | null>(null)
     const [cropperOpen, setCropperOpen] = useState(false)
     const [preview, setPreview] = useState<string | null>(null)
+    const [commentError, setCommentError] = useState<string>('')
 
     const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setImgUploading(true)
-            setImgSrc(file)
+        const f = e.target.files?.[0];
+        if (f) {
+            setImgSrc(f)
             // const imagelink = await uploadImage(file as File)
             // setPreview(imagelink)
             setCropperOpen(true)
-            setImgUploading(false)
         }
     };
 
     const handleCroppedImageChange = async (f: File) => {
-        const file = f
-        if (file) {
-            setImgUploading(true)
-            setFile(file)
-            // setPreview(URL.createObjectURL(file));
-            setImgUploading(false)
+        if (f) {
+            setFile(f)
         }
     };
 
     async function cropDone() {
         try {
             setCropperOpen(false)
+            setImgUploading(true)
             const imagelink = await uploadImage(file as File)
             setPreview(imagelink as string);
+            setImgUploading(false)
         } catch {
             toast({
                 title: 'Image Upload Failed',
@@ -108,13 +106,14 @@ export const AddComment = (props: Props) => {
                     <Input type='text' value={commentText}
                         onChange={(e) => {
                             e.preventDefault()
+                            setCommentError('')
                             setCommentText(e.target.value)
                         }}
-                        className='focus-visible:!border-none focus-visible:!ring-2 focus-visible:!ring-life/40 !duration-300 !transition-all dark:focus-visible:!ring-life/40 !ring-1 !ring-ash dark:!ring-ash/40 !rounded-full !bg-[#F5F6F7] dark:!bg-transparent'
+                        className={cn('focus-visible:!border-none focus-visible:!ring-2 focus-visible:!ring-life/40 !duration-300 !transition-all !ring-1 !ring-ash !rounded-full !bg-[#F5F6F7]', commentError && '!ring-red-500 !border-red-500')}
                         placeholder='তোমার অভিমত বা মন্তব্য লিখো...'
                     />
 
-                    <div className='!rounded-full !cursor-pointer flex items-center gap-2 relative !text-black dark:!text-life dark:bg-life/20 bg-white p-2'>
+                    <div className='!rounded-full !cursor-pointer flex items-center gap-2 relative !text-olive bg-olive/10 p-2'>
                         <Input className='!p-0 opacity-0 absolute w-full h-full !cursor-pointer' type="file" accept="image/*" onChange={handleImageChange} />
                         {imgUploading ? <Loader2 className='animate-spin w-4 h-4' /> : (
                             <svg className='cursor-pointer' width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -125,15 +124,26 @@ export const AddComment = (props: Props) => {
                         )}
                     </div>
 
-                    <button disabled={!commentText || loading} type='submit' className='!rounded-full !text-xs !text-black bg-white dark:bg-life/20 p-2'
+                    <button disabled={loading} type='submit' className='!rounded-full !text-xs !text-light bg-white p-2'
                         onClick={(e) => {
                             e.preventDefault()
+                            if (!commentText) {
+                                setCommentError('Please enter a comment')
+                                toast({
+                                    title: 'কমেন্ট লিখো',
+                                    description: 'কমেন্ট করার আগে কিছু লিখো',
+                                    variant: 'destructive'
+                                })
+                                return
+                            }
+                            setCommentError('')
                             submitComment(preview)
                             setPreview(null)
                         }}>
                         {loading ? <Loader2 className='animate-spin w-4 h-4' /> : (
                             <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18.4164 9.30198L2.29277 1.43678C2.15411 1.36914 2.00184 1.33398 1.84755 1.33398C1.2867 1.33398 0.832031 1.78865 0.832031 2.3495V2.37881C0.832031 2.51508 0.84874 2.65083 0.88179 2.78303L2.42843 8.96957C2.47067 9.13857 2.61355 9.2634 2.78665 9.28265L9.58462 10.038C9.82036 10.0642 9.9987 10.2634 9.9987 10.5007C9.9987 10.7379 9.82036 10.9372 9.58462 10.9633L2.78665 11.7187C2.61355 11.7379 2.47067 11.8627 2.42843 12.0317L0.88179 18.2182C0.84874 18.3505 0.832031 18.4862 0.832031 18.6225V18.6518C0.832031 19.2127 1.2867 19.6673 1.84755 19.6673C2.00184 19.6673 2.15411 19.6322 2.29277 19.5645L18.4164 11.6993C18.8746 11.4758 19.1654 11.0106 19.1654 10.5007C19.1654 9.99074 18.8746 9.52548 18.4164 9.30198Z" fill="#008643" />
+                                <path d="M18.4164 9.30198L2.29277 1.43678C2.15411 1.36914 2.00184 1.33398 1.84755 1.33398C1.2867 1.33398 0.832031 1.78865 0.832031 2.3495V2.37881C0.832031 2.51508 0.84874 2.65083 0.88179 2.78303L2.42843 8.96957C2.47067 9.13857 2.61355 9.2634 2.78665 9.28265L9.58462 10.038C9.82036 10.0642 9.9987 10.2634 9.9987 10.5007C9.9987 10.7379 9.82036 10.9372 9.58462 10.9633L2.78665 11.7187C2.61355 11.7379 2.47067 11.8627 2.42843 12.0317L0.88179 18.2182C0.84874 18.3505 0.832031 18.4862 0.832031 18.6225V18.6518C0.832031 19.2127 1.2867 19.6673 1.84755 19.6673C2.00184 19.6673 2.15411 19.6322 2.29277 19.5645L18.4164 11.6993C18.8746 11.4758 19.1654 11.0106 19.1654 10.5007C19.1654 9.99074 18.8746 9.52548 18.4164 9.30198Z"
+                                    fill={!commentText ? "currentColor" : "#008643"} />
                             </svg>
                         )}
 

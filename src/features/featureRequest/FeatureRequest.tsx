@@ -113,7 +113,7 @@ export const FeatureRequest = () => {
                                     <SelectItem value="club">ক্লাব সম্পর্কিত সমস্যা</SelectItem>
                                     <SelectItem value="teacher">অভিভাবক প্রোগ্রাইল সম্পর্কিত সমস্যা</SelectItem>
                                     <SelectItem value="notification">নোটিফিকেশন সম্পর্কিত সমস্যা</SelectItem>
-                                    <SelectItem value="top_solver">টপ সল্ভারস র‍্যাংকিং সম্পর্কিত সমস্যা</SelectItem>
+                                    <SelectItem value="top_solver">টপ কন্ট্রিবিউটরস্ র‍্যাংকিং সম্পর্কিত সমস্যা</SelectItem>
                                     <SelectItem value="post">পোস্ট সম্পর্কিত সমস্যা</SelectItem>
                                     <SelectItem value="comment">কমেন্ট সম্পর্কিত সমস্যা</SelectItem>
                                     <SelectItem value="profile"> প্রোফাইল আপডেটে সম্পর্কিত সমস্যা</SelectItem>

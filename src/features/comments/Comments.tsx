@@ -13,6 +13,7 @@ import { handleError } from '@/hooks/error-handle';
 import { ValidImage } from '@/components/shared/ValidImage';
 import { toast } from '@/hooks/use-toast';
 import { ImageCropper } from '@/lib/imageCrop';
+import Link from 'next/link';
 const AppMath = dynamic(() => import('../../components/contexts/MathJAX'), { ssr: false });
 
 interface CommentProps {
@@ -405,3 +406,123 @@ export const CommentComponent = ({ comment, authorId, setSuccess, parentCommentI
         </div>
     );
 };
+
+export const FeaturedComments = (props: { comment: Comment, postId: string }) => {
+    const { comment, postId } = props
+    const { user } = useUser()
+    const [reaction, setReaction] = useState<string | null>(null)
+
+    useEffect(() => {
+        setReaction(comment?.reactions[0]?.type)
+    }, [comment])
+
+    const reactToComment = async (r: string) => {
+
+        try {
+            if (comment.user_id === user.id) return;
+
+            if (reaction === r) {
+                if (r === 'satisfied') {
+                    comment.satisfied_count -= 1;
+                } else if (r === 'dissatisfied') {
+                    comment.dissatisfied_count -= 1;
+                }
+                setReaction(null);
+            } else {
+                if (reaction === 'satisfied') {
+                    comment.satisfied_count -= 1;
+                } else if (reaction === 'dissatisfied') {
+                    comment.dissatisfied_count -= 1;
+                }
+
+                if (r === 'satisfied') {
+                    comment.satisfied_count += 1;
+                } else if (r === 'dissatisfied') {
+                    comment.dissatisfied_count += 1;
+                }
+                setReaction(r);
+            }
+
+            const res = await axios.post(`${secondaryAPI}/api/post/${postId}/comments/${comment.id}/react`, {
+                authorId: user.id,
+                reactionType: r,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            });
+            console.log(res)
+        } catch (err) {
+            handleError(err as AxiosError, () => reactToComment(r))
+        }
+    };
+
+    const bgColor = 'bg-dashnje ring-2 ring-elegant/20 dark:ring-elegant/50'
+
+    return (
+        <div className={cn("flex items-start gap-3 px-4 w-full")}>
+            <div>
+                <div className="relative h-[40px] w-[40px]">
+                    <ValidImage
+                        height={40}
+                        width={40}
+                        className="rounded-full h-[40px] w-[40px] cursor-pointer ring-2 ring-elegant/40 hover:ring-elegant/50 transition-all duration-300"
+                        src={comment?.user?.image as string || '/ai.png'}
+                        alt="Profile"
+                    />
+                    <span className="absolute bottom-2 -right-0 w-2 h-2 bg-elegant rounded-full border-1 border-white"></span>
+                </div>
+            </div>
+            <div className="flex-1 w-full">
+                <div className={cn("flex-1 w-full gap-2 p-2 rounded-xl", bgColor)}>
+                    <div className="flex w-full gap-1 items-center justify-between">
+                        <Link href={`/users/${comment?.user?.id || curicity_id}`} className="text-sm flex items-center gap-2 px-2 text-black font-semibold capitalize">
+                            {comment?.user?.name || 'কিউরিওসিটি'}
+                            <svg width="34" height="16" viewBox="0 0 34 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="33.9989" height="16" rx="8" fill="white" />
+                                <path d="M11.7827 2C11.9283 2 12.0544 2.10086 12.0864 2.24284L12.31 3.2353C12.4732 3.95986 13.0391 4.52569 13.7637 4.68891L14.7562 4.91247C14.8982 4.94445 14.9991 5.07056 14.9991 5.21609C14.9991 5.36163 14.8982 5.48774 14.7562 5.51972L13.7637 5.74328C13.0391 5.9065 12.4732 6.47233 12.31 7.19689L12.0864 8.18935C12.0544 8.33133 11.9283 8.43219 11.7827 8.43219C11.6372 8.43219 11.5111 8.33133 11.4791 8.18935L11.2555 7.19689C11.0923 6.47233 10.5264 5.9065 9.80179 5.74328L8.80926 5.51972C8.66727 5.48774 8.56641 5.36163 8.56641 5.21609C8.56641 5.07056 8.66727 4.94445 8.80926 4.91247L9.80179 4.68891C10.5264 4.52569 11.0923 3.95986 11.2555 3.2353L11.4791 2.24284C11.5111 2.10086 11.6372 2 11.7827 2Z" fill="#8A00CA" />
+                                <path d="M9.55688 6.88672C9.77383 6.88672 9.96181 7.03705 10.0095 7.24868L10.2475 8.30532C10.4101 9.0268 10.9735 9.59023 11.6951 9.75275L12.7518 9.99077C12.9634 10.0384 13.1138 10.2264 13.1138 10.4433C13.1138 10.6603 12.9634 10.8482 12.7518 10.8959L11.6951 11.1339C10.9735 11.2965 10.4101 11.8599 10.2475 12.5814L10.0095 13.638C9.96181 13.8496 9.77383 14 9.55688 14C9.33994 14 9.15196 13.8496 9.10428 13.638L8.86624 12.5814C8.70371 11.8599 8.14024 11.2965 7.4187 11.1339L6.36199 10.8959C6.15035 10.8482 6 10.6603 6 10.4433C6 10.2264 6.15035 10.0384 6.36199 9.99077L7.4187 9.75275C8.14024 9.59023 8.70371 9.02681 8.86624 8.30532L9.10428 7.24868C9.15196 7.03705 9.33994 6.88672 9.55688 6.88672Z" fill="#8A00CA" />
+                                <path d="M18.999 8.58L18.891 8.928H21.171L21.063 8.568C20.791 7.704 20.567 6.98 20.391 6.396C20.223 5.804 20.119 5.432 20.079 5.28L20.031 5.04C19.959 5.44 19.615 6.62 18.999 8.58ZM17.919 12H16.335L19.071 3.912H21.027L23.763 12H22.131L21.555 10.164H18.495L17.919 12ZM26.533 12H25.021V3.912H26.533V12Z" fill="#8A00CA" />
+                            </svg>
+                        </Link>
+                        <p className="text-xs text-light">
+                            {fromNow(comment?.created_at as Date)}
+                        </p>
+                    </div>
+                    <div className="rounded-md relative bg-muted p-2">
+                        <AppMath className='!max-w-[calc(100vw-120px)] xl:!max-w-[calc(100vw-980px)]' formula={comment.content + ' <span class="text-elegant text-sm"> See more</span>'} />
+                        <Link href={`/post/${postId}`} className='absolute w-full z-10 h-full top-0 right-0'></Link>
+                    </div>
+
+                </div>
+                <div className="flex items-center gap-4 pt-2">
+                    <button disabled={reaction === 'satisfied'} type='button' onClick={() => reactToComment('satisfied')} className={cn('flex items-center gap-2 text-sm font-semibold', reaction === 'satisfied' ? 'text-elegant' : 'text-light')}>
+                        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3.10867 1.51637C5.3444 0.144968 7.35007 0.691528 8.56173 1.60146C8.76106 1.75115 8.89786 1.8536 8.99971 1.92278C9.10155 1.8536 9.23836 1.75115 9.43769 1.60146C10.6493 0.691528 12.655 0.144968 14.8907 1.51637C16.4367 2.46464 17.3065 4.44545 17.0013 6.72134C16.6946 9.0082 15.2144 11.5947 12.0797 13.9149C10.9912 14.7211 10.1923 15.3127 8.99971 15.3127C7.80716 15.3127 7.00825 14.7211 5.91971 13.9149C2.78501 11.5947 1.30482 9.0082 0.998106 6.72134C0.692868 4.44545 1.56274 2.46464 3.10867 1.51637Z"
+                                fill={reaction === 'satisfied' ? "#8A00CA" : ""} stroke={reaction === 'satisfied' ? "" : "#575757"} />
+                        </svg>
+                        Yes
+                        <span className={cn('text-sm min-w-[20px] rounded-full h-4 font-normal flex items-center justify-center', reaction === 'satisfied' ? 'bg-elegant/10 ring-elegant ring-[1px] text-elegant' : 'bg-light/10 ring-light ring-[1px] text-light')}>
+                            {comment.satisfied_count}
+                        </span>
+                    </button>
+                    <button disabled={reaction === 'dissatisfied'} type='button' onClick={() => reactToComment('dissatisfied')} className={cn('flex items-center gap-2 text-sm font-semibold', reaction === 'dissatisfied' ? 'text-red-500' : 'text-light')}>
+                        <svg width="18" height="16" viewBox="0 0 18 16" fill={reaction === 'dissatisfied' ? "red" : 'none'} xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 11L10.125 9.125L8.625 7.625L10.875 5.75L9 2.75C9 2.75 9.34339 2.37572 9.77576 2.05101C10.8303 1.25909 12.5857 0.761922 14.5969 1.99561C17.2365 3.6147 17.8337 8.95614 11.7454 13.4625C10.5857 14.3208 10.0059 14.75 9 14.75C7.99411 14.75 7.41429 14.3208 6.25465 13.4625C0.16629 8.95614 0.763551 3.6147 3.40308 1.99561C4.82361 1.12426 6.11652 1.11635 7.125 1.46591"
+                                stroke={reaction === 'dissatisfied' ? "none" : "#575757"} fill={reaction === 'dissatisfied' ? "red" : "none"}
+                                strokeWidth="1.125" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        No
+                        <span className={cn('text-sm min-w-[20px] rounded-full h-4 font-normal flex items-center justify-center', reaction === 'dissatisfied' ? 'bg-red-500/10 ring-red-500 ring-[1px] text-red-500' : 'bg-light/10 ring-light ring-[1px] text-light')}>
+                            {comment.dissatisfied_count}
+                        </span>
+                    </button>
+                    <Link href={`/post/${postId}`} className='flex items-center gap-2 text-sm font-semibold text-light'>
+                        Reply
+                    </Link>
+                </div>
+            </div>
+        </div>
+    )
+}

@@ -57,7 +57,8 @@ const PostDetailsPage: NextPage = () => {
         getPost()
     }, [id, user, success])
 
-    const fechComments = useCallback(async () => {
+
+    useEffect(() => {
 
         async function getComments(aiok?: boolean) {
             try {
@@ -82,7 +83,6 @@ const PostDetailsPage: NextPage = () => {
                 handleError(err as AxiosError)
             }
         }
-
         async function getAiReply() {
             try {
                 setAiLoading(true)
@@ -96,10 +96,10 @@ const PostDetailsPage: NextPage = () => {
                 if (res.status === 200) {
                     setTimeout(() => {
                         getComments(false)
+                        return
                     }, 300)
-                    setAiLoading(false)
-                    return
                 }
+                setAiLoading(false)
             } catch (err) {
                 setAiLoading(false)
                 handleError(err as AxiosError)
@@ -109,11 +109,7 @@ const PostDetailsPage: NextPage = () => {
         if (!!id && !!post?.id && !!user?.id) {
             getComments(post?.ai_enabled)
         }
-    }, [id, post, user])
-
-    useEffect(() => {
-        fechComments()
-    }, [fechComments, id, post, user])
+    }, [id, post, user, success])
 
     useEffect(() => {
         async function getSummary() {
@@ -213,7 +209,7 @@ const PostDetailsPage: NextPage = () => {
                                                         <CommentComponent key={c?.id} comment={c} authorId={post?.userId}
                                                             parentCommentId={c?.id}
                                                             setSuccess={() => setSuccess(!success)}
-                                                            refetch={() => fechComments()} />
+                                                            refetch={() => setSuccess(!success)} />
                                                     ))}
                                                 </div>
                                             )}

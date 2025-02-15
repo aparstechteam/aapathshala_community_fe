@@ -97,7 +97,7 @@ export const Rightbar = () => {
         <div className="p-3 bg-white dark:bg-gray-900/40 !border-0 ring-1 rounded-xl shadow ring-ash dark:ring-ash/20 backdrop-blur-sm">
           <div className="flex items-center justify-between">
             <h2 className="text-start flex items-center gap-3 py-2">
-              <span className="font-semibold pt-1 px-2 text-black/80 dark:text-white">টপ সল্ভার্‌স</span>
+              <span className="font-semibold pt-1 px-2 text-black/80 dark:text-white">টপ কন্ট্রিবিউটরস্</span>
             </h2>
             <TooltipProvider>
               <Tooltip open={open} onOpenChange={setOpen}>
@@ -105,7 +105,7 @@ export const Rightbar = () => {
                   <Info size={16} />
                 </TooltipTrigger>
                 <TooltipContent className="z-[999] w-[300px] bg-white text-black shadow-md">
-                  <p>যেসকল শিক্ষার্থীরা অন্য শীক্ষার্থীদের পোস্টে সঠিক উত্তর দিয়ে স্যাটিসফাইড রিয়েকশন পাচ্ছে, মাসিক ভিত্তিতে তাদের নিয়ে এই টপ সল্ভারস র‍্যাংকিং তৈরি হয়েছে</p>
+                  <p>যেসকল শিক্ষার্থীরা অন্য শীক্ষার্থীদের পোস্টে সঠিক উত্তর দিয়ে স্যাটিসফাইড রিয়েকশন পাচ্ছে, মাসিক ভিত্তিতে তাদের নিয়ে এই টপ কন্ট্রিবিউটরস্ র‍্যাংকিং তৈরি হয়েছে</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

@@ -40,14 +40,14 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
     <div className="p-4 mt-4 bg-white lg:rounded-xl ring-1 ring-ash dark:ring-ash/20 lg:shadow-md dark:bg-[#171717]">
       <div className='grid py-2 gap-2 grid-cols-1 items-center justify-between'>
         <div className='flex items-center justify-center'>
-          <h2 className='text-lg text-center py-2 font-semibold px-4 h-full text-black/80 dark:text-white rounded-lg ring-0 ring-ash dark:ring-ash/20'>টপ সল্ভারস্‌</h2>
+          <h2 className='text-lg text-center py-2 font-semibold px-4 h-full text-black/80 dark:text-white rounded-lg ring-0 ring-ash dark:ring-ash/20'>টপ কন্ট্রিবিউটরস্‌</h2>
           <TooltipProvider>
             <Tooltip open={open} onOpenChange={setOpen}>
               <TooltipTrigger asChild onClick={() => setOpen(!open)}>
                 <Info size={20} />
               </TooltipTrigger>
               <TooltipContent className="z-[999] !text-base max-w-[300px] bg-white text-black shadow-md">
-                <p>যেসকল শিক্ষার্থীরা অন্য শীক্ষার্থীদের পোস্টে সঠিক উত্তর দিয়ে স্যাটিসফাইড রিয়েকশন পাচ্ছে, মাসিক ভিত্তিতে তাদের নিয়ে এই টপ সল্ভারস র‍্যাংকিং তৈরি হয়েছে</p>
+                <p>যেসকল শিক্ষার্থীরা অন্য শীক্ষার্থীদের পোস্টে সঠিক উত্তর দিয়ে স্যাটিসফাইড রিয়েকশন পাচ্ছে, মাসিক ভিত্তিতে তাদের নিয়ে এই টপ কন্ট্রিবিউটরস্ র‍্যাংকিং তৈরি হয়েছে</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

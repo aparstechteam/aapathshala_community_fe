@@ -29,12 +29,13 @@ import dynamic from "next/dynamic";
 import { useToast } from "@/hooks/use-toast";
 import { secondaryAPI } from "@/configs";
 import { handleError } from "@/hooks/error-handle";
-import { ChevronLeft, ChevronRight, EllipsisVertical, Flag } from "lucide-react";
+import { ChevronLeft, ChevronRight, EllipsisVertical, Eye, Flag } from "lucide-react";
 import { useRouter } from "next/router";
 import { PollComponent, VideoComponent } from "./index";
 import { reactionTabs } from "@/data/reactions";
 import { collections } from "@/data/saved-types";
 import { ReactCounts } from "@/components/shared/ReactCounts";
+import { FeaturedComments } from "../comments";
 const AppMath = dynamic(() => import("../../components/contexts/MathJAX"), {
   ssr: false,
 });
@@ -906,7 +907,9 @@ export const PostComponent: React.FC<PostShowProps> = ({
           <div className="grid grid-cols-2 justify-between items-center gap-2 -mb-2 px-4 md:px-0">
             {user.role === 'ADMIN' && router.pathname === '/post/[slug]' && (
               <div className="flex text-sm font-medium col-span-2 items-center gap-2 w-full justify-end">
-                <span className="rounded-full px-3 py-0.5 bg-olive/20 text-olive">{post?.reachCount}</span>
+                <span className="rounded-full flex items-center gap-1 px-3 py-0.5 bg-olive/20 text-olive">{post?.reach_count}
+                  <Eye size={16} />
+                </span>
                 <span className="rounded-full px-4 py-0.5 bg-yellow-500/20 text-yellow-700">{post?.costing?.toFixed(2)} BDT</span>
               </div>
             )}
@@ -980,11 +983,12 @@ export const PostComponent: React.FC<PostShowProps> = ({
                 <PopoverTrigger
                   asChild
                   onMouseEnter={() => setViewReactions(true)}
+                  className="!p-0"
                 >
-                  <p className="rounded-md hover:!text-elegant cursor-pointer duration-500 flex justify-center items-center text-sm font-medium shadow-none !text-gray-900 dark:!text-white">
+                  <p className="hover:!text-elegant cursor-pointer duration-500 flex justify-center items-center text-sm font-medium shadow-none !text-gray-900 dark:!text-white">
                     {reaction === 5 ? (
                       <>
-                        <span className="p-2">
+                        <span>
                           <svg
                             width="20"
                             height="20"
@@ -1010,13 +1014,13 @@ export const PostComponent: React.FC<PostShowProps> = ({
                         </span>
                       </>
                     ) : (
-                      <p className="scale-[0.7] p-1">
+                      <p className="scale-[0.7]">
                         {reactionTabs[reaction].icon}
                       </p>
                     )}
                     <span
                       className={cn(
-                        "pt-1",
+                        "pt-1 pl-2",
                         reaction !== 5 && "text-yellow-600 dark:text-yellow-400"
                       )}
                     >
@@ -1027,7 +1031,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
               </Popover>
 
               <Link
-                className="rounded-md hover:!text-elegant !cursor-pointer flex gap-2 justify-center p-2 items-center text-sm font-medium shadow-none !transition-opacity !text-gray-900 dark:!text-white"
+                className="hover:!text-elegant !cursor-pointer flex gap-2 justify-center items-center text-sm font-medium shadow-none !transition-opacity !text-gray-900 dark:!text-white"
                 href={`/post/${post.id}`}
               >
                 {" "}
@@ -1059,7 +1063,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
               <button
                 type="button"
                 onClick={handleShare}
-                className="rounded-md flex items-center gap-2 hover:!text-elegant !p-2 shadow-none duration-300 !transition-opacity !text-gray-900 dark:!text-white"
+                className="flex items-center gap-2 hover:!text-elegant shadow-none duration-300 !transition-opacity !text-gray-900 dark:!text-white"
               >
                 {" "}
                 <svg
@@ -1086,6 +1090,17 @@ export const PostComponent: React.FC<PostShowProps> = ({
               </button>
             </div>
           </div>
+
+          <div className="border-t border-ash border-dashed"></div>
+
+          {/* Recent Comments */}
+          {post?.recentComments && post?.recentComments.length > 0 && (
+            <div className="grid gap-3 py-2">
+              {post.recentComments.map((c) => (
+                <FeaturedComments key={c.id} comment={c} postId={post.id} />
+              ))}
+            </div>
+          )}
         </div>
       </div >
     </>

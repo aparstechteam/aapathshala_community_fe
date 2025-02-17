@@ -4,7 +4,7 @@ import { Header } from './Header'
 import { Sidebar } from './Sidebar'
 import { Rightbar } from './Rightbar'
 import { cn } from '@/lib/utils'
-import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, Input, Label, ScrollArea, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
+import { Button, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, Input, Label, ScrollArea, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui'
 import Image from 'next/image'
 import { useUser } from '../contexts'
 import { Check, ImageUp, Loader2, User } from 'lucide-react'
@@ -30,13 +30,14 @@ export const Layout = (props: Props) => {
     const { user, setUser } = useUser()
     const router = useRouter()
     const { uploadImage } = useCloudflareImage()
-
+    const [limitExpired, setLimitExpired] = useState(false)
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
         hours: 0,
         minutes: 0,
     })
     const [openInfo, setOpenInfo] = useState(false)
+    const [open, setOpen] = useState(false)
     const [infoStep, setInfoStep] = useState(0)
     const [imgloading, setImgloading] = useState(false)
     const [preview, setPreview] = useState<string | null>(user?.image || '')
@@ -55,6 +56,28 @@ export const Layout = (props: Props) => {
         religion: user?.religion || "",
         hsc_batch: user?.hsc_batch || ""
     })
+
+    useEffect(() => {
+        async function getlimit() {
+            try {
+                const res = await axios.get(`${secondaryAPI}/api/utils/limits`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                });
+                setLimitExpired(res.data.isExpired);
+                setTimeLeft({
+                    days: res.data.trialDaysRemaining,
+                    hours: 0,
+                    minutes: 1,
+                });
+
+            } catch (error) {
+                handleError(error as AxiosError, () => getlimit());
+            }
+        }
+        getlimit();
+    }, [user]);
 
     async function handleInfoSubmit(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
@@ -155,6 +178,12 @@ export const Layout = (props: Props) => {
         if (user?.image) {
             setPreview(user?.image)
         }
+        if (limitExpired) {
+            setTimeout(() => {
+                setOpen(true)
+            }, 4000)
+            return
+        }
         if (user.id && !user?.religion) {
             if (!router.pathname.includes('/auth')) {
                 setTimeout(() => {
@@ -162,7 +191,8 @@ export const Layout = (props: Props) => {
                 }, 4000)
             }
         }
-    }, [user, router])
+
+    }, [user, router, limitExpired])
 
     const userinfo = (
         <Dialog
@@ -423,10 +453,49 @@ export const Layout = (props: Props) => {
         </Dialog>
     );
 
+    const trialEnd = (
+        <Dialog
+            open={!open}
+            onOpenChange={(v) => {
+                setOpen(v);
+            }}
+        >
+            <DialogContent className='bg-white p-4'>
+                <DialogHeader>
+                    <DialogTitle>ট্রাইল শেষ হয়ে গেছে</DialogTitle>
+                </DialogHeader>
+                <DialogDescription>
+                    Trial Ended
+                </DialogDescription>
+                <DialogFooter>
+                    <div className="flex items-center justify-end gap-4 w-full">
+                        <DialogClose asChild>
+                            <Button
+                                type="button"
+                                variant="destructive"
+                                className="flex items-center gap-2"
+                                size="sm"
+                            >Cancel</Button>
+                        </DialogClose>
+                        <Button
+                            type="button"
+                            onClick={() => {
+                                router.push('/auth/register')
+                            }}
+                            variant="secondary"
+                            className="flex items-center gap-2"
+                            size="sm"
+                        >Buy / Add Course</Button>
+                    </div>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    )
     return variant === 'home' ? (
 
         <div className="dark:bg-[#171717] md:!bg-[#F5F6F7] dark:!text-white font-siliguri text-gray-700 relative">
             {userinfo}
+            {trialEnd}
             {/* Fixed Header */}
             <div className={cn("fixed top-0 left-0 w-full z-10", router.pathname.includes('/onboard') && 'hidden md:block')}>
                 <Header />

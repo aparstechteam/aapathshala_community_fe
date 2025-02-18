@@ -455,7 +455,7 @@ export const Layout = (props: Props) => {
 
     const trialEnd = (
         <Dialog
-            open={!open}
+            open={open}
             onOpenChange={(v) => {
                 setOpen(v);
             }}

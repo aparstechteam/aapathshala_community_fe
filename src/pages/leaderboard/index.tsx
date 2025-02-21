@@ -33,13 +33,13 @@ const LeaderBoardPage: NextPage = () => {
         const fetchLeaderboard = async () => {
             try {
                 setLoading(true)
-                const response = await axios.get(`${secondaryAPI}/api/utils/leaderboardadmin`, {
+                const response = await axios.get(`${secondaryAPI}/api/utils/leaderboard`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                     },
                     params: {
                         monthYear: currentMonth,
-                        limit: 100,
+                        limit: 12,
                         page: page
                     }
                 });
@@ -87,7 +87,7 @@ const LeaderBoardPage: NextPage = () => {
                 <div className='max-w-5xl pb-5 xl:max-w-[calc(100vw_-_750px)] p-2 2xl:max-w-[calc(100vw_-_850px)] mx-auto !w-full min-h-screen relative z-[4]'>
                     <LeaderBoardComponent
                         merit={firstThree}
-                        limit={100} nextMonth={nextMonth} prevMonth={prevMonth}
+                        limit={12} nextMonth={nextMonth} prevMonth={prevMonth}
                         currentMonthIndex={currentMonthIndex} currentMonth={currentMonth}
                         data={data as { leaderboard: LeaderboardEntry[], pagination: Pagination, first_3: LeaderboardEntry[] }}
                         page={page}

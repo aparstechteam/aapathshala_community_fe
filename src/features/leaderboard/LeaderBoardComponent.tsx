@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ChevronLeft, ChevronRight, Info, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -6,7 +6,7 @@ import Router from 'next/router';
 import { cn } from '@/lib/utils';
 import { months } from '@/data/months';
 import { LeaderboardEntry, Pagination } from '@/@types';
-import { Button, Skeleton, swap, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
+import { Button, Skeleton, swap, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, useUser } from '@/components';
 import { ValidImage } from '@/components/shared/ValidImage';
 
 
@@ -31,36 +31,28 @@ type Props = {
 export const LeaderBoardComponent: React.FC<Props> = (props) => {
 
   const { limit, nextMonth, prevMonth, currentMonthIndex, currentMonth, data, page, setPage, loading, error } = props
+  const { user } = useUser()
 
   const totalPages = data?.pagination?.totalPages || 1
-
-  const [open, setOpen] = useState(false)
 
   return (
     <div className="p-4 mt-4 bg-white lg:rounded-xl ring-1 ring-ash dark:ring-ash/20 lg:shadow-md dark:bg-[#171717]">
       <div className='grid py-2 gap-2 grid-cols-1 items-center justify-between'>
         <div className='flex items-center justify-center'>
           <h2 className='text-lg text-center py-2 font-semibold px-4 h-full text-black/80 dark:text-white rounded-lg ring-0 ring-ash dark:ring-ash/20'>টপ কন্ট্রিবিউটরস্‌</h2>
-          <TooltipProvider>
-            <Tooltip open={open} onOpenChange={setOpen}>
-              <TooltipTrigger asChild onClick={() => setOpen(!open)}>
-                <Info size={20} />
-              </TooltipTrigger>
-              <TooltipContent className="z-[999] !text-base max-w-[300px] bg-white text-black shadow-md">
-                <p>যেসকল শিক্ষার্থীরা অন্য শীক্ষার্থীদের পোস্টে সঠিক উত্তর দিয়ে স্যাটিসফাইড রিয়েকশন পাচ্ছে, মাসিক ভিত্তিতে তাদের নিয়ে এই টপ কন্ট্রিবিউটরস্ র‍্যাংকিং তৈরি হয়েছে</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Link href={`/leaderboard/points?uid=${user?.id}`}>
+            <Info />
+          </Link>
         </div>
 
         <div className="flex items-center !text-light  lg:ml-auto w-full justify-between px-2 h-full py-2 dark:bg-gray-800 bg-white ring-1 ring-ash dark:ring-ash/20 rounded-lg">
-          <Button className='!rounded-full hover:text-life !p-2' size="sm" variant="ghost" disabled={currentMonthIndex === 0} onClick={prevMonth}>
+          <Button className='!rounded-full hover:text-olive !p-2' size="sm" variant="ghost" disabled={currentMonthIndex === 0} onClick={prevMonth}>
             <ChevronLeft className="w-4 h-4" />
           </Button>
           <span className="text-sm md:text-base text-black/80 dark:text-white font-semibold">
             {currentMonth}
           </span>
-          <Button className='!rounded-full hover:text-life !p-2' size="sm" variant="ghost" disabled={currentMonthIndex === months.length - 1} onClick={nextMonth}>
+          <Button className='!rounded-full hover:text-olive !p-2' size="sm" variant="ghost" disabled={currentMonthIndex === months.length - 1} onClick={nextMonth}>
             <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
@@ -233,7 +225,7 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
                           d="M6.37096 5.01729L4.87633 2.85415C4.86638 2.83964 4.85305 2.82778 4.83749 2.81959C4.82192 2.81139 4.8046 2.80711 4.78701 2.80711C4.76943 2.80711 4.7521 2.81139 4.73654 2.81959C4.72098 2.82778 4.70765 2.83964 4.6977 2.85415L3.20307 5.01729C3.18875 5.03816 3.1676 5.05337 3.14326 5.06031C3.11892 5.06724 3.09293 5.06546 3.06976 5.05528L0.948945 4.11317C0.930009 4.10486 0.909098 4.1021 0.888653 4.10522C0.868208 4.10835 0.849074 4.11723 0.833487 4.13082C0.8179 4.14442 0.806504 4.16217 0.80063 4.182C0.794756 4.20183 0.794646 4.22292 0.800314 4.24281L2.03002 8.45379C2.03658 8.47638 2.0503 8.49622 2.06911 8.51034C2.08792 8.52446 2.1108 8.5321 2.13432 8.5321H7.44004C7.46356 8.5321 7.48644 8.52446 7.50525 8.51034C7.52406 8.49622 7.53778 8.47638 7.54435 8.45379L8.77405 4.24281C8.77972 4.22292 8.77961 4.20183 8.77373 4.182C8.76786 4.16217 8.75646 4.14442 8.74088 4.13082C8.72529 4.11723 8.70616 4.10835 8.68571 4.10522C8.66527 4.1021 8.64435 4.10486 8.62542 4.11317L6.5046 5.05528C6.48136 5.06536 6.45536 5.06708 6.431 5.06015C6.40664 5.05323 6.38542 5.03808 6.37096 5.01729Z"
                           fill="#575757" />
                       </svg>
-                      <span className='pt-1'>{l?.satisfied_count}</span>
+                      <span className='pt-1'>{l?.total_points}</span>
                     </h4>
                   </div>
                   <Link href={`/users/${l?.id}`} className='absolute w-full h-full -top-2 -right-2'></Link>
@@ -402,7 +394,7 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
                         d="M6.37096 5.01729L4.87633 2.85415C4.86638 2.83964 4.85305 2.82778 4.83749 2.81959C4.82192 2.81139 4.8046 2.80711 4.78701 2.80711C4.76943 2.80711 4.7521 2.81139 4.73654 2.81959C4.72098 2.82778 4.70765 2.83964 4.6977 2.85415L3.20307 5.01729C3.18875 5.03816 3.1676 5.05337 3.14326 5.06031C3.11892 5.06724 3.09293 5.06546 3.06976 5.05528L0.948945 4.11317C0.930009 4.10486 0.909098 4.1021 0.888653 4.10522C0.868208 4.10835 0.849074 4.11723 0.833487 4.13082C0.8179 4.14442 0.806504 4.16217 0.80063 4.182C0.794756 4.20183 0.794646 4.22292 0.800314 4.24281L2.03002 8.45379C2.03658 8.47638 2.0503 8.49622 2.06911 8.51034C2.08792 8.52446 2.1108 8.5321 2.13432 8.5321H7.44004C7.46356 8.5321 7.48644 8.52446 7.50525 8.51034C7.52406 8.49622 7.53778 8.47638 7.54435 8.45379L8.77405 4.24281C8.77972 4.22292 8.77961 4.20183 8.77373 4.182C8.76786 4.16217 8.75646 4.14442 8.74088 4.13082C8.72529 4.11723 8.70616 4.10835 8.68571 4.10522C8.66527 4.1021 8.64435 4.10486 8.62542 4.11317L6.5046 5.05528C6.48136 5.06536 6.45536 5.06708 6.431 5.06015C6.40664 5.05323 6.38542 5.03808 6.37096 5.01729Z"
                         fill="#575757" />
                     </svg>
-                    <span className='pt-1'>{l?.satisfied_count}</span>
+                    <span className='pt-1'>{l?.total_points}</span>
                   </h4>
                 </div>
                 <Link href={`/users/${l?.id}`} className='absolute -top-2 -right-2 w-full h-full'></Link>
@@ -414,7 +406,7 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
 
       {loading ? (
         <div className='text-center py-4 text-gray-500 w-full flex justify-center'>
-          <Loader2 className='animate-spin text-life' />
+          <Loader2 className='animate-spin text-olive' />
         </div>
       ) : data.leaderboard.length > 0 ? (
         <div className="divide-y dark:divide-gray-700 divide-gray-200">
@@ -447,7 +439,7 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
                   </div>
                 </div>
                 <p className='!text-base text-gray-700 pt-1'>
-                  {l.satisfied_count}
+                  {l.total_points}
                 </p>
               </div>
             ))
@@ -483,7 +475,7 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
           <Button
             disabled={page === 1}
             variant='outline'
-            className='text-life dark:text-life bg-white dark:bg-[#171717] border-life dark:border-life hover:bg-green-500/10 dark:hover:bg-green-500/20 !px-4 !rounded-full hover:text-green-700 dark:hover:text-green-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
+            className='text-olive dark:text-olive bg-white dark:bg-[#171717] border-olive dark:border-olive hover:bg-green-500/10 dark:hover:bg-green-500/20 !px-4 !rounded-full hover:text-green-700 dark:hover:text-green-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
             onClick={() => setPage(page - 1)}
             type='button'
           >
@@ -499,7 +491,7 @@ export const LeaderBoardComponent: React.FC<Props> = (props) => {
           <Button
             disabled={totalPages === page}
             variant='outline'
-            className='text-life dark:text-life bg-white dark:bg-[#171717] border-life dark:border-life hover:bg-green-500/10 dark:hover:bg-green-500/20 !px-4 !rounded-full hover:text-green-700 dark:hover:text-green-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
+            className='text-olive dark:text-olive bg-white dark:bg-[#171717] border-olive dark:border-olive hover:bg-green-500/10 dark:hover:bg-green-500/20 !px-4 !rounded-full hover:text-green-700 dark:hover:text-green-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
             onClick={() => setPage(page + 1)}
             type='button'
           >

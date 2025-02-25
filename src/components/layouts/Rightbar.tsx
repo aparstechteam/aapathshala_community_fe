@@ -4,11 +4,13 @@ import React, { useEffect, useState } from "react";
 import { GraduationCap, Info } from "lucide-react";
 import axios, { AxiosError } from "axios";
 import { LeaderboardEntry, Pagination, Teacher, UserData } from "@/@types";
-import { ScrollArea, ScrollBar, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui";
+import { ScrollArea, ScrollBar } from "../ui";
 import Image from "next/image";
 import { months } from "@/data/months";
 import { secondaryAPI } from "@/configs";
 import { handleError } from "@/hooks/error-handle";
+import Link from "next/link";
+import { useUser } from "../contexts";
 
 export const Rightbar = () => {
   const [currentMonthIndex, setCurrentMonthIndex] = useState(
@@ -20,7 +22,7 @@ export const Rightbar = () => {
     first_3: LeaderboardEntry[] | [];
   }>();
 
-
+  const { user } = useUser()
   const [activeUsers, setActiveUsers] = useState<UserData[]>([]);
 
   const [page, setPage] = useState<number>(1);
@@ -29,12 +31,6 @@ export const Rightbar = () => {
 
   useEffect(() => {
     const getLeaderboard = async () => {
-      // const cachedData = localStorage.getItem(`leaderboard-${currentMonth}-${page}`);
-      // if (cachedData) {
-      //   setData(JSON.parse(cachedData));
-      //   setLoading(false);
-      //   return;
-      // }
       try {
         setLoading(true)
         const response = await axios.get(`${secondaryAPI}/api/utils/leaderboard`, {
@@ -48,7 +44,6 @@ export const Rightbar = () => {
           },
         });
         setData(response.data);
-        // localStorage.setItem(`leaderboard-${currentMonth}-${page}`, JSON.stringify(response.data));
         setLoading(false)
       } catch (err) {
         handleError(err as AxiosError, () => getLeaderboard())
@@ -84,12 +79,10 @@ export const Rightbar = () => {
       } catch (err) {
         handleError(err as AxiosError, () => getActiveUsers())
       }
-      // setActiveUsers(response.data);
     }
     getActiveUsers();
   }, []);
 
-  const [open, setOpen] = useState(false)
 
   return (
     <div className="min-w-[350px] py-4">
@@ -99,16 +92,9 @@ export const Rightbar = () => {
             <h2 className="text-start flex items-center gap-3 py-2">
               <span className="font-semibold pt-1 px-2 text-black/80 dark:text-white">টপ কন্ট্রিবিউটরস্</span>
             </h2>
-            <TooltipProvider>
-              <Tooltip open={open} onOpenChange={setOpen}>
-                <TooltipTrigger asChild onClick={() => setOpen(!open)}>
-                  <Info size={16} />
-                </TooltipTrigger>
-                <TooltipContent className="z-[999] w-[300px] bg-white text-black shadow-md">
-                  <p>যেসকল শিক্ষার্থীরা অন্য শীক্ষার্থীদের পোস্টে সঠিক উত্তর দিয়ে স্যাটিসফাইড রিয়েকশন পাচ্ছে, মাসিক ভিত্তিতে তাদের নিয়ে এই টপ কন্ট্রিবিউটরস্ র‍্যাংকিং তৈরি হয়েছে</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <Link href={`/leaderboard/points?uid=${user?.id}`}>
+              <Info size={16} />
+            </Link>
 
           </div>
           {!!data?.leaderboard && (

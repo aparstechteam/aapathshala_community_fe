@@ -296,6 +296,7 @@ export type LeaderboardEntry = {
     image: string;
     school: string;
     satisfied_count: number;
+    total_points: number;
 };
 export type UserComment = {
     id: string;
@@ -315,14 +316,30 @@ export type UserComment = {
 };
 
 export type NType =
-    | "reaction"
-    | "comment"
-    | "follow"
-    | "mention"
-    | "group_post"
-    | "group_invite"
-    | "group_reply"
-    | "group_accepted";
+    | 'post'
+    | 'post_with_curiosity'
+    | 'teacher_reaction'
+    | 'admin_reaction'
+    | 'reaction'
+    | 'reaction_given'
+    | 'teacher_comment'
+    | 'admin_comment'
+    | 'comment'
+    | 'comment_reply'
+    | 'share'
+    | 'save_post'
+    | 'save_post_given'
+    | 'poll_participate'
+    | 'teacher_comment_reaction'
+    | 'admin_comment_reaction'
+    | 'comment_reaction'
+    | 'teacher_satisfied'
+    | 'admin_satisfied'
+    | 'user_satisfied'
+    | 'click_through'
+    | 'default'
+    | 'score_count'
+    
 
 export type Notification = {
     id: string;

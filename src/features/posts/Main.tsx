@@ -440,7 +440,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
             </button>
           ))}
         </div>
-        <DialogFooter className="flex !justify-end">
+        <DialogFooter className="!flex !justify-end !gap-2">
           <Button className="w-20" variant="destructive" size="sm">
             Cancel
           </Button>

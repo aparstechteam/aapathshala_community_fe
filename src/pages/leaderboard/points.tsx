@@ -25,7 +25,7 @@ const ScoreInfoPage = () => {
     useEffect(() => {
         async function getinfo() {
             try {
-                const res = await axios.get(`${secondaryAPI}/api/admin/users/activity/${uid}?limit=20&page=${page}`, {
+                const res = await axios.get(`${secondaryAPI}/api/utils/activity/${uid}?limit=20&page=${page}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                     }

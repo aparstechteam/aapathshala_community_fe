@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Logo2, NotificationIcon } from "../shared";
+import { NotificationIcon } from "../shared";
 import {
   Button,
   floorNumberD,
@@ -36,6 +36,7 @@ import { handleError } from "@/hooks/error-handle";
 import Cookies from "js-cookie";
 import { navItems } from "@/data/navItems";
 import { ValidImage } from "../shared/ValidImage";
+import Image from "next/image";
 
 export const Header = () => {
   const { user } = useUser();
@@ -167,7 +168,10 @@ export const Header = () => {
       <header className="h-[75px] md:h-[70px] dark:bg-gray-900 bg-white lg:dark:bg-black/25 lg:bg-white/75 backdrop-blur-lg grid items-center w-full fixed border-b dark:border-gray-800 border-gray-200">
         <div className="lg:px-10 px-2 py-2 flex items-center gap-2 justify-between">
           <div className="flex items-center gap-10">
-            <Logo2 size="md" />
+            {/* <Logo2 size="md" /> */}
+            <Link href="/">
+              <Image src="/logo.png" alt="acs-logo" width={120} height={56} />
+            </Link>
           </div>
 
           <div className="flex items-center justify-end gap-6 lg:gap-5">
@@ -192,8 +196,8 @@ export const Header = () => {
                 placeholder="পোস্ট অথবা তোমার বন্ধুকে খুঁজে নাও..."
                 className="bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-gray-200 rounded-full pl-10 pr-4 py-2.5 w-[350px] 
                 border border-gray-200 dark:border-gray-700/50 
-                hover:border-life/30
-                focus:border-life/50 focus:ring-2 focus:ring-life/20 
+                hover:border-hot/30
+                focus:border-hot/50 focus:ring-2 focus:ring-hot/20 
                 focus:outline-none transition-all duration-300 
                 placeholder:text-gray-500 placeholder:text-sm"
               />
@@ -219,7 +223,7 @@ export const Header = () => {
             <div className={cn("max-h-12 hidden xl:flex")}>
               <Popover>
                 <PopoverTrigger asChild>
-                  <div className="relative cursor-pointer !p-0 hidden lg:flex text-life dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 !shadow-none transition-colors">
+                  <div className="relative cursor-pointer !p-0 hidden lg:flex text-hot dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 !shadow-none transition-colors">
                     <svg
                       width="20"
                       height="21"
@@ -285,7 +289,7 @@ export const Header = () => {
                         ))}
                       </div>
                       <Link
-                        className="flex items-center justify-center gap-2 text-sm text-life dark:text-gray-200"
+                        className="flex items-center justify-center gap-2 text-sm text-hot dark:text-gray-200"
                         href="/notification"
                       >
                         আরও দেখুন
@@ -308,11 +312,11 @@ export const Header = () => {
                       size="md"
                       height={40}
                       width={40}
-                      className="rounded-full w-10 h-10 cursor-pointer ring-2 ring-life/70 hover:ring-life/50 transition-all duration-300"
+                      className="rounded-full w-10 h-10 cursor-pointer ring-2 ring-hot/70 hover:ring-hot/50 transition-all duration-300"
                       src={user?.image as string}
                       alt="My Profile"
                     />
-                    <span className="absolute bottom-0 right-0 w-3 h-3 bg-life rounded-full border-2 border-gray-200 dark:border-gray-900"></span>
+                    <span className="absolute bottom-0 right-0 w-3 h-3 bg-hot rounded-full border-2 border-gray-200 dark:border-gray-900"></span>
                   </p>
                 </PopoverTrigger>
                 <PopoverContent
@@ -324,7 +328,7 @@ export const Header = () => {
                       <h4 className="font-medium text-gray-400 text-sm dark:text-gray-400">
                         Signed in as
                       </h4>
-                      <h4 className="font-semibold text-green-600 dark:text-green-400">
+                      <h4 className="font-semibold text-rose-600 dark:text-rose-400">
                         {user?.name}
                       </h4>
                       <p>
@@ -335,44 +339,48 @@ export const Header = () => {
                     </div>
                     <div className="grid gap-1 pt-3">
                       <Link
-                        className="flex items-center gap-2 px-2 py-2 !border-0 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400"
+                        className="flex items-center gap-2 px-2 py-2 !border-0 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-rose-600 dark:hover:text-rose-400"
                         href="/profile"
                       >
                         <LayoutDashboard size={16} /> Dashboard
                       </Link>
                       <Link
-                        className="flex items-center gap-2 px-2 py-2 !border-0 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400"
+                        className="flex items-center gap-2 px-2 py-2 !border-0 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-rose-600 dark:hover:text-rose-400"
                         href="/profile"
                       >
                         <Logs size={16} /> My Posts
                       </Link>
                       <Link
-                        className="flex items-center gap-2 px-2 py-2 !border-0 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400"
+                        className="flex items-center gap-2 px-2 py-2 !border-0 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-rose-600 dark:hover:text-rose-400"
                         href="/saved"
                       >
                         <Bookmark size={16} /> Saved Posts
                       </Link>
                       <Link
-                        className="flex items-center gap-2 px-2 py-2 !border-0 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400"
+                        className="flex items-center gap-2 px-2 py-2 !border-0 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-rose-600 dark:hover:text-rose-400"
                         href="/feature-request"
                       >
                         <WandSparkles size={16} /> Feedback
                       </Link>
-                      <div className={cn(user.role === "USER" ? "hidden" : "block")}>
-                        <Select value={batchName || user?.hsc_batch} onValueChange={(value) => {
-                          localStorage.setItem('hsc_batch', value)
-                          if (batchName !== value) {
-
-                            setBatchName(value)
-                            router.reload()
-                          }
-                        }}>
-                          <SelectTrigger className="flex items-center justify-start gap-2 px-2 py-2 !border-0 hover:bg-gray-100 !rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400">
+                      <div
+                        className={cn(
+                          user.role === "USER" ? "hidden" : "block"
+                        )}
+                      >
+                        <Select
+                          value={batchName || user?.hsc_batch}
+                          onValueChange={(value) => {
+                            localStorage.setItem("hsc_batch", value);
+                            if (batchName !== value) {
+                              setBatchName(value);
+                              router.reload();
+                            }
+                          }}
+                        >
+                          <SelectTrigger className="flex items-center justify-start gap-2 px-2 py-2 !border-0 hover:bg-gray-100 !rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-rose-600 dark:hover:text-rose-400">
                             <h2 className="flex items-center text-base gap-2">
                               <UserRound size={16} />
-                              <span>
-                                Switch Batch
-                              </span>
+                              <span>Switch Batch</span>
                             </h2>
                           </SelectTrigger>
                           <SelectContent className="z-[9999] relative !bg-ash/40 grid gap-2">
@@ -386,11 +394,11 @@ export const Header = () => {
                     <div className="grid gap-1 pt-3">
                       <ThemeToggle
                         onClick={() => setMenuOpen(false)}
-                        className="hidden items-center !outline-none !ring-0 !shadow-none !justify-start text-start gap-2 !px-2 !py-2 !border-0 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400"
+                        className="flex items-center !outline-none !ring-0 !shadow-none !justify-start text-start gap-2 !px-2 !py-2 !border-0 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-rose-600 dark:hover:text-rose-400"
                       />
                       <Button
                         onClick={handleLogout}
-                        className="flex items-center !shadow-none !justify-start text-start gap-2 !px-2 !py-2 !border-0 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400"
+                        className="flex items-center !shadow-none !justify-start text-start gap-2 !px-2 !py-2 !border-0 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:text-rose-600 dark:hover:text-rose-400"
                       >
                         {loading ? (
                           <LoaderCircle size={16} className="animate-spin" />
@@ -414,7 +422,7 @@ export const Header = () => {
               key={x?.label}
               className={cn(
                 router.pathname === x.link &&
-                "text-olive border-b-2 border-b-olive",
+                  "text-hot border-b-2 border-b-hot",
                 "text-center py-2 flex justify-center duration-300"
               )}
               href={x.link}
@@ -426,7 +434,7 @@ export const Header = () => {
           <Link
             className={cn(
               router.pathname === "/notification" &&
-              "text-olive border-b-2 border-b-olive",
+                "text-hot border-b-2 border-b-hot",
               "text-center py-2 flex justify-center duration-300"
             )}
             href="/notification"

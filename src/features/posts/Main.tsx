@@ -29,7 +29,13 @@ import dynamic from "next/dynamic";
 import { useToast } from "@/hooks/use-toast";
 import { secondaryAPI } from "@/configs";
 import { handleError } from "@/hooks/error-handle";
-import { ChevronLeft, ChevronRight, EllipsisVertical, Eye, Flag } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  EllipsisVertical,
+  Eye,
+  Flag,
+} from "lucide-react";
 import { useRouter } from "next/router";
 import { PollComponent, VideoComponent } from "./index";
 import { reactionTabs } from "@/data/reactions";
@@ -221,7 +227,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
                       ?.join("")}
                   </AvatarFallback>
                 </Avatar>
-                <span className="absolute bottom-1 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-200 dark:border-gray-900">
+                <span className="absolute bottom-1 right-0 w-4 h-4 bg-rose-500 rounded-full border-2 border-gray-200 dark:border-gray-900">
                   {getReactionIcon(r.type)}
                 </span>
               </div>
@@ -234,7 +240,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
                   {r.user.name}
                 </Link>
                 {/* {r.user.id !== user.id ? (
-                  <button type="button" className="font-semibold text-sm text-life hover:text-elegant duration-300">
+                  <button type="button" className="font-semibold text-sm text-hot hover:text-elegant duration-300">
                     {r?.user?.isFollowing ? "Following" : "Follow"}
                   </button>
                 ) : null} */}
@@ -424,8 +430,8 @@ export const PostComponent: React.FC<PostShowProps> = ({
             <button
               type="button"
               className={cn(
-                "w-full text-start flex py-2 px-4 gap-2 rounded-lg hover:bg-olive/20 duration-300 bg-ash justify-start items-center",
-                collection === c.id && "bg-olive/20"
+                "w-full text-start flex py-2 px-4 gap-2 rounded-lg hover:bg-hot/20 duration-300 bg-ash justify-start items-center",
+                collection === c.id && "bg-hot/20"
               )}
               onClick={() => setCollection(c.id)}
               key={c.id}
@@ -433,7 +439,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
               <span
                 className={cn(
                   "w-4 h-4 rounded-full",
-                  collection === c.id && "bg-olive"
+                  collection === c.id && "bg-hot"
                 )}
               ></span>
               {c.title}
@@ -457,7 +463,6 @@ export const PostComponent: React.FC<PostShowProps> = ({
     </Dialog>
   );
 
-
   const handleNextImage = () => {
     const n = post?.images.findIndex((i) => i === showImage);
     console.log(n);
@@ -468,8 +473,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
     } else {
       setShowImage(post?.images[0]);
     }
-
-  }
+  };
 
   const handlePrevImage = () => {
     const n = post?.images.findIndex((i) => i === showImage);
@@ -478,7 +482,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
         setShowImage(post?.images[n - 1]);
       }, 200);
     }
-  }
+  };
 
   const imageModal = (
     <Dialog open={imgShowOpen} onOpenChange={setImgShowOpen}>
@@ -489,13 +493,26 @@ export const PostComponent: React.FC<PostShowProps> = ({
         {showImage && (
           <div className="w-auto flex items-center justify-between xl:h-[570px] lg:h-[400px] h-[300px] relative rounded-xl">
             {post?.images.length > 1 && (
-              <button type="button" onClick={() => handlePrevImage()} className="bg-white z-[9] text-black rounded-full p-2">
+              <button
+                type="button"
+                onClick={() => handlePrevImage()}
+                className="bg-white z-[9] text-black rounded-full p-2"
+              >
                 <ChevronLeft size={20} />
               </button>
             )}
-            <Image src={showImage} alt="Preview" fill className="rounded-xl object-contain" />
+            <Image
+              src={showImage}
+              alt="Preview"
+              fill
+              className="rounded-xl object-contain"
+            />
             {post?.images.length > 1 && (
-              <button type="button" onClick={() => handleNextImage()} className="bg-white z-[9] text-black rounded-full p-2">
+              <button
+                type="button"
+                onClick={() => handleNextImage()}
+                className="bg-white z-[9] text-black rounded-full p-2"
+              >
                 <ChevronRight size={20} />
               </button>
             )}
@@ -506,19 +523,21 @@ export const PostComponent: React.FC<PostShowProps> = ({
         )}
         <DialogFooter>
           <DialogClose asChild>
-            <Button className="!w-1/2 mx-auto" variant="destructive" size="sm">Close</Button>
+            <Button className="!w-1/2 mx-auto" variant="destructive" size="sm">
+              Close
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 
-  const [aspectRatio, setAspectRatio] = useState<number | null>(null)
+  const [aspectRatio, setAspectRatio] = useState<number | null>(null);
 
   const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = event.target as HTMLImageElement
-    setAspectRatio(img.naturalHeight / img.naturalWidth)
-  }
+    const img = event.target as HTMLImageElement;
+    setAspectRatio(img.naturalHeight / img.naturalWidth);
+  };
 
   return (
     <>
@@ -538,40 +557,46 @@ export const PostComponent: React.FC<PostShowProps> = ({
                       post?.group_slug && router.pathname.includes("clubs")
                         ? post?.user?.profilePic || post?.user_profile_pic
                         : post?.group_slug
-                          ? post?.group_image
-                          : post?.user?.profilePic || post?.user_profile_pic || post?.user?.image
+                        ? post?.group_image
+                        : post?.user?.profilePic ||
+                          post?.user_profile_pic ||
+                          post?.user?.image
                     }
                     alt={
                       post?.group_slug && router.pathname.includes("clubs")
                         ? post?.user?.name || post?.user_name
                         : post?.group_slug
-                          ? post?.group_name
-                          : post?.user?.name || post?.user_name
+                        ? post?.group_name
+                        : post?.user?.name || post?.user_name
                     }
                     referrerPolicy="no-referrer"
                   />
                   <AvatarFallback>
                     {post?.user
                       ? post?.user?.name
-                        ?.split(" ")
-                        ?.map((n: string) => n[0])
-                        ?.join("")
+                          ?.split(" ")
+                          ?.map((n: string) => n[0])
+                          ?.join("")
                       : "U"}
                   </AvatarFallback>
                 </Avatar>
                 {post?.group_slug && !router.pathname.includes("clubs") && (
                   <Avatar className="w-4 h-4 !absolute bottom-0 right-0">
                     <AvatarImage
-                      src={post?.user?.image || post.user_profile_pic || post.userProfilePic}
+                      src={
+                        post?.user?.image ||
+                        post.user_profile_pic ||
+                        post.userProfilePic
+                      }
                       alt={post?.user?.name}
                       referrerPolicy="no-referrer"
                     />
                     <AvatarFallback>
                       {post?.user
                         ? post?.user?.name
-                          .split(" ")
-                          .map((n: string) => n[0])
-                          .join("")
+                            .split(" ")
+                            .map((n: string) => n[0])
+                            .join("")
                         : "U"}
                     </AvatarFallback>
                   </Avatar>
@@ -585,16 +610,16 @@ export const PostComponent: React.FC<PostShowProps> = ({
                       post?.group_slug && router.pathname.includes("clubs")
                         ? `/users/${post?.userId}`
                         : post?.group_slug
-                          ? `/clubs/${post?.group_slug}`
-                          : `/users/${post?.userId}`
+                        ? `/clubs/${post?.group_slug}`
+                        : `/users/${post?.userId}`
                     }
                     className="text-gray-900 dark:text-white duration-300 text-sm font-bold"
                   >
                     {post?.group_slug && router.pathname.includes("clubs")
                       ? post?.user?.name || post?.user_name
                       : post?.group_slug
-                        ? post?.group_name
-                        : post?.user?.name || post?.user_name}
+                      ? post?.group_name
+                      : post?.user?.name || post?.user_name}
                   </Link>
                   {user?.id !== post?.userId && (
                     <span>
@@ -616,7 +641,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
                   {user?.id !== post?.userId && (
                     <button
                       type="button"
-                      className="text-sm font-semibold duration-300 hover:text-life dark:hover:text-green-300 text-olive"
+                      className="text-sm font-semibold duration-300 hover:text-hot dark:hover:text-rose-300 text-hot"
                       onClick={toggleFollow}
                     >
                       {!followLoading
@@ -673,24 +698,26 @@ export const PostComponent: React.FC<PostShowProps> = ({
                         </svg>
                       </span>
                     </>
-                  ) : (post?.subjectName &&
-                    <>
-                      <span>{post?.subjectName}</span>
-                      <span className="flex items-center px-1">
-                        <svg
-                          width="4"
-                          height="4"
-                          viewBox="0 0 3 3"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M2.64752 0.9C2.85552 1.10267 2.95952 1.35333 2.95952 1.652C2.95952 1.95067 2.85818 2.204 2.65552 2.412C2.45285 2.61467 2.20218 2.716 1.90352 2.716C1.59952 2.716 1.34618 2.61467 1.14352 2.412C0.940849 2.20933 0.839516 1.956 0.839516 1.652C0.839516 1.348 0.938182 1.09467 1.13552 0.892C1.33818 0.689333 1.59152 0.588 1.89552 0.588C2.19418 0.588 2.44485 0.692 2.64752 0.9Z"
-                            fill="#575757"
-                          />
-                        </svg>
-                      </span>
-                    </>
+                  ) : (
+                    post?.subjectName && (
+                      <>
+                        <span>{post?.subjectName}</span>
+                        <span className="flex items-center px-1">
+                          <svg
+                            width="4"
+                            height="4"
+                            viewBox="0 0 3 3"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M2.64752 0.9C2.85552 1.10267 2.95952 1.35333 2.95952 1.652C2.95952 1.95067 2.85818 2.204 2.65552 2.412C2.45285 2.61467 2.20218 2.716 1.90352 2.716C1.59952 2.716 1.34618 2.61467 1.14352 2.412C0.940849 2.20933 0.839516 1.956 0.839516 1.652C0.839516 1.348 0.938182 1.09467 1.13552 0.892C1.33818 0.689333 1.59152 0.588 1.89552 0.588C2.19418 0.588 2.44485 0.692 2.64752 0.9Z"
+                              fill="#575757"
+                            />
+                          </svg>
+                        </span>
+                      </>
+                    )
                   )}
                   <span>
                     {fromNow(
@@ -712,7 +739,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
                     setShowSaveTypes(true);
                   }
                 }}
-                className="!text-start flex justify-start items-center gap-2 p-1 text-gray-900 dark:text-white duration-300 hover:bg-gray-100 dark:hover:bg-green-800"
+                className="!text-start flex justify-start items-center gap-2 p-1 text-gray-900 dark:text-white duration-300 hover:bg-gray-100 dark:hover:bg-rose-800"
               >
                 {" "}
                 <svg
@@ -732,11 +759,9 @@ export const PostComponent: React.FC<PostShowProps> = ({
                 </svg>
               </button>
 
-
               <Popover>
                 <PopoverTrigger>
-                  <span className="!rounded-full !bg-green-100 dark:!bg-green-500 !bg-opacity-50 dark:!bg-opacity-20 hover:!bg-opacity-70 dark:hover:!bg-opacity-20 duration-300">
-
+                  <span className="!rounded-full !bg-rose-100 dark:!bg-rose-500 !bg-opacity-50 dark:!bg-opacity-20 hover:!bg-opacity-70 dark:hover:!bg-opacity-20 duration-300">
                     <EllipsisVertical size={20} />
                   </span>
                 </PopoverTrigger>
@@ -744,13 +769,12 @@ export const PostComponent: React.FC<PostShowProps> = ({
                   align="end"
                   className="!p-0 relative z-[2] rounded-lg !bg-white dark:!bg-gray-900 !min-w-[200px] border-gray-200 dark:border-0"
                 >
-                  <div className="py-2 grid ring-1 ring-gray-200 dark:ring-green-800 rounded-lg">
-
+                  <div className="py-2 grid ring-1 ring-gray-200 dark:ring-rose-800 rounded-lg">
                     {(user?.id === post?.user.id || user?.role === "ADMIN") && (
                       <button
                         type="button"
                         onClick={() => setShowDelete(true)}
-                        className="text-start text-gray-900 dark:text-white flex gap-2 justify-start items-center duration-300 hover:bg-gray-100 dark:hover:bg-green-800 px-3 py-2"
+                        className="text-start text-gray-900 dark:text-white flex gap-2 justify-start items-center duration-300 hover:bg-gray-100 dark:hover:bg-rose-800 px-3 py-2"
                       >
                         <svg
                           width="17"
@@ -764,10 +788,11 @@ export const PostComponent: React.FC<PostShowProps> = ({
                             fill="#575757"
                           />
                         </svg>
-                        <span className="leading-none text-sm pt-1">Delete</span>
+                        <span className="leading-none text-sm pt-1">
+                          Delete
+                        </span>
                       </button>
                     )}
-
 
                     {user?.role === "ADMIN" && (
                       <button
@@ -782,8 +807,8 @@ export const PostComponent: React.FC<PostShowProps> = ({
                         }}
                         type="button"
                         className={cn(
-                          "!text-start flex justify-start items-center gap-2 px-3 py-2 duration-300 hover:bg-gray-100 dark:hover:bg-olive",
-                          isPinned && "!text-life"
+                          "!text-start flex justify-start items-center gap-2 px-3 py-2 duration-300 hover:bg-gray-100 dark:hover:bg-hot",
+                          isPinned && "!text-hot"
                         )}
                       >
                         <svg
@@ -804,27 +829,23 @@ export const PostComponent: React.FC<PostShowProps> = ({
                       </button>
                     )}
 
-                    <button disabled
+                    <button
+                      disabled
                       type="button"
-                      className="!text-start flex justify-start items-center gap-2 px-3 py-2 text-gray-600 cursor-not-allowed dark:text-white duration-300 hover:bg-gray-100 dark:hover:bg-green-800"
+                      className="!text-start flex justify-start items-center gap-2 px-3 py-2 text-gray-600 cursor-not-allowed dark:text-white duration-300 hover:bg-gray-100 dark:hover:bg-rose-800"
                     >
                       {" "}
                       <Flag size={17} strokeWidth={1.1} />
-                      <span className="leading-none text-sm pt-1">
-                        Report
-                      </span>
+                      <span className="leading-none text-sm pt-1">Report</span>
                     </button>
                   </div>
                 </PopoverContent>
               </Popover>
-
             </div>
           </div>
 
-
           {/* image & post body  */}
           <div className="grid gap-2 text-gray-900 dark:text-white">
-
             {post?.body && (
               <AppMath
                 className="px-4 md:px-0 !w-full"
@@ -832,19 +853,30 @@ export const PostComponent: React.FC<PostShowProps> = ({
                 key={Number(post?.id.replace(/\D/g, ""))}
               />
             )}
-            {post?.category === 'homework' &&
-              <Link href={`/search?q=homework`} className="text-sm font-medium text-start text-olive">#{post?.category}</Link>
-            }
-
+            {post?.category === "homework" && (
+              <Link
+                href={`/search?q=homework`}
+                className="text-sm font-medium text-start text-hot"
+              >
+                #{post?.category}
+              </Link>
+            )}
 
             {!!post?.image ? (
-              <button type="button" onClick={() => {
-                setShowImage(post?.image)
-                setImgShowOpen(true)
-              }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowImage(post?.image);
+                  setImgShowOpen(true);
+                }}
+              >
                 <div
                   className="relative md:rounded-xl w-full overflow-hidden bg-gray-200"
-                  style={{ paddingBottom: aspectRatio ? `${aspectRatio * 100}%` : '56.25%' }}
+                  style={{
+                    paddingBottom: aspectRatio
+                      ? `${aspectRatio * 100}%`
+                      : "56.25%",
+                  }}
                 >
                   <Image
                     src={post?.image}
@@ -856,37 +888,52 @@ export const PostComponent: React.FC<PostShowProps> = ({
                   />
                 </div>
               </button>
-            ) : (!!post?.images &&
-              <div className={cn("grid gap-2", post?.images.length > 1 ? "grid-cols-2" : "grid-cols-1")}>
-                {post?.images.slice(0, 4).map((image, index) => (
-                  <button key={index} type="button" onClick={() => {
-                    setShowImage(image)
-                    setImgShowOpen(true)
-                  }}
-                    className="col-span-1 w-full">
-                    <div
-                      className="relative w-full overflow-hidden bg-gray-200 md:rounded-xl"
-                      style={{ paddingBottom: aspectRatio ? `${aspectRatio * 100}%` : '56.25%' }}
+            ) : (
+              !!post?.images && (
+                <div
+                  className={cn(
+                    "grid gap-2",
+                    post?.images.length > 1 ? "grid-cols-2" : "grid-cols-1"
+                  )}
+                >
+                  {post?.images.slice(0, 4).map((image, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => {
+                        setShowImage(image);
+                        setImgShowOpen(true);
+                      }}
+                      className="col-span-1 w-full"
                     >
-                      <Image
-                        src={image}
-                        alt="Post image"
-                        layout="fill"
-                        objectFit="cover"
-                        className="md:rounded-xl"
-                        onLoad={handleImageLoad}
-                      />
-                      {index === 3 && post?.images.length > 4 && (
-                        <div className="absolute text-2xl font-bold sm:rounded-xl top-0 right-0 flex items-center justify-center bg-black/40 w-full h-full text-white px-2 py-1">
-                          <span className="text-white rounded-full p-2 w-12 h-12">
-                            +{post?.images.length - 3}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </button>
-                ))}
-              </div>
+                      <div
+                        className="relative w-full overflow-hidden bg-gray-200 md:rounded-xl"
+                        style={{
+                          paddingBottom: aspectRatio
+                            ? `${aspectRatio * 100}%`
+                            : "56.25%",
+                        }}
+                      >
+                        <Image
+                          src={image}
+                          alt="Post image"
+                          layout="fill"
+                          objectFit="cover"
+                          className="md:rounded-xl"
+                          onLoad={handleImageLoad}
+                        />
+                        {index === 3 && post?.images.length > 4 && (
+                          <div className="absolute text-2xl font-bold sm:rounded-xl top-0 right-0 flex items-center justify-center bg-black/40 w-full h-full text-white px-2 py-1">
+                            <span className="text-white rounded-full p-2 w-12 h-12">
+                              +{post?.images.length - 3}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )
             )}
           </div>
 
@@ -905,12 +952,15 @@ export const PostComponent: React.FC<PostShowProps> = ({
 
           {/* Reaction & comments counts */}
           <div className="grid grid-cols-2 justify-between items-center gap-2 -mb-2 px-4 md:px-0">
-            {user.role === 'ADMIN' && router.pathname === '/post/[slug]' && (
+            {user.role === "ADMIN" && router.pathname === "/post/[slug]" && (
               <div className="flex text-sm font-medium col-span-2 items-center gap-2 w-full justify-end">
-                <span className="rounded-full flex items-center gap-1 px-3 py-0.5 bg-olive/20 text-olive">{post?.reach_count}
+                <span className="rounded-full flex items-center gap-1 px-3 py-0.5 bg-hot/20 text-hot">
+                  {post?.reach_count}
                   <Eye size={16} />
                 </span>
-                <span className="rounded-full px-4 py-0.5 bg-yellow-500/20 text-yellow-700">{post?.costing?.toFixed(2)} BDT</span>
+                <span className="rounded-full px-4 py-0.5 bg-yellow-500/20 text-yellow-700">
+                  {post?.costing?.toFixed(2)} BDT
+                </span>
               </div>
             )}
             <button
@@ -919,17 +969,39 @@ export const PostComponent: React.FC<PostShowProps> = ({
               onClick={() => setViewReactionList(!viewRectionList)}
               className="flex items-center hover:text-yellow-500 gap-1"
             >
-              {post.reactions.length > 0 && <ReactCounts reacts={post.reactions} />}
+              {post.reactions.length > 0 && (
+                <ReactCounts reacts={post.reactions} />
+              )}
               <span>{post?.reactions.length || 0} Reactions</span>
             </button>
-            <div className='flex items-center gap-2 justify-end'>
+            <div className="flex items-center gap-2 justify-end">
               {post.ai_enabled && (
                 <span className="relative p-0.5 rounded-full">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="5" height="6" viewBox="0 0 10 12" fill="none" className="animate-pulse animate-delay-500 absolute -left-[3px] -top-[3px]">
-                    <path fill="#1488FC" d="M5.332 1.064a.5.5 0 0 0-.972 0c-.37 1.528-.76 2.45-1.315 3.092-.547.635-1.298 1.05-2.513 1.461a.5.5 0 0 0 0 .948c1.27.428 2.03.88 2.568 1.528.546.657.908 1.57 1.26 3.024a.5.5 0 0 0 .972 0c.37-1.527.761-2.448 1.314-3.091.547-.635 1.298-1.05 2.514-1.461a.5.5 0 0 0 0-.948c-1.272-.43-2.032-.88-2.568-1.526-.546-.656-.907-1.568-1.26-3.027Z"></path>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="5"
+                    height="6"
+                    viewBox="0 0 10 12"
+                    fill="none"
+                    className="animate-pulse animate-delay-500 absolute -left-[3px] -top-[3px]"
+                  >
+                    <path
+                      fill="#1488FC"
+                      d="M5.332 1.064a.5.5 0 0 0-.972 0c-.37 1.528-.76 2.45-1.315 3.092-.547.635-1.298 1.05-2.513 1.461a.5.5 0 0 0 0 .948c1.27.428 2.03.88 2.568 1.528.546.657.908 1.57 1.26 3.024a.5.5 0 0 0 .972 0c.37-1.527.761-2.448 1.314-3.091.547-.635 1.298-1.05 2.514-1.461a.5.5 0 0 0 0-.948c-1.272-.43-2.032-.88-2.568-1.526-.546-.656-.907-1.568-1.26-3.027Z"
+                    ></path>
                   </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="8" height="9.6" viewBox="0 0 10 12" fill="none" className="animate-pulse">
-                    <path fill="#1488FC" d="M5.332 1.064a.5.5 0 0 0-.972 0c-.37 1.528-.76 2.45-1.315 3.092-.547.635-1.298 1.05-2.513 1.461a.5.5 0 0 0 0 .948c1.27.428 2.03.88 2.568 1.528.546.657.908 1.57 1.26 3.024a.5.5 0 0 0 .972 0c.37-1.527.761-2.448 1.314-3.091.547-.635 1.298-1.05 2.514-1.461a.5.5 0 0 0 0-.948c-1.272-.43-2.032-.88-2.568-1.526-.546-.656-.907-1.568-1.26-3.027Z"></path>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="8"
+                    height="9.6"
+                    viewBox="0 0 10 12"
+                    fill="none"
+                    className="animate-pulse"
+                  >
+                    <path
+                      fill="#1488FC"
+                      d="M5.332 1.064a.5.5 0 0 0-.972 0c-.37 1.528-.76 2.45-1.315 3.092-.547.635-1.298 1.05-2.513 1.461a.5.5 0 0 0 0 .948c1.27.428 2.03.88 2.568 1.528.546.657.908 1.57 1.26 3.024a.5.5 0 0 0 .972 0c.37-1.527.761-2.448 1.314-3.091.547-.635 1.298-1.05 2.514-1.461a.5.5 0 0 0 0-.948c-1.272-.43-2.032-.88-2.568-1.526-.546-.656-.907-1.568-1.26-3.027Z"
+                    ></path>
                   </svg>
                 </span>
               )}
@@ -952,7 +1024,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
                 <PopoverContent
                   side="top"
                   align="start"
-                  className="!rounded-full !p-0 relative z-[2] ring-gray-200 dark:ring-green-800 !ring-1 !border-0 bg-white dark:bg-gray-800"
+                  className="!rounded-full !p-0 relative z-[2] ring-gray-200 dark:ring-rose-800 !ring-1 !border-0 bg-white dark:bg-gray-800"
                   // onMouseEnter={() => setViewReactions(true)}
                   onMouseLeave={() => setViewReactions(false)}
                 >
@@ -1056,7 +1128,6 @@ export const PostComponent: React.FC<PostShowProps> = ({
                     strokeLinejoin="round"
                   />
                 </svg>
-
                 <span className="">কমেন্ট</span>
               </Link>
 
@@ -1102,7 +1173,7 @@ export const PostComponent: React.FC<PostShowProps> = ({
             </div>
           )}
         </div>
-      </div >
+      </div>
     </>
   );
 };

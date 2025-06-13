@@ -22,7 +22,6 @@ export const ActiveUsers = (props: Props) => {
   const { user } = useUser();
   const [followLoading, setFollowLoading] = useState(false);
 
-
   const toggleFollow = async (id: string) => {
     // if (isFollowing) return;
 
@@ -77,9 +76,9 @@ export const ActiveUsers = (props: Props) => {
                 alt="Profile"
                 height={40}
                 width={40}
-                className="rounded-full cursor-pointer h-10 w-10 ring-2 ring-green-500/70 hover:ring-green-500/50 transition-all duration-300"
+                className="rounded-full cursor-pointer h-10 w-10 ring-2 ring-rose-500/70 hover:ring-rose-500/50 transition-all duration-300"
               />
-              <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-100 dark:border-gray-900"></span>
+              <span className="absolute bottom-0 right-0 w-3 h-3 bg-rose-500 rounded-full border-2 border-gray-100 dark:border-gray-900"></span>
             </div>
             <Link
               href={`/users/${x.id}`}
@@ -90,7 +89,7 @@ export const ActiveUsers = (props: Props) => {
                   {x.name}
                 </span>
                 {!!x?.role && (
-                  <span className="text-xs font-medium px-3 h-4 flex items-center text-center bg-olive/20 text-olive pt-0.5 rounded-full capitalize">
+                  <span className="text-xs font-medium px-3 h-4 flex items-center text-center bg-hot/20 text-hot pt-0.5 rounded-full capitalize">
                     {x?.role?.toLowerCase()}
                   </span>
                 )}
@@ -102,18 +101,19 @@ export const ActiveUsers = (props: Props) => {
             <div>
               <button
                 onClick={() => toggleFollow(x.id)}
-                className={cn(x.id === user.id && 'hidden',
+                className={cn(
+                  x.id === user.id && "hidden",
                   "!rounded-lg py-1 px-2",
-                  x.isFollowing ? "text-olive" : "text-black"
+                  x.isFollowing ? "text-hot" : "text-black"
                 )}
               >
                 {followLoading ? (
                   <Loader2 size={16} className="animate-spin" />
-                ) : (x.isFollowing ? (
+                ) : x.isFollowing ? (
                   <UserRoundCheck size={16} />
                 ) : (
                   <UserPlus size={16} />
-                ))}
+                )}
               </button>
             </div>
           </div>

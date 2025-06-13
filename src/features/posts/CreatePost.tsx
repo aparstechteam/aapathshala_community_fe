@@ -3,7 +3,37 @@ import { useState, FormEvent, ChangeEvent, useEffect, useRef } from "react";
 import axios, { AxiosError } from "axios";
 import Router, { useRouter } from "next/router";
 import {
-  Button, Switch, Dialog, DialogContent, DialogHeader, DialogTitle, Label, Textarea, useUser, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, DialogFooter, useDebounce, DialogTrigger, Accordion, AccordionItem, AccordionTrigger, AccordionContent, ScrollArea, RadioGroup, RadioGroupItem, Input, ScrollBar, Avatar, AvatarImage, AvatarFallback, formatBnNumber, Jhikimiki
+  Button,
+  Switch,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  Label,
+  Textarea,
+  useUser,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  DialogFooter,
+  useDebounce,
+  DialogTrigger,
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+  ScrollArea,
+  RadioGroup,
+  RadioGroupItem,
+  Input,
+  ScrollBar,
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  formatBnNumber,
+  Jhikimiki,
 } from "@/components";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import Image from "next/image";
@@ -18,8 +48,11 @@ import { guidelines } from "@/data/community";
 import { Chapter, CreatePostProps, Group, TimeLeft } from "@/@types";
 import { Err, WritePost } from "./sections";
 
-export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, subject_id }) => {
-
+export const CreatePost: React.FC<CreatePostProps> = ({
+  group_id,
+  group_type,
+  subject_id,
+}) => {
   const { user } = useUser();
   const { toast } = useToast();
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -43,7 +76,12 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
 
   const [ai, setAi] = useState(false);
 
-  const [error, setError] = useState<Err>({ subject: "", chapter: "", prompt: "", destination: "" });
+  const [error, setError] = useState<Err>({
+    subject: "",
+    chapter: "",
+    prompt: "",
+    destination: "",
+  });
 
   const [limit, setLimit] = useState<number>(0);
   const [canUseAi, setCanUseAi] = useState<boolean>(false);
@@ -68,7 +106,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
   const [destination, setDestination] = useState(group_id || "");
   const [destinationType, setDestinationType] = useState(group_type || "");
   const { subjects, subLoading } = useSubject();
-  const [subjectDisabled, setSubjectDisabled] = useState(false)
+  const [subjectDisabled, setSubjectDisabled] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
@@ -80,7 +118,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
     if (!!subject_id) {
       setSubject(subject_id);
       setSubjectDisabled(true);
-      setCategory({ name: "বিষয়ভিত্তিক প্রশ্ন", value: "subject" },);
+      setCategory({ name: "বিষয়ভিত্তিক প্রশ্ন", value: "subject" });
     }
   }, [subject_id]);
 
@@ -135,7 +173,6 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
           hours: 0,
           minutes: 1,
         });
-
       } catch (error) {
         handleError(error as AxiosError, () => getlimit());
       }
@@ -303,14 +340,13 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
         setTopicLoading(false);
       }
     };
-    if (dsubject)
-      getChapters();
+    if (dsubject) getChapters();
   }, [dsubject]);
 
   const cropperModal = (
     <div>
       <Dialog open={cropperOpen} onOpenChange={setCropperOpen}>
-        <DialogContent className="p-4 bg-white flex justify-center max-w-[500px] max-h-[80vh] items-center">
+        <DialogContent className="p-4 bg-white dark:bg-gray-900 flex justify-center max-w-[500px] max-h-[80vh] items-center">
           <DialogHeader>
             <DialogTitle className="text-center py-2 text-black">
               Crop Image
@@ -351,7 +387,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
       <DialogTrigger asChild>
         <Link
           href={`#`}
-          className="text-sm flex items-center gap-2 text-light hover:text-life duration-300"
+          className="text-sm flex items-center gap-2 text-light hover:text-hot duration-300"
         >
           <svg
             width="16"
@@ -395,7 +431,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
           <Button
             type="button"
             size="sm"
-            className="ring-1 ring-ash bg-life text-white"
+            className="ring-1 ring-ash bg-hot text-white"
             onClick={() => setCommunityOpen(false)}
           >
             ঠিকাছে
@@ -569,21 +605,22 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                             value={destination || " "}
                             onValueChange={(value) => {
                               setDestination(value);
-                              const sub = myGroups.find(x => x.group_id === value)
-                              setDestinationType(sub?.type as string)
+                              const sub = myGroups.find(
+                                (x) => x.group_id === value
+                              );
+                              setDestinationType(sub?.type as string);
                               if (!!sub?.data?.subject) {
-                                setSubject(sub?.data?.subject)
-                                setSubjectDisabled(true)
+                                setSubject(sub?.data?.subject);
+                                setSubjectDisabled(true);
                               } else {
-                                setSubject('')
-                                setSubjectDisabled(false)
+                                setSubject("");
+                                setSubjectDisabled(false);
                               }
-
                             }}
                           >
                             <SelectTrigger
                               className={cn(
-                                "w-full !h-10 !px-4 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-green-200 dark:hover:bg-green-200/20",
+                                "w-full !h-10 !px-4 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-hot/10 bg-white dark:text-white text-gray-900 hover:bg-rose-200 dark:hover:bg-rose-200/20",
                                 error.subject && !subject && "ring-hot ring-2"
                               )}
                             >
@@ -702,7 +739,6 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                                     <X className="w-4 h-4" />
                                   </button>
                                 </div>
-
                               </div>
                             ))}
                           </RadioGroup>
@@ -741,7 +777,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                               handleCorrectAnswer(Number(value));
                             }}
                           >
-                            <SelectTrigger className="ring-2 !ring-ash focus-visible:!ring-life focus-visible:!ring-2 !rounded-md">
+                            <SelectTrigger className="ring-2 !ring-ash focus-visible:!ring-hot focus-visible:!ring-2 !rounded-md">
                               <SelectValue
                                 className="placeholder:text-light/70 text-light"
                                 placeholder="সঠিক অপশন সিলেক্ট করো"
@@ -782,10 +818,19 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                           Number(user?.level) === 0 && "hidden",
                           poll && "hidden",
                           !poll && "grid",
-                          destinationType === "COURSE" ? 'grid-cols-3' : 'grid-cols-2'
+                          destinationType === "COURSE"
+                            ? "grid-cols-3"
+                            : "grid-cols-2"
                         )}
                       >
-                        <h2 className={cn("text-base font-medium", destinationType === "COURSE" ? 'col-span-3' : 'col-span-2')}>
+                        <h2
+                          className={cn(
+                            "text-base font-medium",
+                            destinationType === "COURSE"
+                              ? "col-span-3"
+                              : "col-span-2"
+                          )}
+                        >
                           প্রশ্নের ধরণ সিলেক্ট করো
                         </h2>
                         <button
@@ -797,9 +842,9 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                           className={cn(
                             "rounded-full gap-1 text-xs sm:text-sm flex p-1.5 justify-center items-center shadow-none duration-300",
                             category.value === "subject" &&
-                            "ring-life/70 ring-2 hover:ring-life/50",
+                              "ring-hot/70 ring-2 hover:ring-hot/50",
                             category.value !== "subject" &&
-                            "ring-ash ring-1 hover:ring-2"
+                              "ring-ash ring-1 hover:ring-2"
                           )}
                         >
                           <svg
@@ -855,23 +900,42 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                           </span>
                         </button>
                         {destinationType === "COURSE" && (
-                          <button type='button'
+                          <button
+                            type="button"
                             onClick={() => {
-                              setIsOpen(true)
-                              setCategory(categories[1])
+                              setIsOpen(true);
+                              setCategory(categories[1]);
                             }}
-                            className={cn("rounded-full gap-1 text-xs sm:text-sm ring-1 ring-ash flex justify-center items-center p-1 shadow-none duration-300",
-                              category.value === 'homework' && "ring-life/70 ring-2 hover:ring-life/50",
-                              category.value !== 'homework' && "ring-ash ring-1 hover:ring-2"
-                            )}>
-                            <svg className='w-4 h-4 sm:h-6 sm:w-6' viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            className={cn(
+                              "rounded-full gap-1 text-xs sm:text-sm ring-1 ring-ash flex justify-center items-center p-1 shadow-none duration-300",
+                              category.value === "homework" &&
+                                "ring-hot/70 ring-2 hover:ring-hot/50",
+                              category.value !== "homework" &&
+                                "ring-ash ring-1 hover:ring-2"
+                            )}
+                          >
+                            <svg
+                              className="w-4 h-4 sm:h-6 sm:w-6"
+                              viewBox="0 0 20 20"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
                               <path
                                 d="M11.8088 17.4088C15.2946 17.1771 18.0713 14.3611 18.2998 10.8258C18.3445 10.1339 18.3445 9.41748 18.2998 8.72564C18.0713 5.19035 15.2946 2.37432 11.8088 2.1426C10.6196 2.06355 9.37793 2.06371 8.19112 2.1426C4.70528 2.37432 1.92863 5.19035 1.70016 8.72564C1.65545 9.41748 1.65545 10.1339 1.70016 10.8258C1.78337 12.1134 2.35282 13.3055 3.02322 14.3122C3.41247 15.017 3.15558 15.8966 2.75014 16.6649C2.4578 17.2189 2.31163 17.4959 2.42899 17.696C2.54636 17.8961 2.80851 17.9024 3.33281 17.9152C4.36968 17.9404 5.06886 17.6465 5.62386 17.2372C5.93863 17.0051 6.09602 16.8891 6.20449 16.8757C6.31296 16.8624 6.52643 16.9503 6.9533 17.1261C7.33696 17.2841 7.78243 17.3816 8.19112 17.4088C9.37793 17.4877 10.6196 17.4879 11.8088 17.4088Z"
-                                stroke="#FC465D" strokeLinejoin="round" />
+                                stroke="#FC465D"
+                                strokeLinejoin="round"
+                              />
                               <path
                                 d="M8.75 7.9488C8.75 7.24074 9.30964 6.66675 10 6.66675C10.6904 6.66675 11.25 7.24074 11.25 7.9488C11.25 8.20402 11.1773 8.44183 11.0519 8.64161C10.6784 9.23705 10 9.80484 10 10.5129V10.8334"
-                                stroke="#FC465D" strokeLinecap="round" />
-                              <path d="M10 12.5H10.0075" stroke="#FC465D" strokeLinecap="round" strokeLinejoin="round" />
+                                stroke="#FC465D"
+                                strokeLinecap="round"
+                              />
+                              <path
+                                d="M10 12.5H10.0075"
+                                stroke="#FC465D"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
                             </svg>
                             <span className="pt-1 !font-medium">হোমওয়ার্ক</span>
                           </button>
@@ -885,9 +949,9 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                           className={cn(
                             "rounded-full gap-1 text-xs sm:text-sm ring-1 ring-ash flex justify-center items-center p-1 shadow-none duration-300",
                             category.value === "other" &&
-                            "ring-life/70 ring-2 hover:ring-life/50",
+                              "ring-hot/70 ring-2 hover:ring-hot/50",
                             category.value !== "other" &&
-                            "ring-ash ring-1 hover:ring-2"
+                              "ring-ash ring-1 hover:ring-2"
                           )}
                         >
                           <svg
@@ -928,7 +992,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                             >
                               <SelectTrigger
                                 className={cn(
-                                  "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-green-200 dark:hover:bg-green-200/20",
+                                  "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-hot/10 bg-white dark:text-white text-gray-900 hover:bg-rose-200 dark:hover:bg-rose-200/20",
                                   error.subject && !subject && "ring-hot ring-2"
                                 )}
                               >
@@ -973,7 +1037,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                             >
                               <SelectTrigger
                                 className={cn(
-                                  "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-green-200 dark:hover:bg-green-200/20",
+                                  "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-hot/10 bg-white dark:text-white text-gray-900 hover:bg-rose-200 dark:hover:bg-rose-200/20",
                                   error.chapter && !chapter && "ring-hot ring-2"
                                 )}
                               >
@@ -1082,15 +1146,23 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                       )}
 
                       {/* Image preview  */}
-                      <div className={cn("grid gap-4",
-                        preview.length > 1 && "sm:grid-cols-2 grid-cols-1"
-                      )}>
+                      <div
+                        className={cn(
+                          "grid gap-4",
+                          preview.length > 1 && "sm:grid-cols-2 grid-cols-1"
+                        )}
+                      >
                         {preview.map((src, index) => (
-                          <div key={index} className="w-full flex items-center relative justify-center h-[300px]">
+                          <div
+                            key={index}
+                            className="w-full flex items-center relative justify-center h-[300px]"
+                          >
                             <button
                               type="button"
                               onClick={() => {
-                                const newPreviews = preview.filter((_, i) => i !== index);
+                                const newPreviews = preview.filter(
+                                  (_, i) => i !== index
+                                );
                                 setPreview(newPreviews);
                               }}
                             >
@@ -1154,7 +1226,6 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                                     strokeWidth="1.5"
                                   />
                                 </svg>
-
                               </p>
                             )}
                           </div>
@@ -1225,7 +1296,9 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
 
                         <div className="flex items-center gap-1 text-black">
                           {!isPaid && (
-                            <span className="text-xs text-white px-2.5 py-0.5 bg-hot rounded-lg">Free Trial</span>
+                            <span className="text-xs text-white px-2.5 py-0.5 bg-hot rounded-lg">
+                              Free Trial
+                            </span>
                           )}
                           {group_type === "SUBJECT" ? (
                             <>
@@ -1257,7 +1330,11 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
 
                               <span>{`${limitRemaining}/ ${limit} left`}</span>
 
-                              <Switch disabled={true} checked={ai} onCheckedChange={setAi} />
+                              <Switch
+                                disabled={true}
+                                checked={ai}
+                                onCheckedChange={setAi}
+                              />
                               <Label>
                                 <span className="font-semibold text-sm text-gray-500">
                                   Curiosity AI
@@ -1281,7 +1358,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                             }
                           }}
                           type="submit"
-                          className="!rounded-full bg-olive dark:bg-life"
+                          className="!rounded-full bg-hot dark:bg-hot"
                           disabled={loading}
                         >
                           <span className="pt-1 text-white">
@@ -1303,7 +1380,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
         )}
 
         <div className="pt-4 space-y-4 relative z-[2]">
-          <div className="p-4 grid gap-2 ring-0 md:ring-2 ring-ash bg-white md:rounded-xl">
+          <div className="p-4 grid gap-2 ring-0 md:ring-1 ring-ash dark:ring-gray-700 bg-white dark:bg-gray-900 md:rounded-xl">
             <div
               onClick={() => {
                 setIsOpen(true);
@@ -1321,11 +1398,11 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                   <Image
                     height={40}
                     width={40}
-                    className="rounded-full cursor-pointer ring-2 ring-life/70 hover:ring-life/50 transition-all duration-300"
+                    className="rounded-full cursor-pointer ring-2 ring-hot/70 hover:ring-hot/50 transition-all duration-300"
                     src={"/user.jpg"}
                     alt="Profile"
                   />
-                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-life rounded-full border-2 dark:border-gray-900 border-ash"></span>
+                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-hot rounded-full border-2 dark:border-gray-900 border-ash"></span>
                 </div>
               )}
               <div className="flex flex-col gap-1">
@@ -1335,7 +1412,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                 </h3>
               </div>
             </div>
-            <div className="border-t border-ash border-dashed"></div>
+            <div className="border-t border-ash dark:border-gray-500 border-dashed"></div>
             <div className="w-full grid grid-cols-3 gap-2 justify-between">
               <button
                 onClick={() => {
@@ -1409,7 +1486,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
                 className="rounded-full gap-1 text-xs sm:text-sm ring-1 ring-gray-200 sm:ring-0 flex justify-center items-center p-1 shadow-none duration-300"
               >
                 <svg
-                  className="w-4 h-4 text-olive sm:h-5 sm:w-5"
+                  className="w-4 h-4 text-hot sm:h-5 sm:w-5"
                   viewBox="0 0 22 21"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -1463,8 +1540,13 @@ export const CreatePost: React.FC<CreatePostProps> = ({ group_id, group_type, su
           </div>
         </div>
         {timeLeft?.days !== 0 && (
-          <div className={cn('z-[2] relative bg-white rounded-lg my-2', user.role === 'ADMIN' && 'hidden')}>
-            <p className='text-center bg-hot/20 max-w-4xl py-2 mx-auto rounded-lg h-full px-5 w-full flex items-center justify-center text-base font-semibold text-hot'>
+          <div
+            className={cn(
+              "z-[2] relative bg-white rounded-lg my-2",
+              user.role === "ADMIN" && "hidden"
+            )}
+          >
+            <p className="text-center bg-hot/20 max-w-4xl py-2 mx-auto rounded-lg h-full px-5 w-full flex items-center justify-center text-base font-semibold text-hot">
               {formatBnNumber(timeLeft.days)} দিন ফ্রি ট্রায়াল বাকি আছে
             </p>
           </div>

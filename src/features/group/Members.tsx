@@ -6,7 +6,7 @@ import {
   AvatarImage,
   Button,
   Tagtag,
-  useUser
+  useUser,
 } from "@/components";
 import {
   Check,
@@ -36,22 +36,22 @@ import { handleError } from "@/hooks/error-handle";
 export type Memberr = {
   user_id: string;
   role:
-  | "MEMBER"
-  | "GROUP_ADMIN"
-  | "GROUP_MODERATOR"
-  | "TEACHER"
-  | "CLASS_TEACHER"
-  | "PRESIDENT"
-  | "VICE_PRESIDENT"
-  | "GENERAL_SECRETARY"
-  | "CAPTAIN"
-  | "VICE_CAPTAIN"
-  | "CLUB_ADVISOR";
+    | "MEMBER"
+    | "GROUP_ADMIN"
+    | "GROUP_MODERATOR"
+    | "TEACHER"
+    | "CLASS_TEACHER"
+    | "PRESIDENT"
+    | "VICE_PRESIDENT"
+    | "GENERAL_SECRETARY"
+    | "CAPTAIN"
+    | "VICE_CAPTAIN"
+    | "CLUB_ADVISOR";
   name: string;
   school: string;
   level: number;
   image: string;
-  institute_name?: string
+  institute_name?: string;
 };
 
 type Props = {
@@ -77,13 +77,23 @@ const GROUP_ROLES = {
   CAPTAIN: "Captain",
   VICE_CAPTAIN: "Vice Captain",
   MEMBER: "Member",
-  CLUB_ADVISOR: "Club Advisor"
+  CLUB_ADVISOR: "Club Advisor",
 } as const;
 
 export const MembersComponent = (props: Props) => {
-  const { group, members, setMembers, id, page, setPage, searchQuery, setSearchQuery, totalPages } = props;
+  const {
+    group,
+    members,
+    setMembers,
+    id,
+    page,
+    setPage,
+    searchQuery,
+    setSearchQuery,
+    totalPages,
+  } = props;
   const { toast } = useToast();
-  const { user } = useUser()
+  const { user } = useUser();
 
   // const filteredMembers = members?.filter((member) =>
   //   member.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -92,18 +102,20 @@ export const MembersComponent = (props: Props) => {
   const handleRoleChange = async (
     memberId: string,
     role: keyof typeof GROUP_ROLES
-
   ) => {
     try {
-
-      await axios.post(`${secondaryAPI}/api/group/${group?.id}/assign-role`, {
-        role,
-        userId: memberId
-      }, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+      await axios.post(
+        `${secondaryAPI}/api/group/${group?.id}/assign-role`,
+        {
+          role,
+          userId: memberId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         }
-      })
+      );
 
       const newMembers = members.map((m) => {
         if (m.user_id === memberId) {
@@ -116,9 +128,8 @@ export const MembersComponent = (props: Props) => {
         title: "Role Updated",
         description: `Member role updated to ${GROUP_ROLES[role]}`,
       });
-
     } catch (error) {
-      handleError(error as AxiosError)
+      handleError(error as AxiosError);
     }
   };
 
@@ -142,8 +153,6 @@ export const MembersComponent = (props: Props) => {
 
   return (
     <div className="w-full min-h-screen z-0 dark:text-white text-black">
-
-
       {/* Members Section */}
       <div className="mt-8 space-y-6">
         <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
@@ -177,7 +186,7 @@ export const MembersComponent = (props: Props) => {
                       .join("")}
                   </AvatarFallback>
                 </Avatar>
-                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></span>
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-rose-500 rounded-full border-2 border-white dark:border-gray-800"></span>
               </div>
               <div className="space-y-1 flex-1">
                 <Link
@@ -232,7 +241,7 @@ export const MembersComponent = (props: Props) => {
                           <span className="text-xs text-gray-500">
                             {member.role !== "MEMBER" &&
                               GROUP_ROLES[
-                              member.role as keyof typeof GROUP_ROLES
+                                member.role as keyof typeof GROUP_ROLES
                               ]}
                           </span>
                         </DropdownMenuItem>
@@ -262,7 +271,6 @@ export const MembersComponent = (props: Props) => {
 
                     <DropdownMenuSeparator />
 
-
                     {/* Remove Member */}
                     <DropdownMenuItem
                       onSelect={() => handleRemoveMember(member.user_id)}
@@ -271,7 +279,6 @@ export const MembersComponent = (props: Props) => {
                       <UserMinus className="mr-2 h-4 w-4" />
                       <span>Remove from Group</span>
                     </DropdownMenuItem>
-
 
                     {/* Ban Member */}
                     <DropdownMenuItem
@@ -289,12 +296,27 @@ export const MembersComponent = (props: Props) => {
         </div>
 
         <div className="flex justify-between items-center py-5">
-          <Button disabled={page === 1} size="sm" className="bg-olive disabled:bg-light text-white !rounded-lg" onClick={() => setPage(page - 1)}>Previous</Button>
-          <div className="text-sm text-gray-500 dark:text-gray-400">Page: {page} out of {totalPages}</div>
-          <Button disabled={page === totalPages} size="sm" className="bg-olive disabled:bg-light text-white !rounded-lg" onClick={() => setPage(page + 1)}>Next</Button>
+          <Button
+            disabled={page === 1}
+            size="sm"
+            className="bg-hot disabled:bg-light text-white !rounded-lg"
+            onClick={() => setPage(page - 1)}
+          >
+            Previous
+          </Button>
+          <div className="text-sm text-gray-500 dark:text-gray-400">
+            Page: {page} out of {totalPages}
+          </div>
+          <Button
+            disabled={page === totalPages}
+            size="sm"
+            className="bg-hot disabled:bg-light text-white !rounded-lg"
+            onClick={() => setPage(page + 1)}
+          >
+            Next
+          </Button>
         </div>
       </div>
     </div>
-
   );
 };

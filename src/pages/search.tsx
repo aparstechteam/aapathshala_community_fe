@@ -179,7 +179,7 @@ export default function SearchPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search a friend or a post..."
-                  className="w-full pl-10 pr-4 !ring-2 dark:!ring-gray-800 focus:!ring-green-500 focus:ring-2 focus:!border-none !duration-300 !transition-all !ring-green-500 !rounded-full"
+                  className="w-full pl-10 pr-4 !ring-2 dark:!ring-gray-800 focus:!ring-rose-500 focus:ring-2 focus:!border-none !duration-300 !transition-all !ring-rose-500 !rounded-full"
                   onKeyDown={(e) => e.key === "Enter" && performSearch()}
                 />
               </div>
@@ -265,7 +265,7 @@ export default function SearchPage() {
                                   .join("")}
                               </AvatarFallback>
                             </Avatar>
-                            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></span>
+                            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-rose-500 rounded-full border-2 border-white dark:border-gray-800"></span>
                           </div>
 
                           <div className="space-y-2 flex-1">
@@ -300,8 +300,8 @@ export default function SearchPage() {
                                 size="sm"
                                 className={`rounded-full transition-all duration-300 ${
                                   u.isFollowing
-                                    ? "bg-green-100 hover:bg-green-200 text-green-700 dark:bg-green-800 dark:hover:bg-green-700 dark:text-green-300"
-                                    : "bg-green-500 hover:bg-green-600 text-white"
+                                    ? "bg-rose-100 hover:bg-rose-200 text-rose-700 dark:bg-rose-800 dark:hover:bg-rose-700 dark:text-rose-300"
+                                    : "bg-rose-500 hover:bg-rose-600 text-white"
                                 }`}
                               >
                                 {u.isFollowing ? (

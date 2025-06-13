@@ -10,7 +10,7 @@ export const useSubject = () => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [topicLoading, setTopicLoading] = useState<boolean>(false);
     const [subLoading, setSubLoading] = useState<boolean>(false);
-
+    const [chapters, setChapters] = useState<Chapter[]>([]);
     useEffect(() => {
         const fetchSubjects = async () => {
             try {
@@ -42,6 +42,7 @@ export const useSubject = () => {
                 }
             });
             setTopicLoading(false);
+            setChapters(response.data.chapters as Chapter[]);
             return response.data.chapters as Chapter[];
         } catch (error) {
             setTopicLoading(false);
@@ -50,5 +51,5 @@ export const useSubject = () => {
         }
     }
 
-    return { subjects, getChapters, topicLoading, subLoading };
+    return { subjects, getChapters, topicLoading, subLoading, chapters };
 };

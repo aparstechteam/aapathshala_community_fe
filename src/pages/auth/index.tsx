@@ -7,10 +7,9 @@ import axios from "axios";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { secondaryAPI } from "@/configs";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import Image from "next/image";
 import GoogleSignInButton from "@/components/shared/GoogleSignInButton";
-
 
 const LoginPage = () => {
   const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
@@ -18,35 +17,35 @@ const LoginPage = () => {
 
   async function getUser(token: string) {
     try {
-      localStorage.removeItem('user')
+      localStorage.removeItem("user");
       const response = await axios.get(`${secondaryAPI}/api/auth/user`, {
         // withCredentials: true,
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
       });
       const data = await response.data;
-      setUser(data.user)
-      localStorage.setItem('user', JSON.stringify(data.user))
-      if (data.user.role === 'ADMIN' && !data.user.onboarding_complete) {
-        Router.push('/auth/onboard/admin')
-        return
+      setUser(data.user);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      if (data.user.role === "ADMIN" && !data.user.onboarding_complete) {
+        Router.push("/auth/onboard/admin");
+        return;
       }
 
       if (!!data.user.onboarding_complete) {
-        localStorage.setItem('hsc_batch', data.user.hsc_batch as string)
+        localStorage.setItem("hsc_batch", data.user.hsc_batch as string);
         Router.push("/");
-        return
+        return;
       } else if (!data.user.is_paid) {
         Router.push("/auth/register");
-        return
+        return;
       } else {
         Router.push("/auth/onboard");
       }
     } catch (error) {
       console.error("Error assigning user:", error);
-      localStorage.removeItem('user')
+      localStorage.removeItem("user");
     }
   }
 
@@ -54,28 +53,31 @@ const LoginPage = () => {
   const handleGoogleLoginSuccess = async (response: any | unknown) => {
     try {
       setIsLoadingGoogle(true);
-      const res = await axios.post(`${secondaryAPI}/api/auth/google`, {
-        accessToken: response.credential,
-      }, {
-        headers: {
-          "Content-Type": "application/json",
+      const res = await axios.post(
+        `${secondaryAPI}/api/auth/google`,
+        {
+          accessToken: response.credential,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      localStorage.setItem('accessToken', res.data.accessToken)
-      localStorage.setItem('refreshToken', res.data.refreshToken)
-      Cookies.set('accessToken', res.data.accessToken, { path: '/' })
-      Cookies.set('refreshToken', res.data.refreshToken, { path: '/' })
+      localStorage.setItem("accessToken", res.data.accessToken);
+      localStorage.setItem("refreshToken", res.data.refreshToken);
+      Cookies.set("accessToken", res.data.accessToken, { path: "/" });
+      Cookies.set("refreshToken", res.data.refreshToken, { path: "/" });
 
-      getUser(res.data.accessToken)
-
+      getUser(res.data.accessToken);
     } catch {
       setIsLoadingGoogle(false);
     }
   };
 
   const handleGoogleLoginError = () => {
-    console.log("Error: google login")
+    console.log("Error: google login");
   };
 
   const isLoginSupported =
@@ -87,23 +89,27 @@ const LoginPage = () => {
   }, []);
 
   const openInChrome = () => {
-    if (typeof window === 'undefined') return
+    if (typeof window === "undefined") return;
 
-    const userAgent = navigator.userAgent.toLowerCase()
-    const isAndroid = userAgent.includes('android')
-    const isIOS = /iphone|ipad|ipod/.test(userAgent)
-    const currentUrl = window.location.origin + window.location.pathname + window.location.search
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isAndroid = userAgent.includes("android");
+    const isIOS = /iphone|ipad|ipod/.test(userAgent);
+    const currentUrl =
+      window.location.origin +
+      window.location.pathname +
+      window.location.search;
 
     if (isAndroid) {
-      window.location.href = `intent://${currentUrl}#Intent;scheme=https;package=com.android.chrome;end`
+      window.location.href = `intent://${currentUrl}#Intent;scheme=https;package=com.android.chrome;end`;
     } else if (isIOS) {
-      window.location.href = `googlechrome://${currentUrl}`
+      window.location.href = `googlechrome://${currentUrl}`;
 
       setTimeout(() => {
-        window.location.href = 'https://apps.apple.com/us/app/google-chrome/id535886823'
-      }, 2000)
+        window.location.href =
+          "https://apps.apple.com/us/app/google-chrome/id535886823";
+      }, 2000);
     }
-  }
+  };
 
   return view ? (
     <>
@@ -112,18 +118,25 @@ const LoginPage = () => {
         <meta name="description" content="Login to Smart Community" />
       </Head>
 
-      <div className='bg-white flex flex-col items-center justify-center min-h-screen w-full'>
-
+      <div className="bg-white flex flex-col items-center justify-center min-h-screen w-full">
         <div className="w-full h-full">
           <Card className="!w-full !max-w-lg mx-auto bg-white !rounded-xl backdrop-blur-md ring-light/30 !shadow-md !border-0 !ring-2 !shadow-light/50">
             <CardHeader className="flex items-center">
               <div className="py-2 px-6 flex flex-col items-center justify-center">
-                <Image src="/acs.png" alt="acs-logo" className="mx-auto" width={70} height={70} />
-                <span className="text-center text-sm font-semibold py-2">স্মার্ট কমিউনিটি</span>
+                <Image
+                  src="/logo.png"
+                  alt="acs-logo"
+                  className="mx-auto"
+                  width={150}
+                  height={200}
+                />
+                <span className="text-center text-sm font-semibold py-2">
+                  স্মার্ট কমিউনিটি
+                </span>
               </div>
               <p className="text-center pt-4">
-                <span className="text-clip bg-gradient-to-r from-sky-500 via-olive to-blue-600 text-transparent bg-clip-text text-base md:text-xl font-semibold tracking-tight">
-                  Where knowledge meets collaboration
+                <span className="text-clip bg-gradient-to-r from-sky-500 via-hot to-blue-600 text-transparent bg-clip-text text-base md:text-xl font-semibold tracking-tight">
+                  প্রস্তুতি হোক সেরা গাইডলাইনে!
                 </span>
               </p>
             </CardHeader>
@@ -154,11 +167,9 @@ const LoginPage = () => {
                   <div className="flex justify-center">
                     <Button
                       size="sm"
-                      onClick={() => copyLink('/')}
+                      onClick={() => copyLink("/")}
                       className="bg-zinc-800 hover:bg-zinc-700 text-light border-0 transition-colors"
                     >
-
-
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -179,13 +190,10 @@ const LoginPage = () => {
                 </div>
               )}
 
-              <div>
-
-              </div>
+              <div></div>
             </CardContent>
           </Card>
         </div>
-
       </div>
     </>
   ) : null;

@@ -1,0 +1,5 @@
+export * from "./Mains"
+export * from "./HwqCard"
+export * from "./Details"
+export * from "./sections"
+export * from "./sections/HwCreate"

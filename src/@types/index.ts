@@ -68,6 +68,22 @@ export type Reply = {
     reactions: Reaction[];
 };
 
+export type Profile = {
+  id: string;
+  name: string;
+  image: string;
+  phone: string;
+  level: number;
+  role: "USER" | "ADMIN";
+  fcm_tokens: string[] | null;
+  status: string | null;
+  handle: string;
+  updated_at: string;
+  created_at: string;
+  school: string | null;
+  is_paid: boolean;
+};
+
 export type UserData = {
     is_paid: boolean;
     email: string;

@@ -27,7 +27,7 @@ export const Logo = ({ size = "md", className }: LogoProps) => {
               sizeClasses[size]
             )}
           >
-            SMART <span className="text-life">COMMUNITY</span>
+            SMART <span className="text-hot">COMMUNITY</span>
           </p>
         </div>
       </div>
@@ -44,10 +44,23 @@ export const Logo2 = ({ size = "md", className }: LogoProps) => {
   };
 
   return (
-    <Link href={router.pathname.includes("/auth") ? "/auth" : "/"} className={cn("hover:scale-105 transition-all duration-300 flex items-center", className, sizeClasses[size])}>
-      {size === "md" && <img src="/acs.png" alt="acs-logo" width={46} height={46} />}
-      {size === "sm" && <Image src={"/acs.png"} alt="acs-logo" width={36} height={36} />}
-      {size === "lg" && <Image src={"/acs.png"} alt="acs-logo" width={66} height={66} />}
+    <Link
+      href={router.pathname.includes("/auth") ? "/auth" : "/"}
+      className={cn(
+        "hover:scale-105 transition-all duration-300 flex items-center",
+        className,
+        sizeClasses[size]
+      )}
+    >
+      {size === "md" && (
+        <img src="/logo.png" alt="acs-logo" width={46} height={46} />
+      )}
+      {size === "sm" && (
+        <Image src={"/logo.png"} alt="acs-logo" width={36} height={36} />
+      )}
+      {size === "lg" && (
+        <Image src={"/logo.png"} alt="acs-logo" width={66} height={66} />
+      )}
     </Link>
-  )
-}
+  );
+};

@@ -77,7 +77,6 @@ type UserData = {
   hsc_batch: string;
 };
 
-
 type DashboardData = {
   totalPosts: number;
   totalComments: number;
@@ -85,9 +84,9 @@ type DashboardData = {
 };
 
 export type UserProfile = {
-  userData: UserData
-  dashboard: DashboardData
-  course_enrolled: string[]
+  userData: UserData;
+  dashboard: DashboardData;
+  course_enrolled: string[];
 };
 
 type Props = {
@@ -99,7 +98,6 @@ type Props = {
 };
 
 export const ProfileComponent = (props: Props) => {
-
   const { userProfile, id, isFollowing, setIsFollowing, refetch } = props;
 
   const { uploadImage } = useCloudflareImage();
@@ -132,7 +130,7 @@ export const ProfileComponent = (props: Props) => {
   const [openCourse, setOpenCourse] = useState(false);
 
   useEffect(() => {
-    if (tab === 'courses') {
+    if (tab === "courses") {
       setOpenCourse(true);
     }
     if (user?.religion) {
@@ -141,7 +139,6 @@ export const ProfileComponent = (props: Props) => {
     if (user?.gender) {
       setGender(user?.gender);
     }
-
   }, [tab, user]);
 
   useEffect(() => {
@@ -171,18 +168,15 @@ export const ProfileComponent = (props: Props) => {
 
     try {
       setFollowLoading(false);
-      const res = await axios.delete(
-        `${secondaryAPI}/api/follow`,
-        {
-          data: {
-            followingId: id,
-          },
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      );
+      const res = await axios.delete(`${secondaryAPI}/api/follow`, {
+        data: {
+          followingId: id,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
       if (setIsFollowing) setIsFollowing(!isFollowing);
       setFollowLoading(false);
       toast({
@@ -378,7 +372,7 @@ export const ProfileComponent = (props: Props) => {
           gender: gender,
           religion: religion,
           hsc_batch: hscBatch,
-          phone: user?.phone
+          phone: user?.phone,
         },
         {
           headers: {
@@ -420,9 +414,9 @@ export const ProfileComponent = (props: Props) => {
     setBio(value);
   };
 
-  const [fberror, setfbError] = useState('')
+  const [fberror, setfbError] = useState("");
 
-  const [course, setCourse] = useState<string>('');
+  const [course, setCourse] = useState<string>("");
 
   async function handleAddCourse() {
     if (!course) {
@@ -434,33 +428,37 @@ export const ProfileComponent = (props: Props) => {
       return;
     }
     try {
-      setIsFTLoading(true)
-      await axios.post(`${secondaryAPI}/api/auth/verify-joining-id`, {
-        joiningId: course
-      }, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      setIsFTLoading(true);
+      await axios.post(
+        `${secondaryAPI}/api/auth/verify-joining-id`,
+        {
+          joiningId: course,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
 
       toast({
         title: "Course added",
         description: "You have been added to the course",
         variant: "default",
       });
-      await getme()
-      router.replace(`/profile`)
-      if (refetch) refetch()
-      setIsFTLoading(false)
-
+      await getme();
+      router.replace(`/profile`);
+      if (refetch) refetch();
+      setIsFTLoading(false);
     } catch (error) {
-      setIsFTLoading(false)
+      setIsFTLoading(false);
       handleError(error as AxiosError);
       if (axios.isAxiosError(error)) {
         toast({
           title: "Error",
-          description: error.response?.data.errors[0]?.message || "Please try again",
+          description:
+            error.response?.data.errors[0]?.message || "Please try again",
           variant: "destructive",
         });
       }
@@ -468,21 +466,19 @@ export const ProfileComponent = (props: Props) => {
   }
 
   async function getme() {
-
     try {
       const response = await axios.get(`${secondaryAPI}/api/auth/user`, {
-
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       });
-      setUser(response.data.user)
-      localStorage.setItem('user', JSON.stringify(response.data.user))
-      localStorage.setItem('hsc_batch', response.data.user?.hsc_batch)
-      setOpenCourse(false)
+      setUser(response.data.user);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("hsc_batch", response.data.user?.hsc_batch);
+      setOpenCourse(false);
     } catch (error) {
-      handleError(error as AxiosError, getme)
+      handleError(error as AxiosError, getme);
     }
   }
 
@@ -552,143 +548,211 @@ export const ProfileComponent = (props: Props) => {
               Characters left: {100 - bio.length}/100
             </p>
           </div>
-          <div className='w-full grid grid-cols-2 gap-x-4 gap-y-2'>
-            <Label className='col-span-2'>তুমি একজন</Label>
-            <button onClick={() => {
-              setError('')
-              setGender('boy')
-            }} type='button'
-              className={cn('text-sm text-black ring-2 h-10 duration-300 px-4 py-0.5 rounded-lg',
-                (error && !gender) ? 'ring-hot' :
-                  gender === 'boy' ? 'ring-olive' :
-                    gender !== 'boy' && 'ring-ash',
-              )}>
+          <div className="w-full grid grid-cols-2 gap-x-4 gap-y-2">
+            <Label className="col-span-2">তুমি একজন</Label>
+            <button
+              onClick={() => {
+                setError("");
+                setGender("boy");
+              }}
+              type="button"
+              className={cn(
+                "text-sm text-black ring-2 h-10 duration-300 px-4 py-0.5 rounded-lg",
+                error && !gender
+                  ? "ring-hot"
+                  : gender === "boy"
+                  ? "ring-hot"
+                  : gender !== "boy" && "ring-ash"
+              )}
+            >
               ছাত্র
             </button>
 
-            <button onClick={() => {
-              setGender('girl')
-              setError('')
-            }}
-              type='button'
-              className={cn('text-sm text-black ring-2 h-10 duration-300 px-4 py-1 rounded-lg',
-                (error && !gender) ? 'ring-hot' :
-                  gender === 'girl' ? 'ring-olive' :
-                    gender !== 'girl' && 'ring-ash',
-              )}>
+            <button
+              onClick={() => {
+                setGender("girl");
+                setError("");
+              }}
+              type="button"
+              className={cn(
+                "text-sm text-black ring-2 h-10 duration-300 px-4 py-1 rounded-lg",
+                error && !gender
+                  ? "ring-hot"
+                  : gender === "girl"
+                  ? "ring-hot"
+                  : gender !== "girl" && "ring-ash"
+              )}
+            >
               ছাত্রী
             </button>
           </div>
-          <div className='w-full'>
-
-            <div className='flex flex-col gap-3'>
+          <div className="w-full">
+            <div className="flex flex-col gap-3">
               <Label>তোমার ধর্ম কী?</Label>
-              <Select disabled value={userProfile?.userData?.religion}
+              <Select
+                disabled
+                value={userProfile?.userData?.religion}
                 onValueChange={(value) => {
-                  setReligion(value)
-                  setError('')
-                }}>
-                <SelectTrigger className={cn("w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-ash/20",
-                  error && !religion && "ring-hot ring-2"
-                )}>
+                  setReligion(value);
+                  setError("");
+                }}
+              >
+                <SelectTrigger
+                  className={cn(
+                    "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-hot/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-ash/20",
+                    error && !religion && "ring-hot ring-2"
+                  )}
+                >
                   <SelectValue placeholder={"তুমি কোন ধর্মের অনুসারী?"} />
                 </SelectTrigger>
-                <SelectContent align='start' className="dark:!bg-gray-800 text-light dark:text-gray-200 !bg-white max-h-[250px]">
-
-                  <SelectItem value={'ISLAM'} className='hover:!text-white !text-black dark:text-white'>
+                <SelectContent
+                  align="start"
+                  className="dark:!bg-gray-800 text-light dark:text-gray-200 !bg-white max-h-[250px]"
+                >
+                  <SelectItem
+                    value={"ISLAM"}
+                    className="hover:!text-white !text-black dark:text-white"
+                  >
                     ইসলাম
                   </SelectItem>
 
-                  <SelectItem value={'SANATAN'} className='hover:!text-white !text-black dark:text-white'>
+                  <SelectItem
+                    value={"SANATAN"}
+                    className="hover:!text-white !text-black dark:text-white"
+                  >
                     সনাতন
                   </SelectItem>
-                  <SelectItem value={'CHRISTIANITY'} className='hover:!text-white !text-black dark:text-white'>
+                  <SelectItem
+                    value={"CHRISTIANITY"}
+                    className="hover:!text-white !text-black dark:text-white"
+                  >
                     খৃষ্টান
                   </SelectItem>
 
-                  <SelectItem value={'OTHERS'} className='hover:!text-white text-black dark:text-white'>
+                  <SelectItem
+                    value={"OTHERS"}
+                    className="hover:!text-white text-black dark:text-white"
+                  >
                     অন্যান্য
                   </SelectItem>
-
                 </SelectContent>
               </Select>
-              {error && !religion && <p className='text-hot text-xs'>
-                ধর্ম সিলেক্ট করো
-              </p>}
+              {error && !religion && (
+                <p className="text-hot text-xs">ধর্ম সিলেক্ট করো</p>
+              )}
             </div>
           </div>
-          <div className='w-full'>
-
-            <div className='flex flex-col gap-3'>
+          <div className="w-full">
+            <div className="flex flex-col gap-3">
               <Label>তোমার ব্যাচ কী?</Label>
-              <Select value={hscBatch} disabled={!!user?.hsc_batch}
+              <Select
+                value={hscBatch}
+                disabled={!!user?.hsc_batch}
                 onValueChange={(value) => {
-                  setHscBatch(value)
-                  setError('')
-                }}>
-
-                <SelectTrigger className={cn("w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-life/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-ash/20",
-                  error && !hscBatch && "ring-hot ring-2"
-                )}>
-
+                  setHscBatch(value);
+                  setError("");
+                }}
+              >
+                <SelectTrigger
+                  className={cn(
+                    "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-hot/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-ash/20",
+                    error && !hscBatch && "ring-hot ring-2"
+                  )}
+                >
                   <SelectValue placeholder={"তুমি কোন ব্যাচে পড়ছ?"} />
                 </SelectTrigger>
-                <SelectContent align='start' className="dark:!bg-gray-800 text-light dark:text-gray-200 !bg-white max-h-[250px]">
-
-
-                  <SelectItem value={'HSC 25'} className='hover:!text-white !text-black dark:text-white'>
+                <SelectContent
+                  align="start"
+                  className="dark:!bg-gray-800 text-light dark:text-gray-200 !bg-white max-h-[250px]"
+                >
+                  <SelectItem
+                    value={"HSC 25"}
+                    className="hover:!text-white !text-black dark:text-white"
+                  >
                     HSC 2025
                   </SelectItem>
 
-                  <SelectItem value={'HSC 26'} className='hover:!text-white !text-black dark:text-white'>
+                  <SelectItem
+                    value={"HSC 26"}
+                    className="hover:!text-white !text-black dark:text-white"
+                  >
                     HSC 2026
                   </SelectItem>
-
                 </SelectContent>
               </Select>
-              {error && !hscBatch && <p className='text-hot text-xs'>
-                ব্যাচ সিলেক্ট করো
-              </p>}
-
+              {error && !hscBatch && (
+                <p className="text-hot text-xs">ব্যাচ সিলেক্ট করো</p>
+              )}
             </div>
           </div>
 
-          <h2 className="text-sm font-medium text-black">তোমার সোশ্যাল মিডিয়া</h2>
+          <h2 className="text-sm font-medium text-black">
+            তোমার সোশ্যাল মিডিয়া
+          </h2>
           <div className="flex items-center gap-2">
             <Label htmlFor="facebook">
-              <Image src={"/facebook.png"} alt="facebook" width={30} height={30} />
+              <Image
+                src={"/facebook.png"}
+                alt="facebook"
+                width={30}
+                height={30}
+              />
             </Label>
-            <Input className={cn("!h-10 !shadow-none !rounded-lg", fberror === 'fb' && '!ring-hot !ring-2')} value={fb} onChange={(e) => {
-              if (!!validateFbLink(e.target.value)) {
-                setFb(e.target.value)
-                setfbError('')
-              } else {
-                setFb(e.target.value)
-                setfbError('fb')
-                toast({
-                  title: "Invalid Facebook Link",
-                  description: "Please enter a valid Facebook link",
-                  variant: "destructive",
-                });
-              }
-            }} id="facebook" placeholder="Facebook" />
-            {fberror === 'fb' &&
+            <Input
+              className={cn(
+                "!h-10 !shadow-none !rounded-lg",
+                fberror === "fb" && "!ring-hot !ring-2"
+              )}
+              value={fb}
+              onChange={(e) => {
+                if (!!validateFbLink(e.target.value)) {
+                  setFb(e.target.value);
+                  setfbError("");
+                } else {
+                  setFb(e.target.value);
+                  setfbError("fb");
+                  toast({
+                    title: "Invalid Facebook Link",
+                    description: "Please enter a valid Facebook link",
+                    variant: "destructive",
+                  });
+                }
+              }}
+              id="facebook"
+              placeholder="Facebook"
+            />
+            {fberror === "fb" && (
               <span className="text-xs text-hot">
                 Please enter a valid Facebook link
               </span>
-            }
+            )}
           </div>
 
           <div className="hidden items-center gap-2">
             <Label htmlFor="instagram">
-              <Image src={"/instagram.png"} alt="instagram" width={30} height={30} />
+              <Image
+                src={"/instagram.png"}
+                alt="instagram"
+                width={30}
+                height={30}
+              />
             </Label>
-            <Input className="!h-10 !shadow-none !rounded-lg" value={insta} onChange={(e) => setInsta(e.target.value)} id="instagram" placeholder="Instagram" />
+            <Input
+              className="!h-10 !shadow-none !rounded-lg"
+              value={insta}
+              onChange={(e) => setInsta(e.target.value)}
+              id="instagram"
+              placeholder="Instagram"
+            />
           </div>
-
         </div>
         <DialogFooter className="!flex !items-center !justify-end gap-2">
-          <Button onClick={() => setEditOpen(false)} className="w-20" variant="destructive" size="sm">
+          <Button
+            onClick={() => setEditOpen(false)}
+            className="w-20"
+            variant="destructive"
+            size="sm"
+          >
             Cancel
           </Button>
           <Button
@@ -719,8 +783,8 @@ export const ProfileComponent = (props: Props) => {
           <Input
             required
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault()
+              if (e.key === "Enter") {
+                e.preventDefault();
                 if (course.length === 0) {
                   toast({
                     title: "Course code is required",
@@ -729,18 +793,34 @@ export const ProfileComponent = (props: Props) => {
                   });
                   return;
                 }
-                handleAddCourse()
+                handleAddCourse();
               }
-            }} placeholder="কোর্স কোড" value={course} onChange={(e) => setCourse(e.target.value)} />
+            }}
+            placeholder="কোর্স কোড"
+            value={course}
+            onChange={(e) => setCourse(e.target.value)}
+          />
         </div>
         <DialogFooter>
           <div className="flex items-center gap-2">
-            <Button size="sm" variant="destructive" className="!w-16 !text-xs" onClick={() => setOpenCourse(false)}>Cancel</Button>
-            <Button size="sm" type="button" variant="secondary" className="!w-16 !text-xs"
+            <Button
+              size="sm"
+              variant="destructive"
+              className="!w-16 !text-xs"
+              onClick={() => setOpenCourse(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              type="button"
+              variant="secondary"
+              className="!w-16 !text-xs"
               onClick={(e) => {
-                e.preventDefault()
-                handleAddCourse()
-              }}>
+                e.preventDefault();
+                handleAddCourse();
+              }}
+            >
               {isFTLoading ? (
                 <Loader2 className="animate-spin text-center" />
               ) : (
@@ -761,9 +841,7 @@ export const ProfileComponent = (props: Props) => {
         <div className="max-w-6xl grid grid-cols-1 px-0 md:px-4 w-full mx-auto">
           {/* Cover & Profile Photo  */}
           <div className="w-full p-5 bg-white dark:bg-gray-800/20 rounded-xl shadow-md shadow-ash dark:shadow-ash/20 mt-4">
-            <div
-              className="flex items-center gap-2 text-base sm:text-lg font-semibold text-black/80 dark:text-white mb-4"
-            >
+            <div className="flex items-center gap-2 text-base sm:text-lg font-semibold text-black/80 dark:text-white mb-4">
               <span>কমিউনিটি প্রোফাইল</span>
             </div>
             <div className="z-[2] sm:flex grid items-center gap-4">
@@ -777,7 +855,6 @@ export const ProfileComponent = (props: Props) => {
                     alt="User Image"
                   />
                 </div>
-
               </div>
 
               <div className="flex justify-between w-full gap-2">
@@ -786,17 +863,25 @@ export const ProfileComponent = (props: Props) => {
                     <div className="grid items-center gap-1">
                       <div className="flex items-center gap-2">
                         <h1 className="text-lg flex items-center gap-2 sm:text-xl font-semibold text-gray-900">
-
                           {userProfile.userData.name}
                           <span>
-                            <Image src={userProfile.userData.gender === 'boy' ?
-                              'https://img.icons8.com/officel/80/male.png' :
-                              'https://img.icons8.com/officel/80/female.png'} alt="gender" width={20} height={20} />
+                            <Image
+                              src={
+                                userProfile.userData.gender === "boy"
+                                  ? "https://img.icons8.com/officel/80/male.png"
+                                  : "https://img.icons8.com/officel/80/female.png"
+                              }
+                              alt="gender"
+                              width={20}
+                              height={20}
+                            />
                           </span>
                         </h1>
                         {userProfile.userData?.role !== "USER" && (
                           <span>
-                            <Tagtag tags={[userProfile.userData?.role || "User"]} />
+                            <Tagtag
+                              tags={[userProfile.userData?.role || "User"]}
+                            />
                           </span>
                         )}
                       </div>
@@ -809,10 +894,21 @@ export const ProfileComponent = (props: Props) => {
                     </div>
                     <div className="flex items-center gap-2">
                       {userProfile?.course_enrolled?.map((course: string) => (
-                        <span className="text-sm text-elegant hover:text-white hover:bg-elegant duration-300 px-3 py-0.5 rounded-full bg-elegant/10" key={course}>{course}</span>
+                        <span
+                          className="text-sm text-elegant hover:text-white hover:bg-elegant duration-300 px-3 py-0.5 rounded-full bg-elegant/10"
+                          key={course}
+                        >
+                          {course}
+                        </span>
                       ))}
                       {userProfile?.userData?.id === user?.id && (
-                        <button type="button" onClick={() => setOpenCourse(true)} className="text-sm text-olive px-3 py-0.5 rounded-full bg-olive/10 hover:bg-olive hover:text-white transition-colors duration-300">Add +</button>
+                        <button
+                          type="button"
+                          onClick={() => setOpenCourse(true)}
+                          className="text-sm text-hot px-3 py-0.5 rounded-full bg-hot/10 hover:bg-hot hover:text-white transition-colors duration-300"
+                        >
+                          Add +
+                        </button>
                       )}
                     </div>
                   </div>
@@ -841,22 +937,25 @@ export const ProfileComponent = (props: Props) => {
                   </Tabs>
                 </div>
                 <div>
-
                   {user.id !== userProfile?.userData?.id && (
                     <Button
                       type="button"
                       size="sm"
                       onClick={toggleFollow}
-                      className={cn("text-white px-5 !rounded-lg !ring-0 !shadow-none flex items-center gap-2 transition-colors",
-                        isFollowing ? "bg-olive hover:bg-olive/90" : "bg-sky-500 hover:bg-sky-600")}
+                      className={cn(
+                        "text-white px-5 !rounded-lg !ring-0 !shadow-none flex items-center gap-2 transition-colors",
+                        isFollowing
+                          ? "bg-hot hover:bg-hot/90"
+                          : "bg-sky-500 hover:bg-sky-600"
+                      )}
                     >
                       {followLoading ? (
                         <Loader2 className="animate-spin text-center" />
-                      ) : (isFollowing ? (
+                      ) : isFollowing ? (
                         <Check className="h-4 w-4" />
                       ) : (
                         <UserRoundPlusIcon className="h-4 w-4" />
-                      ))}
+                      )}
                       {isFollowing ? "Following" : "Follow"}
                     </Button>
                   )}
@@ -877,13 +976,13 @@ export const ProfileComponent = (props: Props) => {
                     disabled={followLoading}
                     onClick={toggleFollow}
                     type="button"
-                    className="bg-white text-olive !rounded-none !p-0 !ring-0 !shadow-none"
+                    className="bg-white text-hot !rounded-none !p-0 !ring-0 !shadow-none"
                   >
                     {isFollowing ? <Check /> : <UserRoundPlus />}
                     <span
                       className={cn(
                         "pt-1 text-sm font-semibold",
-                        isFollowing ? "text-olive" : "text-gray-500"
+                        isFollowing ? "text-hot" : "text-gray-500"
                       )}
                     >
                       {isFollowing ? "Following" : "Follow"}
@@ -895,13 +994,13 @@ export const ProfileComponent = (props: Props) => {
                     disabled={followLoading}
                     onClick={() => Router.push(`/profile/edit`)}
                     type="button"
-                    className="bg-white text-olive !rounded-none !p-0 !ring-0 !shadow-none"
+                    className="bg-white text-hot !rounded-none !p-0 !ring-0 !shadow-none"
                   >
                     <UserPen />
                     <span
                       className={cn(
                         "pt-1 text-sm font-semibold",
-                        isFollowing ? "text-olive" : "text-gray-500"
+                        isFollowing ? "text-hot" : "text-gray-500"
                       )}
                     >
                       Edit Profile
@@ -921,7 +1020,7 @@ export const ProfileComponent = (props: Props) => {
           </div>
 
           <div>
-            <div className="w-full p-5 space-y-2 bg-white dark:shadow-olive/20 dark:bg-green-800/10 rounded-lg shadow md:hidden block">
+            <div className="w-full p-5 space-y-2 bg-white dark:shadow-hot/20 dark:bg-rose-800/10 rounded-lg shadow md:hidden block">
               <div className="flex flex-col gap-2">
                 <h2 className="text-base font-semibold text-black dark:text-white">
                   Intro
@@ -937,10 +1036,7 @@ export const ProfileComponent = (props: Props) => {
                     <BookOpenText size={20} />
                   </span>
                   <div>
-                    <span>
-                      {" "}
-                      Student of {userProfile.userData?.hsc_batch}
-                    </span>
+                    <span> Student of {userProfile.userData?.hsc_batch}</span>
                   </div>
                 </h4>
 
@@ -1030,8 +1126,16 @@ export const ProfileComponent = (props: Props) => {
                 </h4>
                 {userProfile?.userData?.facebook && (
                   <div>
-                    <Link href={userProfile?.userData?.facebook || '#'} className="flex text-blue-700 font-semibold items-center gap-2">
-                      <Image src='/facebook.png' height={20} width={20} alt="facebook" />
+                    <Link
+                      href={userProfile?.userData?.facebook || "#"}
+                      className="flex text-blue-700 font-semibold items-center gap-2"
+                    >
+                      <Image
+                        src="/facebook.png"
+                        height={20}
+                        width={20}
+                        alt="facebook"
+                      />
                       <span>@Facebook</span>
                     </Link>
                   </div>
@@ -1053,7 +1157,7 @@ export const ProfileComponent = (props: Props) => {
           </div>
 
           <div className="pt-4 px-4 md:px-0 flex gap-4">
-            <div className="w-[400px] content-between p-5 space-y-2 bg-white dark:shadow-olive/20 dark:bg-green-800/10 rounded-lg shadow hidden md:grid">
+            <div className="w-[400px] content-between p-5 space-y-2 bg-white dark:shadow-hot/20 dark:bg-rose-800/10 rounded-lg shadow hidden md:grid">
               <div className="space-y-2">
                 <h2 className="text-base font-semibold text-black dark:text-white">
                   Intro
@@ -1064,7 +1168,7 @@ export const ProfileComponent = (props: Props) => {
                   </span>
                 </h2>
                 {userProfile.userData.level === 0 && (
-                  <h4 className="py-1 px-4 bg-green-500/10 text-olive text-center dark:text-green-400 rounded-full">
+                  <h4 className="py-1 px-4 bg-rose-500/10 text-hot text-center dark:text-rose-400 rounded-full">
                     Guardian Account
                   </h4>
                 )}
@@ -1174,8 +1278,16 @@ export const ProfileComponent = (props: Props) => {
                 </h4>
                 <div className="flex items-center gap-2">
                   {userProfile?.userData?.facebook && (
-                    <Link href={userProfile?.userData?.facebook || '#'} className="flex font-semibold text-blue-700 items-center justify-center gap-2">
-                      <Image src='/facebook.png' height={18} width={18} alt="facebook" />
+                    <Link
+                      href={userProfile?.userData?.facebook || "#"}
+                      className="flex font-semibold text-blue-700 items-center justify-center gap-2"
+                    >
+                      <Image
+                        src="/facebook.png"
+                        height={18}
+                        width={18}
+                        alt="facebook"
+                      />
                       <span>@Facebook</span>
                     </Link>
                   )}

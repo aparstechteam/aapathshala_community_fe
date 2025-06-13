@@ -22,31 +22,34 @@ export const Rightbar = () => {
     first_3: LeaderboardEntry[] | [];
   }>();
 
-  const { user } = useUser()
+  const { user } = useUser();
   const [activeUsers, setActiveUsers] = useState<UserData[]>([]);
 
   const [page, setPage] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
   const currentMonth = months[currentMonthIndex];
 
   useEffect(() => {
     const getLeaderboard = async () => {
       try {
-        setLoading(true)
-        const response = await axios.get(`${secondaryAPI}/api/utils/leaderboard`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-          },
-          params: {
-            monthYear: currentMonth,
-            limit: 8,
-            page: page,
-          },
-        });
+        setLoading(true);
+        const response = await axios.get(
+          `${secondaryAPI}/api/utils/leaderboard`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            params: {
+              monthYear: currentMonth,
+              limit: 8,
+              page: page,
+            },
+          }
+        );
         setData(response.data);
-        setLoading(false)
+        setLoading(false);
       } catch (err) {
-        handleError(err as AxiosError, () => getLeaderboard())
+        handleError(err as AxiosError, () => getLeaderboard());
       }
     };
     getLeaderboard();
@@ -70,19 +73,18 @@ export const Rightbar = () => {
       try {
         const response = await axios.get(`${secondaryAPI}/api/active/list`, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         });
         if (response.data.length > 0) {
-          setActiveUsers(response.data)
+          setActiveUsers(response.data);
         }
       } catch (err) {
-        handleError(err as AxiosError, () => getActiveUsers())
+        handleError(err as AxiosError, () => getActiveUsers());
       }
     }
     getActiveUsers();
   }, []);
-
 
   return (
     <div className="min-w-[350px] py-4">
@@ -90,12 +92,13 @@ export const Rightbar = () => {
         <div className="p-3 bg-white dark:bg-gray-900/40 !border-0 ring-1 rounded-xl shadow ring-ash dark:ring-ash/20 backdrop-blur-sm">
           <div className="flex items-center justify-between">
             <h2 className="text-start flex items-center gap-3 py-2">
-              <span className="font-semibold pt-1 px-2 text-black/80 dark:text-white">টপ কন্ট্রিবিউটরস্</span>
+              <span className="font-semibold pt-1 px-2 text-black/80 dark:text-white">
+                টপ কন্ট্রিবিউটরস্
+              </span>
             </h2>
             <Link href={`/leaderboard/points?uid=${user?.id}`}>
               <Info size={16} />
             </Link>
-
           </div>
           {!!data?.leaderboard && (
             <TopSolvers
@@ -118,15 +121,12 @@ export const Rightbar = () => {
         </div>
 
         <ActiveUsers users={activeUsers} setUsers={setActiveUsers} />
-
       </div>
     </div>
   );
 };
 
-
 export const TeachersLists = () => {
-
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const TEACHERS_PER_SLIDE = 3;
   const SCROLL_SPEED = 16; // seconds for one complete rotation
@@ -153,17 +153,18 @@ export const TeachersLists = () => {
     getTeachers();
   }, []);
 
-
   // Clone teachers array to create seamless loop
   const extendedTeachers = [...teachers, ...teachers, ...teachers];
 
   return (
     <div className="p-4 hidden bg-white dark:bg-gray-900/40 !border-0 ring-1 rounded-xl shadow ring-ash dark:ring-purple-700/50 backdrop-blur-sm">
       <h2 className="text-start flex items-center gap-3 mb-4">
-        <span className="p-2.5 rounded-xl bg-green-500/10 text-green-600 dark:text-green-400">
+        <span className="p-2.5 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400">
           <GraduationCap />
         </span>
-        <span className="font-semibold pt-1 text-green-600 dark:text-green-400">টিচার্স লিস্ট</span>
+        <span className="font-semibold pt-1 text-rose-600 dark:text-rose-400">
+          টিচার্স লিস্ট
+        </span>
       </h2>
 
       <div className="relative group">
@@ -189,15 +190,16 @@ export const TeachersLists = () => {
                       <Image
                         height={75}
                         width={75}
-                        className="rounded-full cursor-pointer ring-2 ring-green-500/70 hover:ring-green-500/50 transition-all duration-300"
+                        className="rounded-full cursor-pointer ring-2 ring-rose-500/70 hover:ring-rose-500/50 transition-all duration-300"
                         src={teacher?.profilePic as string}
                         alt="Profile"
                       />
                     )}
-                    <span className="absolute bottom-1.5 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-100 dark:border-gray-900"></span>
+                    <span className="absolute bottom-1.5 right-1 w-4 h-4 bg-rose-500 rounded-full border-2 border-gray-100 dark:border-gray-900"></span>
                   </div>
-                  <span className="text-xs font-medium text-gray-600/90 dark:text-gray-300/90 truncate w-full 
-                text-center group-hover/item:text-green-600 dark:group-hover/item:text-green-400 
+                  <span
+                    className="text-xs font-medium text-gray-600/90 dark:text-gray-300/90 truncate w-full 
+                text-center group-hover/item:text-rose-600 dark:group-hover/item:text-rose-400 
                 transition-colors duration-300"
                   >
                     {teacher.name.split(" ")[0]}
@@ -210,5 +212,5 @@ export const TeachersLists = () => {
         </ScrollArea>
       </div>
     </div>
-  )
-}
+  );
+};

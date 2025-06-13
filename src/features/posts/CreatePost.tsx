@@ -1539,7 +1539,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
             </div>
           </div>
         </div>
-        {timeLeft?.days !== 0 && (
+        {/* {timeLeft?.days !== 0 && (
           <div
             className={cn(
               "z-[2] relative bg-white rounded-lg my-2",
@@ -1550,7 +1550,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
               {formatBnNumber(timeLeft.days)} দিন ফ্রি ট্রায়াল বাকি আছে
             </p>
           </div>
-        )}
+        )} */}
       </div>
     </>
   );

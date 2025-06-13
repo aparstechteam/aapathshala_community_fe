@@ -38,7 +38,8 @@ const LoginPage = () => {
         Router.push("/");
         return;
       } else if (!data.user.is_paid) {
-        Router.push("/auth/register");
+        Router.push("/");
+        // Router.push("/auth/register");
         return;
       } else {
         Router.push("/auth/onboard");

@@ -546,13 +546,13 @@ export const Layout = (props: Props) => {
           <div className="mx-auto w-full overflow-y-auto z-[2]">
             {props.children}
           </div>
-          {timeLeft.days > 0 && (
+          {/* {timeLeft.days > 0 && (
             <div className="fixed bottom-5 left-0 w-full h-10 z-[999] flex items-center justify-center">
               <p className="text-center bg-hot max-w-4xl mx-auto rounded-full h-full px-5 w-full flex items-center justify-center text-xl text-white">
                 ৭ দিন ফ্রি ট্রায়াল বাকি আছে
               </p>
             </div>
-          )}
+          )} */}
         </div>
 
         {/* Right Sidebar - Fixed */}
@@ -586,13 +586,13 @@ export const Layout = (props: Props) => {
         )}
       >
         {props.children}
-        {timeLeft.days > 0 && (
+        {/* {timeLeft.days > 0 && (
           <div className="fixed bottom-5 left-0 w-full h-10 z-[999] flex items-center justify-center">
             <p className="text-center bg-hot max-w-4xl mx-auto rounded-full h-full px-5 w-full flex items-center justify-center text-xl text-white">
               ৭ দিন ফ্রি ট্রায়াল বাকি আছে
             </p>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

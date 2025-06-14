@@ -43,7 +43,7 @@ export const handleError = async (error: AxiosError, refetch?: () => void) => {
 
             if (refetch) {
                 // refetch()
-                Router.reload()
+                // Router.reload()
             }
 
         } catch {

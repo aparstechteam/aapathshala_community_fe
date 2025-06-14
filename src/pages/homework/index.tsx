@@ -333,12 +333,14 @@ const HomeWorkPage = () => {
                 setIsFetching={setIsFetching}
               />
             </div>
-          ) : user.id && !user.is_paid ? (
-            <UnpaidMsg />
           ) : (
+            //  user.id && !user.is_paid ? (
+            //   <UnpaidMsg />
+            // )
+            //
             <div className="flex flex-col gap-2 sm:gap-4 pt-10 xl:pt-0">
               {/* Create HW Post  */}
-              {user.role !== "USER" && user.level !== 0 && (
+              {/* {user.role !== "USER" && user.level !== 0 && ( */}
                 <HwCreate
                   isOpen={isOpen}
                   setIsOpen={setIsOpen}
@@ -350,7 +352,7 @@ const HomeWorkPage = () => {
                   }
                   onSubmit={createHomework}
                 />
-              )}
+              {/* )} */}
 
               {/* Filter HW */}
               <HwFilter

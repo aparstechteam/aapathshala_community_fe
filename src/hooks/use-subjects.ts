@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
-import { secondaryAPI } from '@/configs';
+import { primaryAPI } from '@/configs';
 import { handleError } from './error-handle';
 import { useUser } from '@/components';
 import { Chapter, Subject } from '@/@types';
@@ -15,11 +15,16 @@ export const useSubject = () => {
         const fetchSubjects = async () => {
             try {
                 setSubLoading(true);
-                const subjectResponse = await axios.get(`${secondaryAPI}/api/subjects`, {
+                const subjectResponse = await axios.get(
+                  `${primaryAPI}/api/subjects`,
+                  {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-                    }
-                });
+                      Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                      )}`,
+                    },
+                  }
+                );
 
                 setSubjects(subjectResponse.data);
 
@@ -36,11 +41,16 @@ export const useSubject = () => {
     async function getChapters(subjectId: string) {
         try {
             setTopicLoading(true);
-            const response = await axios.get(`${secondaryAPI}/api/subjects/${subjectId}/chapters`, {
+            const response = await axios.get(
+              `${primaryAPI}/api/subjects/${subjectId}/chapters`,
+              {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-                }
-            });
+                  Authorization: `Bearer ${localStorage.getItem(
+                    "accessToken"
+                  )}`,
+                },
+              }
+            );
             setTopicLoading(false);
             setChapters(response.data.chapters as Chapter[]);
             return response.data.chapters as Chapter[];

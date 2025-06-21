@@ -466,50 +466,11 @@ export const Layout = (props: Props) => {
     </Dialog>
   );
 
-  const trialEnd = (
-    <Dialog
-      open={open}
-      onOpenChange={(v) => {
-        setOpen(v);
-      }}
-    >
-      <DialogContent className="bg-white p-4">
-        <DialogHeader>
-          <DialogTitle>ট্রাইল শেষ হয়ে গেছে</DialogTitle>
-        </DialogHeader>
-        <DialogDescription>Trial Ended</DialogDescription>
-        <DialogFooter>
-          <div className="flex items-center justify-end gap-4 w-full">
-            <DialogClose asChild>
-              <Button
-                type="button"
-                variant="destructive"
-                className="flex items-center gap-2"
-                size="sm"
-              >
-                Cancel
-              </Button>
-            </DialogClose>
-            <Button
-              type="button"
-              onClick={() => {
-                router.push("/auth/register");
-              }}
-              variant="secondary"
-              className="flex items-center gap-2"
-              size="sm"
-            >
-              Buy / Add Course
-            </Button>
-          </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
+ 
   return variant === "home" ? (
     <div className="dark:bg-[#171717] md:!bg-[#F5F6F7] dark:!text-white font-siliguri text-gray-700 relative">
       {userinfo}
-      {trialEnd}
+     
       {/* Fixed Header */}
       <div
         className={cn(

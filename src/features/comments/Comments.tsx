@@ -21,7 +21,7 @@ import { useCloudflareImage, useComments } from "@/hooks";
 import { Comment } from "@/@types";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
-import { curicity_id, secondaryAPI } from "@/configs";
+import { curiosity_id, secondaryAPI } from "@/configs";
 import { handleError } from "@/hooks/error-handle";
 import { ValidImage } from "@/components/shared/ValidImage";
 import { toast } from "@/hooks/use-toast";
@@ -213,7 +213,7 @@ export const CommentComponent = ({
   );
 
   const bgColor =
-    comment?.user_id === curicity_id
+      comment?.user_id === curiosity_id
       ? "bg-dashnje ring-2 ring-elegant/20 dark:ring-elegant/50"
       : "bg-dew dark:bg-deep ring-0";
 
@@ -270,7 +270,7 @@ export const CommentComponent = ({
             >
               <h2 className="font-bold flex items-center gap-1 text-xs lg:text-sm">
                 <span className="pt-1">{comment.user.name}</span>
-                {comment.user_id === curicity_id && (
+                {comment.user_id === curiosity_id && (
                   <svg
                     width="36"
                     height="17"
@@ -328,13 +328,13 @@ export const CommentComponent = ({
               )}
             </div>
           </div>
-          {comment.user_id === curicity_id && (
+          {comment.user_id === curiosity_id && (
             <div className="mt-3 text-xs md:text-sm font-medium px-3">
               <p>তুমি কি এই উত্তরটিতে স্যাটিস্ফাইড?</p>
             </div>
           )}
           <div className="flex items-center px-2 mt-2 space-x-4 text-xs md:text-sm font-medium text-light">
-            {comment.user_id === curicity_id ? (
+              {comment.user_id === curiosity_id ? (
               <>
                 <button
                   type="button"
@@ -745,7 +745,7 @@ export const FeaturedComments = (props: {
         <div className={cn("flex-1 w-full gap-2 p-2 rounded-xl", bgColor)}>
           <div className="flex w-full gap-1 items-center justify-between">
             <Link
-              href={`/users/${comment?.user?.id || curicity_id}`}
+              href={`/users/${comment?.user?.id || curiosity_id}`}
               className="text-sm flex items-center gap-2 px-2 text-black font-semibold capitalize"
             >
               {comment?.user?.name || "কিউরিওসিটি"}

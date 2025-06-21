@@ -143,7 +143,7 @@ export const HwCreate = (props: Props) => {
     setLoading(true);
     if (
       !values?.subject_id ||
-      !values?.chapter_id ||
+      // !values?.chapter_id ||
       !values?.topic ||
       !values?.deadline
     ) {

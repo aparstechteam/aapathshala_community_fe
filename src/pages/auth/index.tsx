@@ -6,14 +6,77 @@ import { AppLoader, Button, copyLink, useUser } from "@/components";
 import axios from "axios";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { secondaryAPI } from "@/configs";
+import { aapAPI, primaryAPI, secondaryAPI } from "@/configs";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import GoogleSignInButton from "@/components/shared/GoogleSignInButton";
-
+type User = {
+  uid: string;
+  name: string;
+  email: string;
+  photo: string;
+  verified: boolean;
+  purchasedProducts: string[];
+};
 const LoginPage = () => {
   const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
   const { setUser } = useUser();
+
+  useEffect(() => {
+    async function loginWithCookie(user: User, user_session: string) {
+      const data = {
+        uid: user.uid,
+        name: user.name,
+        email: user.email,
+        photo: user.photo,
+      };
+
+      try {
+        const response = await axios.post(
+          `${primaryAPI}/api/auth/login`,
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user_session}`,
+            },
+          }
+        );
+        localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("refreshToken", response.data.refreshToken);
+        Cookies.set("accessToken", response.data.accessToken, { path: "/" });
+        Cookies.set("refreshToken", response.data.refreshToken, { path: "/" });
+        setUser(response.data.user);
+        getUser(response.data.accessToken);
+      } catch (error) {
+        console.error("Error getting user from cookie:", error);
+      }
+    }
+
+    async function getmeFromCookie() {
+      try {
+        const user_session = Cookies.get("user_session");
+        const device_id = Cookies.get("device_id");
+        console.log(user_session, device_id);
+        const response = await axios.get(`/api/secondary/auth/validate`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            Cookie: `user_session=${user_session}`,
+          },
+        });
+        console.log(response.data.user);
+        loginWithCookie(response.data.user, user_session as string);
+      } catch (error) {
+        console.error("Error getting user from cookie:", error);
+      }
+      // if (accessToken && refreshToken) {
+      //   getUser(accessToken);
+      // }
+    }
+    getmeFromCookie();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function getUser(token: string) {
     try {
@@ -119,7 +182,9 @@ const LoginPage = () => {
         <meta name="description" content="Login to Smart Community" />
       </Head>
 
-      <div className="bg-white flex flex-col items-center justify-center min-h-screen w-full">
+      <div>Loading ...</div>
+
+      <div className="bg-white hidden flex-col items-center justify-center min-h-screen w-full">
         <div className="w-full h-full">
           <Card className="!w-full !max-w-lg mx-auto bg-white !rounded-xl backdrop-blur-md ring-light/30 !shadow-md !border-0 !ring-2 !shadow-light/50">
             <CardHeader className="flex items-center">

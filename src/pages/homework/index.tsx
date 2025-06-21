@@ -41,32 +41,32 @@ const HomeWorkPage = () => {
   const dprofile = useDebounce(profile || user?.level, 300);
   const duid = useDebounce(uid || user?.id, 300);
 
-  useEffect(() => {
-    async function getProfiles() {
-      try {
-        setLoading(true);
-        setError(false);
-        const res = await axios.post(
-          `${secondaryAPI}/api/auth/profiles`,
-          {
-            phone_number: user.phone,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        setProfiles(res.data);
-        setLoading(false);
-      } catch {
-        setLoading(false);
-      }
-    }
-    if (!!user.phone) {
-      getProfiles();
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   async function getProfiles() {
+  //     try {
+  //       setLoading(true);
+  //       setError(false);
+  //       const res = await axios.post(
+  //         `${secondaryAPI}/api/auth/profiles`,
+  //         {
+  //           phone_number: user.phone,
+  //         },
+  //         {
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       );
+  //       setProfiles(res.data);
+  //       setLoading(false);
+  //     } catch {
+  //       setLoading(false);
+  //     }
+  //   }
+  //   if (!!user.phone) {
+  //     getProfiles();
+  //   }
+  // }, [user]);
 
   useEffect(() => {
     setHomeworks([]);

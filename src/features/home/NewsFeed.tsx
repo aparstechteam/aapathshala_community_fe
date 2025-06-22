@@ -46,9 +46,9 @@ export function NewsFeed(props: TNewsFeed) {
       try {
         setError('')
         setLoading(true);
-        const batchName = localStorage.getItem("hsc_batch") || user?.hsc_batch;
+        // const batchName = localStorage.getItem("hsc_batch") || user?.hsc_batch;
         if (!!user?.id) {
-          const POST_API_URL = `${secondaryAPI}/api/post?page=${page}&pageSize=10&subjectId=${dSelectedSubject || ''}&sortedBy=${dsort || ''}&group=${dGroupId}&hsc_batch=${batchName}`;
+          const POST_API_URL = `${secondaryAPI}/api/post?page=${page}&pageSize=10&subjectId=${dSelectedSubject || ''}&sortedBy=${dsort || ''}&group=${dGroupId}`;
 
           const response = await axios.get(POST_API_URL, {
             headers: {

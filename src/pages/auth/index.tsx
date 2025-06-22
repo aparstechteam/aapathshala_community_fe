@@ -46,7 +46,7 @@ const LoginPage = () => {
         localStorage.setItem("refreshToken", response.data.refreshToken);
         Cookies.set("accessToken", response.data.accessToken, { path: "/" });
         Cookies.set("refreshToken", response.data.refreshToken, { path: "/" });
-        setUser(response.data.user);
+        // setUser(response.data.user);
         getUser(response.data.accessToken);
       } catch (error) {
         console.error("Error getting user from cookie:", error);

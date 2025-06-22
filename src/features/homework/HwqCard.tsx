@@ -315,7 +315,7 @@ export const HwqCard = (props: Props) => {
             />
 
             {/* Submit Homework */}
-            {router.pathname === "/homeworks/[slug]" &&
+            {router.pathname === "/homework/[slug]" &&
               user.level !== 0 &&
               !homework?.has_submitted && (
                 <div
@@ -451,14 +451,14 @@ export const HwqCard = (props: Props) => {
             {user.level === 0 &&
               (homework?.has_submitted ? (
                 <Link
-                  href={`/homeworks/${homework?.id}?uid=${uid}&profile=${profile}`}
+                  href={`/homework/${homework?.id}?uid=${uid}&profile=${profile}`}
                   className="flex items-center justify-center p-4 rounded-xl font-semibold bg-hot/10 text-hot ring-2 ring-hot/20"
                 >
                   আপনার সন্তান এই হোমওয়ার্কটি সাবমিট করেছে
                 </Link>
               ) : (
                 <Link
-                  href={`/homeworks/${homework?.id}?uid=${uid}&profile=${profile}`}
+                  href={`/homework/${homework?.id}?uid=${uid}&profile=${profile}`}
                   className="flex items-center justify-center p-3 font-semibold rounded-xl bg-hot/10 text-hot ring-2 ring-hot/20"
                 >
                   আপনার সন্তান এই হোমওয়ার্কটি সাবমিট করেনি।
@@ -474,8 +474,8 @@ export const HwqCard = (props: Props) => {
               <Link
                 href={
                   !!uid
-                    ? `/homeworks/${homework?.id}?uid=${uid}&profile=${profile}`
-                    : `/homeworks/${homework?.id}`
+                    ? `/homework/${homework?.id}?uid=${uid}&profile=${profile}`
+                    : `/homework/${homework?.id}`
                 }
                 className="flex items-center gap-2 text-light hover:text-elegant duration-300"
               >
@@ -533,13 +533,13 @@ export const HwqCard = (props: Props) => {
                 </div>
               ) : (
                 user.level !== 0 &&
-                router.pathname !== "/homeworks/[slug]" && (
+                router.pathname !== "/homework/[slug]" && (
                   <div className="flex items-center justify-end">
                     <Link
                       href={
                         !!uid
-                          ? `/homeworks/${homework?.id}?uid=${uid}`
-                          : `/homeworks/${homework?.id}`
+                          ? `/homework/${homework?.id}?uid=${uid}`
+                          : `/homework/${homework?.id}`
                       }
                       className="text-sm rounded-full bg-light/10 px-4 py-1 text-light"
                     >

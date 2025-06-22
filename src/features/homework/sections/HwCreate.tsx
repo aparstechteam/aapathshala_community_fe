@@ -162,7 +162,7 @@ export const HwCreate = (props: Props) => {
 
   const createPost = (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="max-w-2xl bg-white !p-2 !rounded-2xl">
+      <DialogContent className="max-w-2xl bg-white dark:bg-gray-900 text-black dark:text-white !p-2 !rounded-2xl">
         <DialogHeader>
           <DialogTitle className="text-center py-2">
             হোমওয়ার্ক পোস্ট করুন
@@ -180,7 +180,7 @@ export const HwCreate = (props: Props) => {
               >
                 <SelectTrigger
                   className={cn(
-                    "w-full !h-9 !md:h-10 !px-4 !rounded-lg ring-2 ring-ash shadow-none duration-300 bg-white dark:text-white text-gray-900 hover:bg-ash",
+                    "w-full !h-9 !md:h-10 !px-4 !rounded-lg ring-2 ring-ash shadow-none duration-300 bg-white dark:bg-gray-900 dark:text-white text-gray-900 hover:bg-ash",
                     error?.subject && !values?.subject_id && "ring-hot ring-2"
                   )}
                 >
@@ -405,7 +405,7 @@ export const HwCreate = (props: Props) => {
   return (
     <div className="pt-1 relative z-[2]">
       {createPost}
-      <div className="p-4 ring-0 md:ring-1 grid gap-2 ring-ash bg-white dark:bg-gradient-to-r md:rounded-xl">
+      <div className="p-4 ring-0 md:ring-1 grid gap-2 ring-ash bg-white dark:ring-gray-700 dark:bg-gray-900 md:rounded-xl">
         <div
           onClick={() => {
             setIsOpen(true);
@@ -431,7 +431,7 @@ export const HwCreate = (props: Props) => {
           )}
           <div className="flex flex-col gap-1">
             <h3 className="text-base font-semibold">{user.name}</h3>
-            <h3 className="text-sm text-light">হোমওয়ার্ক পোস্ট করুন . . .</h3>
+            <h3 className="text-sm text-light dark:text-gray-200">হোমওয়ার্ক পোস্ট করুন . . .</h3>
           </div>
         </div>
 

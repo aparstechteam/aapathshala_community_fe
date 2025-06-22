@@ -484,7 +484,7 @@ export const ProfileComponent = (props: Props) => {
 
   const editprofile = (
     <Dialog open={editOpen} onOpenChange={setEditOpen}>
-      <DialogContent className="w-full max-w-md text-black bg-white rounded-xl shadow-md shadow-ash p-2">
+      <DialogContent className="w-full max-w-xl text-black bg-white rounded-xl shadow-md shadow-ash p-2">
         <DialogHeader className="p-4">
           <DialogTitle>Edit Profile</DialogTitle>
         </DialogHeader>
@@ -586,7 +586,7 @@ export const ProfileComponent = (props: Props) => {
               ছাত্রী
             </button>
           </div>
-          <div className="w-full">
+          <div className="w-full hidden">
             <div className="flex flex-col gap-3">
               <Label>তোমার ধর্ম কী?</Label>
               <Select
@@ -599,7 +599,7 @@ export const ProfileComponent = (props: Props) => {
               >
                 <SelectTrigger
                   className={cn(
-                    "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-hot/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-ash/20",
+                    "w-full !px-4 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-hot/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-ash/20",
                     error && !religion && "ring-hot ring-2"
                   )}
                 >
@@ -686,9 +686,7 @@ export const ProfileComponent = (props: Props) => {
             </div>
           </div>
 
-          <h2 className="text-sm font-medium text-black">
-            তোমার সোশ্যাল মিডিয়া
-          </h2>
+        
           <div className="flex items-center gap-2">
             <Label htmlFor="facebook">
               <Image

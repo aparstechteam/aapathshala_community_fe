@@ -51,11 +51,7 @@ export const Layout = (props: Props) => {
   const router = useRouter();
   const { uploadImage } = useCloudflareImage();
   const [limitExpired, setLimitExpired] = useState(false);
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-  });
+ 
   const [openInfo, setOpenInfo] = useState(false);
   const [open, setOpen] = useState(false);
   const [infoStep, setInfoStep] = useState(0);
@@ -86,11 +82,7 @@ export const Layout = (props: Props) => {
           },
         });
         setLimitExpired(res.data.isExpired);
-        setTimeLeft({
-          days: res.data.trialDaysRemaining,
-          hours: 0,
-          minutes: 1,
-        });
+      
       } catch (error) {
         handleError(error as AxiosError, () => getlimit());
       }
@@ -468,7 +460,7 @@ export const Layout = (props: Props) => {
 
  
   return variant === "home" ? (
-    <div className="dark:bg-[#171717] md:!bg-[#F5F6F7] dark:!text-white font-siliguri text-gray-700 relative">
+    <div className="dark:!bg-[#171717] !bg-[#F5F6F7] dark:!text-white font-siliguri text-gray-700 relative">
       {userinfo}
      
       {/* Fixed Header */}
@@ -507,13 +499,6 @@ export const Layout = (props: Props) => {
           <div className="mx-auto w-full overflow-y-auto z-[2]">
             {props.children}
           </div>
-          {/* {timeLeft.days > 0 && (
-            <div className="fixed bottom-5 left-0 w-full h-10 z-[999] flex items-center justify-center">
-              <p className="text-center bg-hot max-w-4xl mx-auto rounded-full h-full px-5 w-full flex items-center justify-center text-xl text-white">
-                ৭ দিন ফ্রি ট্রায়াল বাকি আছে
-              </p>
-            </div>
-          )} */}
         </div>
 
         {/* Right Sidebar - Fixed */}
@@ -528,7 +513,7 @@ export const Layout = (props: Props) => {
     <div
       className={cn(
         "dark:bg-[#171717] min-h-screen dark:!text-white text-gray-700 relative font-siliguri",
-        router.pathname.includes("/onboard") ? "bg-white" : "bg-[#F5F6F7]"
+        router.pathname.includes("/onboard") ? "bg-white dark:bg-gray-900" : "bg-[#F5F6F7] dark:bg-[#171717]"
       )}
     >
       {userinfo}
@@ -542,18 +527,10 @@ export const Layout = (props: Props) => {
       </div>
       <div
         className={cn(
-          "pt-10",
           !router.pathname.includes("/onboard") && "pt-[80px] lg:!pt-[70px]"
         )}
       >
         {props.children}
-        {/* {timeLeft.days > 0 && (
-          <div className="fixed bottom-5 left-0 w-full h-10 z-[999] flex items-center justify-center">
-            <p className="text-center bg-hot max-w-4xl mx-auto rounded-full h-full px-5 w-full flex items-center justify-center text-xl text-white">
-              ৭ দিন ফ্রি ট্রায়াল বাকি আছে
-            </p>
-          </div>
-        )} */}
       </div>
     </div>
   );

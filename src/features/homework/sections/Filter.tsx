@@ -300,7 +300,7 @@ export const HwFilter = (props: Props) => {
   );
 
   return (
-    <div className="flex gap-2 items-center justify-between sm:rounded-xl bg-white p-3 sm:p-4 ring-1 ring-ash w-full">
+    <div className="flex gap-2 items-center justify-between sm:rounded-xl bg-white dark:bg-gray-900 dark:ring-gray-700 dark:text-white p-3 sm:p-4 ring-1 ring-ash w-full">
       <h2 className="sm:text-lg text-base flex items-center gap-2 text-center font-semibold">
         <svg
           width="31"

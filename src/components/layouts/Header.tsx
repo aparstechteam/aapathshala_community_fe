@@ -78,12 +78,13 @@ export const Header = () => {
       Cookies.remove("accessToken");
       Cookies.remove("refreshToken");
       setTimeout(() => {
-        Router.push("/auth");
+        Router.push("https://guidelinebox.com/signin/google");
       }, 600);
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      handleError(err as AxiosError, handleLogout);
+      console.log(err);
+      // handleError(err as AxiosError, handleLogout);
     }
   }
 

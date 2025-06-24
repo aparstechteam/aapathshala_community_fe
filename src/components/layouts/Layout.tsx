@@ -51,7 +51,7 @@ export const Layout = (props: Props) => {
   const router = useRouter();
   const { uploadImage } = useCloudflareImage();
   const [limitExpired, setLimitExpired] = useState(false);
- 
+
   const [openInfo, setOpenInfo] = useState(false);
   const [open, setOpen] = useState(false);
   const [infoStep, setInfoStep] = useState(0);
@@ -82,7 +82,6 @@ export const Layout = (props: Props) => {
           },
         });
         setLimitExpired(res.data.isExpired);
-      
       } catch (error) {
         handleError(error as AxiosError, () => getlimit());
       }
@@ -458,11 +457,8 @@ export const Layout = (props: Props) => {
     </Dialog>
   );
 
- 
   return variant === "home" ? (
     <div className="dark:!bg-[#171717] !bg-[#F5F6F7] dark:!text-white font-siliguri text-gray-700 relative">
-      {userinfo}
-     
       {/* Fixed Header */}
       <div
         className={cn(
@@ -513,10 +509,11 @@ export const Layout = (props: Props) => {
     <div
       className={cn(
         "dark:bg-[#171717] min-h-screen dark:!text-white text-gray-700 relative font-siliguri",
-        router.pathname.includes("/onboard") ? "bg-white dark:bg-gray-900" : "bg-[#F5F6F7] dark:bg-[#171717]"
+        router.pathname.includes("/onboard")
+          ? "bg-white dark:bg-gray-900"
+          : "bg-[#F5F6F7] dark:bg-[#171717]"
       )}
     >
-      {userinfo}
       <div
         className={cn(
           "fixed top-0 left-0 w-full z-10",

@@ -334,11 +334,6 @@ export const Header = () => {
                       <h4 className="font-semibold text-rose-600 dark:text-rose-400">
                         {user?.name}
                       </h4>
-                      <p>
-                        <span className="text-sm capitalize">
-                          {batchName || user.hsc_batch}
-                        </span>
-                      </p>
                     </div>
                     <div className="grid gap-1 pt-3">
                       <Link

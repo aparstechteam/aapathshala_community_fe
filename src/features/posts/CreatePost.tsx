@@ -1295,11 +1295,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
                         </div>
 
                         <div className="flex items-center gap-1 text-black">
-                          {!isPaid && (
-                            <span className="text-xs text-white px-2.5 py-0.5 bg-hot rounded-lg">
-                              Free Trial
-                            </span>
-                          )}
+                      
                           {group_type === "SUBJECT" ? (
                             <>
                               <Jhikimiki />

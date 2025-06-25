@@ -60,7 +60,7 @@ export const Sidebar = (props: Props) => {
             },
           }
         );
-        if (response.data.groups.length > 0) {
+        if (response.data.groups.others.length > 0) {
           setGroups(response.data.groups.others);
         }
         setLoading(false);
@@ -86,7 +86,7 @@ export const Sidebar = (props: Props) => {
           <>
             {groups.length > 0 && (
               <div className="flex w-[340px] flex-col gap-2 p-4 rounded-xl ring-1 ring-ash dark:ring-ash/20 bg-white dark:bg-neutral-950">
-                <h2 className="font-semibold">{"কোর্স সমূহ"}</h2>
+                <h2 className="font-semibold">গ্রুপ সমূহ</h2>
                 <ClubListCard
                   className="h-full !max-w-[340px]"
                   clubs={groups}
@@ -96,8 +96,8 @@ export const Sidebar = (props: Props) => {
             )}
 
             {mygroups.length > 0 && (
-              <div className="flex w-[340px] flex-col gap-2 p-4 rounded-xl ring-1 ring-ash dark:ring-ash/20 bg-white dark:bg-neutral-950">
-                <h2 className="font-semibold">গ্রুপ সমূহ</h2>
+              <div className="hidden w-[340px] flex-col gap-2 p-4 rounded-xl ring-1 ring-ash dark:ring-ash/20 bg-white dark:bg-neutral-950">
+                <h2 className="font-semibold">আমার গ্রুপ সমূহ</h2>
                 <ClubListCard
                   className="h-full !max-w-[340px]"
                   clubs={mygroups}

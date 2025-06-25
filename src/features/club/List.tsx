@@ -239,7 +239,7 @@ export function ClubListCard(props: Propss) {
                   ) : (
                     !g?.is_eligiable && (
                       <p className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-elegant/10 text-elegant text-xs">
-                        <span className="pt-0.5 font-medium">Paid</span>
+                        <span className="pt-0.5 font-medium">Posh</span>
                         <span>
                           <svg
                             className="w-4 h-4"

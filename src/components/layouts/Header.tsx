@@ -77,9 +77,11 @@ export const Header = () => {
       localStorage.clear();
       Cookies.remove("accessToken");
       Cookies.remove("refreshToken");
+      Cookies.remove("user_session");
+      
       setTimeout(() => {
         Router.push("https://guidelinebox.com/signin/google");
-      }, 600);
+      }, 1000);
       setLoading(false);
     } catch (err) {
       setLoading(false);

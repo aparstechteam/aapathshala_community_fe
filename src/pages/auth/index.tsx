@@ -6,10 +6,11 @@ import { AppLoader, Button, copyLink, useUser } from "@/components";
 import axios from "axios";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { aapAPI, primaryAPI, secondaryAPI } from "@/configs";
+import { primaryAPI, secondaryAPI } from "@/configs";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import GoogleSignInButton from "@/components/shared/GoogleSignInButton";
+import { Loader2 } from "lucide-react";
 type User = {
   uid: string;
   name: string;
@@ -21,7 +22,7 @@ type User = {
 const LoginPage = () => {
   const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
   const { setUser } = useUser();
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     async function loginWithCookie(user: User, user_session: string) {
       const data = {
@@ -32,6 +33,7 @@ const LoginPage = () => {
       };
 
       try {
+        setLoading(true);
         const response = await axios.post(
           `${primaryAPI}/api/auth/login`,
           data,
@@ -54,9 +56,14 @@ const LoginPage = () => {
     }
 
     async function getmeFromCookie() {
+      const user_session = Cookies.get("user_session");
+      const device_id = Cookies.get("device_id");
+      if (!user_session) {
+        setLoading(false);
+        Router.push("https://guidelinebox.com/signin/google");
+        return;
+      }
       try {
-        const user_session = Cookies.get("user_session");
-        const device_id = Cookies.get("device_id");
         console.log(user_session, device_id);
         const response = await axios.get(`/api/secondary/auth/validate`, {
           withCredentials: true,
@@ -70,9 +77,6 @@ const LoginPage = () => {
       } catch (error) {
         console.error("Error getting user from cookie:", error);
       }
-      // if (accessToken && refreshToken) {
-      //   getUser(accessToken);
-      // }
     }
     getmeFromCookie();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -99,6 +103,7 @@ const LoginPage = () => {
       if (!!data.user.onboarding_complete) {
         localStorage.setItem("hsc_batch", data.user.hsc_batch as string);
         Router.push("/");
+        setLoading(false);
         return;
       } else {
         Router.push("/auth/onboard");
@@ -106,6 +111,7 @@ const LoginPage = () => {
     } catch (error) {
       console.error("Error assigning user:", error);
       localStorage.removeItem("user");
+      setLoading(false);
     }
   }
 
@@ -178,9 +184,7 @@ const LoginPage = () => {
         <meta name="description" content="Login to Smart Community" />
       </Head>
 
-      <div>Loading ...</div>
-
-      <div className="bg-white hidden flex-col items-center justify-center min-h-screen w-full">
+      <div className="bg-white flex flex-col items-center justify-center min-h-screen w-full">
         <div className="w-full h-full">
           <Card className="!w-full !max-w-lg mx-auto bg-white !rounded-xl backdrop-blur-md ring-light/30 !shadow-md !border-0 !ring-2 !shadow-light/50">
             <CardHeader className="flex items-center">
@@ -208,11 +212,20 @@ const LoginPage = () => {
                 <div className="py-4">
                   {!isLoadingGoogle ? (
                     <div className="flex justify-center">
-                      <div>
+                      <div className="hidden">
                         <GoogleSignInButton
                           onSuccess={handleGoogleLoginSuccess}
                           onError={handleGoogleLoginError}
                         />
+                      </div>
+                      <div>
+                        {loading ? (
+                          <div className="flex items-center justify-center">
+                            <Loader2 className="animate-spin" />
+                          </div>
+                        ) : (
+                          <div>Redirecting...</div>
+                        )}
                       </div>
                     </div>
                   ) : (

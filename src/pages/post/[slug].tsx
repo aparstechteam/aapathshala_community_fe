@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { memo, useCallback, useEffect, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 import { useComments } from "@/hooks"
 import { cn } from "@/lib/utils"
 import axios, { AxiosError } from "axios"

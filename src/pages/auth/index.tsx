@@ -23,6 +23,7 @@ const LoginPage = () => {
   const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
   const { setUser } = useUser();
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     async function loginWithCookie(user: User, user_session: string) {
       const data = {
@@ -68,7 +69,6 @@ const LoginPage = () => {
         console.log(response.data.user);
         loginWithCookie(response.data.user, user_session as string);
       } catch (error) {
-        console.error("Error getting user from cookie:", error);
         Router.push("https://guidelinebox.com/signin/google");
       }
     }

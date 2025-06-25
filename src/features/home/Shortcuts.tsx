@@ -1,16 +1,12 @@
-// import { useUser } from "@/components";
 import { Card, CardContent } from "@/components/ui/card";
 import { navItems } from "@/data/navItems";
 import { cn } from "@/lib/utils";
 import Router, { useRouter } from "next/router";
 import { useState } from "react";
-// import { Input } from "@/components/ui/input"
 
 export function Shortcuts() {
-  // const { user } = useUser();
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>("");
-  // const [batchName, setBatchName] = useState<string>("");
 
   function isActive(link: string) {
     return router.pathname === link;
@@ -28,9 +24,6 @@ export function Shortcuts() {
       <CardContent className="grid gap-4 py-5">
         <h2 className="text-base flex items-center justify-between text-hot gap-2 font-semibold">
           <span>Guideline Community</span>
-          {/* <span className="text-xs flex items-center justify-center bg-hot/10 text-hot h-5 font-normal pt-0.5 w-[60px] rounded-full">
-            {batchName}
-          </span> */}
         </h2>
 
         <form className="relative hidden lg:flex">
@@ -80,11 +73,6 @@ export function Shortcuts() {
               <span className="text-sm sm:text-base font-medium">
                 {item.label}
               </span>
-              {/* {item.label === 'প্রোফাইল' && (
-                <span>
-                  <Tagtag tags={[user?.role?.toUpperCase() as string]} />
-                </span>
-              )} */}
             </button>
           ))}
         </nav>

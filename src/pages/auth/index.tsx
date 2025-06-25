@@ -58,12 +58,6 @@ const LoginPage = () => {
     async function getmeFromCookie() {
       try {
         const user_session = Cookies.get("user_session");
-        const device_id = Cookies.get("device_id");
-        if (!user_session) {
-          setLoading(false);
-          Router.push("https://guidelinebox.com/signin/google");
-          return;
-        }
         const response = await axios.get(`/api/secondary/auth/validate`, {
           withCredentials: true,
           headers: {
@@ -75,6 +69,7 @@ const LoginPage = () => {
         loginWithCookie(response.data.user, user_session as string);
       } catch (error) {
         console.error("Error getting user from cookie:", error);
+        Router.push("https://guidelinebox.com/signin/google");
       }
     }
     getmeFromCookie();

@@ -61,7 +61,7 @@ export const Sidebar = (props: Props) => {
           }
         );
         if (response.data.groups.length > 0) {
-          setGroups(response.data.groups);
+          setGroups(response.data.groups.others);
         }
         setLoading(false);
       } catch (err) {

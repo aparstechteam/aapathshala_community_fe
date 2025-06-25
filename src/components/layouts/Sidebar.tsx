@@ -50,10 +50,10 @@ export const Sidebar = (props: Props) => {
   useEffect(() => {
     const getGroups = async () => {
       try {
-        const batchName = localStorage.getItem("hsc_batch") || user.hsc_batch;
+        // const batchName = localStorage.getItem("hsc_batch") || user.hsc_batch;
         setLoading(true);
         const response = await axios.get(
-          `${secondaryAPI}/api/group/?group_type=COURSE&hsc_batch=${batchName}`,
+          `${secondaryAPI}/api/group/?group_type=GENERAL`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

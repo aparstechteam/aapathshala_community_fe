@@ -56,15 +56,14 @@ const LoginPage = () => {
     }
 
     async function getmeFromCookie() {
-      const user_session = Cookies.get("user_session");
-      const device_id = Cookies.get("device_id");
-      if (!user_session) {
-        setLoading(false);
-        Router.push("https://guidelinebox.com/signin/google");
-        return;
-      }
       try {
-        console.log(user_session, device_id);
+        const user_session = Cookies.get("user_session");
+        const device_id = Cookies.get("device_id");
+        if (!user_session) {
+          setLoading(false);
+          Router.push("https://guidelinebox.com/signin/google");
+          return;
+        }
         const response = await axios.get(`/api/secondary/auth/validate`, {
           withCredentials: true,
           headers: {

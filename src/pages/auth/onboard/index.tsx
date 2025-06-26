@@ -696,7 +696,7 @@ const OnboardPage = () => {
                     onClick={() => {
                       setError("");
                       setMyInfo({ ...myinfo, gender: "boy" });
-                      if (myinfo.phone && myinfo.hsc_batch && myinfo.gender)
+                      if (myinfo.phone && myinfo.hsc_batch)
                         setDisabledNext(false);
                     }}
                     type="button"
@@ -716,7 +716,7 @@ const OnboardPage = () => {
                     onClick={() => {
                       setMyInfo({ ...myinfo, gender: "girl" });
                       setError("");
-                      if (myinfo.phone && myinfo.hsc_batch && myinfo.gender)
+                      if (myinfo.phone && myinfo.hsc_batch)
                         setDisabledNext(false);
                     }}
                     type="button"
@@ -732,68 +732,7 @@ const OnboardPage = () => {
                     ছাত্রী
                   </button>
                 </div>
-                <div className="w-full hidden">
-                  <div className="flex flex-col gap-3">
-                    <Label>তোমার ধর্ম কী?</Label>
-                    <Select
-                      value={myinfo?.religion}
-                      required
-                      onValueChange={(value) => {
-                        setMyInfo({ ...myinfo, religion: value });
-                        setError("");
-                      }}
-                    >
-                      <SelectTrigger
-                        className={cn(
-                          "w-full !px-4 !pb-1 !rounded-lg ring-2 ring-ash shadow-none duration-300 dark:bg-hot/10 bg-white dark:text-white text-gray-900 hover:bg-ash/20 dark:hover:bg-ash/20",
-                          error && !myinfo.religion && "ring-hot ring-2"
-                        )}
-                      >
-                        <SelectValue placeholder={"তুমি কোন ধর্মের অনুসারী?"} />
-                      </SelectTrigger>
-                      <SelectContent
-                        align="start"
-                        className="dark:!bg-gray-800 text-light dark:text-gray-200 !bg-white max-h-[250px]"
-                      >
-                        <SelectItem
-                          value={"ISLAM"}
-                          className="hover:!text-white !text-black dark:text-white"
-                        >
-                          ইসলাম
-                        </SelectItem>
 
-                        <SelectItem
-                          value={"SANATAN"}
-                          className="hover:!text-white !text-black dark:text-white"
-                        >
-                          সনাতন
-                        </SelectItem>
-                        <SelectItem
-                          value={"CHRISTIANITY"}
-                          className="hover:!text-white !text-black dark:text-white"
-                        >
-                          খৃষ্টান
-                        </SelectItem>
-                        <SelectItem
-                          value={"BUDDHIST"}
-                          className="hover:!text-white !text-black dark:text-white"
-                        >
-                          বৌদ্ধ
-                        </SelectItem>
-
-                        <SelectItem
-                          value={"OTHERS"}
-                          className="hover:!text-white text-black dark:text-white"
-                        >
-                          অন্যান্য
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {error && !myinfo.religion && (
-                      <p className="text-hot text-xs">ধর্ম সিলেক্ট করো</p>
-                    )}
-                  </div>
-                </div>
                 <div className="w-full">
                   <div className="flex flex-col gap-3">
                     <Label>তোমার ব্যাচ সিলেক্ট করো</Label>
@@ -803,7 +742,7 @@ const OnboardPage = () => {
                       onValueChange={(value) => {
                         setMyInfo({ ...myinfo, hsc_batch: value });
                         setError("");
-                        if (myinfo.phone && myinfo.hsc_batch && myinfo.gender)
+                        if (myinfo.phone && myinfo.gender)
                           setDisabledNext(false);
                       }}
                     >

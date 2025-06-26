@@ -17,7 +17,7 @@ const HWDetailsPage = () => {
   const [submissions, setSubmissions] = useState<TSubmission[]>([]);
   const [loading, setLoading] = useState(false);
   const [refetch, setRefetch] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [page, setPage] = useState(1);
   const [evaluation, setEvaluation] = useState("");
@@ -74,7 +74,7 @@ const HWDetailsPage = () => {
           setSubmissions((prevPosts) => [...prevPosts, ...newPosts]);
         }
         setIsFetching(false);
-        setHasMore(newPosts.length > 0);
+        setHasMore(!!newPosts && newPosts.length > 0);
         setLoading(false);
         // setTotalPage(res.data.total_pages);
       } catch (error) {
@@ -101,7 +101,7 @@ const HWDetailsPage = () => {
         <title>Homework Details</title>
       </Head>
       <Layout>
-        {submissions.length === 0 && loading ? (
+        {submissions && submissions.length === 0 && loading ? (
           <div className="flex justify-center items-center h-[calc(100vh-200px)]">
             <Loader className="animate-spin" />
           </div>

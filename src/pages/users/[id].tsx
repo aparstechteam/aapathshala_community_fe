@@ -55,7 +55,7 @@ const UserDetailsPage = () => {
 
     const [userProfile, setUserProfile] = useState<UserProfile>()
     const [loading, setLoading] = useState<boolean>(false)
-    const [following, setFollowing] = useState<boolean>(!!userProfile?.userData?.isFollowing)
+    const [following, setFollowing] = useState<boolean>(true)
 
 
     useEffect(() => {
@@ -68,34 +68,15 @@ const UserDetailsPage = () => {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                     }
                 })
-                setFollowing(response?.data?.userData?.isFollowing)
+                setFollowing(response?.data?.userData.isFollowing);
                 setUserProfile(response.data)
                 setLoading(false)
-
             } catch (err) {
                 setLoading(false)
                 handleError(err as AxiosError, () => getUserProfile())
             }
         }
         if (!!id) getUserProfile()
-    }, [id, router])
-
-    useEffect(() => {
-        async function getFollowing() {
-            try {
-                if (!!id) {
-                    const response = await axios.get(`${secondaryAPI}/api/follow?following=${id}`, {
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-                        }
-                    })
-                    setFollowing(response.data.following)
-                }
-            } catch (err) {
-                handleError(err as AxiosError, () => getFollowing())
-            }
-        }
-        if (!!id) getFollowing()
     }, [id])
 
     return (

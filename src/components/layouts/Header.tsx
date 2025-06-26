@@ -207,10 +207,65 @@ export const Header = () => {
             </form>
 
             <div className="xl:hidden flex gap-5 items-center px-3">
+              <Link
+                className={cn(
+                  router.pathname === "/notification" &&
+                    "text-hot border-b-2 border-b-hot",
+                  "text-center py-2 flex justify-center duration-300"
+                )}
+                href="/notification"
+              >
+                <p className="relative cursor-pointer !p-0 flex">
+                  {router.pathname !== "/notification" ? (
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 21"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M10.0002 0.160034C5.85804 0.160034 2.50017 3.5179 2.50017 7.66003V11.6624L0.893001 15.6841C0.790407 15.9409 0.821819 16.2318 0.976854 16.4607C1.13189 16.6896 1.39036 16.8267 1.66683 16.8267H6.66683C6.66683 18.674 8.1529 20.16 10.0002 20.16C11.8474 20.16 13.3335 18.674 13.3335 16.8267H18.3335C18.61 16.8267 18.8684 16.6896 19.0235 16.4607C19.1785 16.2318 19.2099 15.9409 19.1073 15.6841L17.5002 11.6624V7.66003C17.5002 3.5179 14.1423 0.160034 10.0002 0.160034ZM11.6668 16.8267C11.6668 17.7535 10.9269 18.4934 10.0002 18.4934C9.07337 18.4934 8.33349 17.7535 8.33349 16.8267H11.6668ZM4.16684 7.66003C4.16684 4.43837 6.77851 1.8267 10.0002 1.8267C13.2218 1.8267 15.8335 4.43837 15.8335 7.66003V11.8227C15.8335 11.9286 15.8537 12.0336 15.893 12.1319L17.1031 15.16H2.89726L4.10734 12.1319C4.14665 12.0336 4.16684 11.9286 4.16684 11.8227V7.66003Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      width="20"
+                      height="20"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 17.96 19.5"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M11,16.5v.15a1.5,1.5,0,0,1-3-.15Z"
+                        transform="translate(-0.52)"
+                      />
+                      <path
+                        fill="currentColor"
+                        d="M15.5,11.91,16.85,15H2.16L3.5,11.91V7.5a6,6,0,0,1,12-.22v4.63Z"
+                        transform="translate(-0.52)"
+                      />
+                      <path
+                        fill="currentColor"
+                        d="M11,16.65V16.5H8a1.5,1.5,0,0,0,3,.15ZM15.5,7.28a6,6,0,0,0-12,.22v4.41L2.16,15H16.85L15.5,11.91V7.28Zm-3,9.22a3,3,0,0,1-6,.18V16.5H1.77a1.34,1.34,0,0,1-.49-.1,1.25,1.25,0,0,1-.65-1.65L2,11.59V7.5a7.5,7.5,0,0,1,15-.25v4.34l1.38,3.16a1.26,1.26,0,0,1-1.15,1.75Z"
+                        transform="translate(-0.52)"
+                      />
+                    </svg>
+                  )}
+
+                  {notificationCount > 0 && (
+                    <span className="absolute -top-2 -right-2 pt-0.5 bg-rose-400 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                      {notificationCount}
+                    </span>
+                  )}
+                </p>
+              </Link>
               <Link href="/search">
                 <svg
-                  width="1.3em"
-                  height="1.3em"
+                  width="24"
+                  height="24"
                   viewBox="0 0 25 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -415,7 +470,7 @@ export const Header = () => {
 
         {/* Mobile Links */}
         <div className="grid text-light grid-cols-5 justify-around xl:hidden">
-          {navItems.slice(0, 3).map((x) => (
+          {navItems.slice(0, 4).map((x) => (
             <Link
               key={x?.label}
               className={cn(
@@ -428,62 +483,6 @@ export const Header = () => {
               {x.link !== router.pathname ? x.icon.selected : x.icon.unselected}
             </Link>
           ))}
-
-          <Link
-            className={cn(
-              router.pathname === "/notification" &&
-                "text-hot border-b-2 border-b-hot",
-              "text-center py-2 flex justify-center duration-300"
-            )}
-            href="/notification"
-          >
-            <p className="relative cursor-pointer !p-0 flex">
-              {router.pathname !== "/notification" ? (
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 21"
-                  fill="currentColor"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M10.0002 0.160034C5.85804 0.160034 2.50017 3.5179 2.50017 7.66003V11.6624L0.893001 15.6841C0.790407 15.9409 0.821819 16.2318 0.976854 16.4607C1.13189 16.6896 1.39036 16.8267 1.66683 16.8267H6.66683C6.66683 18.674 8.1529 20.16 10.0002 20.16C11.8474 20.16 13.3335 18.674 13.3335 16.8267H18.3335C18.61 16.8267 18.8684 16.6896 19.0235 16.4607C19.1785 16.2318 19.2099 15.9409 19.1073 15.6841L17.5002 11.6624V7.66003C17.5002 3.5179 14.1423 0.160034 10.0002 0.160034ZM11.6668 16.8267C11.6668 17.7535 10.9269 18.4934 10.0002 18.4934C9.07337 18.4934 8.33349 17.7535 8.33349 16.8267H11.6668ZM4.16684 7.66003C4.16684 4.43837 6.77851 1.8267 10.0002 1.8267C13.2218 1.8267 15.8335 4.43837 15.8335 7.66003V11.8227C15.8335 11.9286 15.8537 12.0336 15.893 12.1319L17.1031 15.16H2.89726L4.10734 12.1319C4.14665 12.0336 4.16684 11.9286 4.16684 11.8227V7.66003Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  width="20"
-                  height="20"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 17.96 19.5"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M11,16.5v.15a1.5,1.5,0,0,1-3-.15Z"
-                    transform="translate(-0.52)"
-                  />
-                  <path
-                    fill="currentColor"
-                    d="M15.5,11.91,16.85,15H2.16L3.5,11.91V7.5a6,6,0,0,1,12-.22v4.63Z"
-                    transform="translate(-0.52)"
-                  />
-                  <path
-                    fill="currentColor"
-                    d="M11,16.65V16.5H8a1.5,1.5,0,0,0,3,.15ZM15.5,7.28a6,6,0,0,0-12,.22v4.41L2.16,15H16.85L15.5,11.91V7.28Zm-3,9.22a3,3,0,0,1-6,.18V16.5H1.77a1.34,1.34,0,0,1-.49-.1,1.25,1.25,0,0,1-.65-1.65L2,11.59V7.5a7.5,7.5,0,0,1,15-.25v4.34l1.38,3.16a1.26,1.26,0,0,1-1.15,1.75Z"
-                    transform="translate(-0.52)"
-                  />
-                </svg>
-              )}
-
-              {notificationCount > 0 && (
-                <span className="absolute -top-2 -right-2 pt-0.5 bg-rose-400 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                  {notificationCount}
-                </span>
-              )}
-            </p>
-          </Link>
 
           <div className="xl:hidden flex justify-center">
             <MobileMenu loading={loading} handleLogout={handleLogout} />

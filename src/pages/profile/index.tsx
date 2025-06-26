@@ -64,8 +64,6 @@ const MyProfilePage = () => {
           },
         }
       );
-
-      setIsFollowing(response?.data?.userData?.isFollowing);
       setUserProfile(response.data);
       setLoading(false);
     } catch (error) {

@@ -175,7 +175,7 @@ export const ProfileComponent = (props: Props) => {
     async function getUserFollowings() {
       try {
         const response = await axios.get(
-          `${secondaryAPI}/api/follow/following`,
+          `${secondaryAPI}/api/follow/following?user_id=${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -194,7 +194,7 @@ export const ProfileComponent = (props: Props) => {
     async function getUserFollowers() {
       try {
         const response = await axios.get(
-          `${secondaryAPI}/api/follow/followers`,
+          `${secondaryAPI}/api/follow/followers?user_id=${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -225,7 +225,7 @@ export const ProfileComponent = (props: Props) => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      if (setIsFollowing) setIsFollowing(!isFollowing);
+      if (setIsFollowing) setIsFollowing(false);
       setFollowLoading(false);
       toast({
         title: "Success!",
@@ -256,7 +256,7 @@ export const ProfileComponent = (props: Props) => {
           },
         }
       );
-      if (setIsFollowing) setIsFollowing(!isFollowing);
+      if (setIsFollowing) setIsFollowing(true);
       setFollowLoading(false);
       toast({
         title: "Success!",
@@ -817,67 +817,6 @@ export const ProfileComponent = (props: Props) => {
     </Dialog>
   );
 
-  const courseDialog = (
-    <Dialog open={openCourse} onOpenChange={setOpenCourse}>
-      <DialogContent className="!w-full !max-w-md text-black !bg-white rounded-xl shadow-md shadow-ash p-4">
-        <DialogHeader>
-          <DialogTitle>কোর্স যোগ করো</DialogTitle>
-        </DialogHeader>
-        <div className="flex flex-col gap-2">
-          <Label>কোর্স কোড</Label>
-          <Input
-            required
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                if (course.length === 0) {
-                  toast({
-                    title: "Course code is required",
-                    description: "Please enter a course code",
-                    variant: "destructive",
-                  });
-                  return;
-                }
-                handleAddCourse();
-              }
-            }}
-            placeholder="কোর্স কোড"
-            value={course}
-            onChange={(e) => setCourse(e.target.value)}
-          />
-        </div>
-        <DialogFooter>
-          <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              variant="destructive"
-              className="!w-16 !text-xs"
-              onClick={() => setOpenCourse(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              size="sm"
-              type="button"
-              variant="secondary"
-              className="!w-16 !text-xs"
-              onClick={(e) => {
-                e.preventDefault();
-                handleAddCourse();
-              }}
-            >
-              {isFTLoading ? (
-                <Loader2 className="animate-spin text-center" />
-              ) : (
-                "Add"
-              )}
-            </Button>
-          </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-
   const followerList = (
     <Dialog open={followerOpen} onOpenChange={setFollowerOpen}>
       <DialogContent className="p-4 bg-white max-w-sm text-black/80 dark:bg-gray-900 dark:text-white">
@@ -963,7 +902,7 @@ export const ProfileComponent = (props: Props) => {
   return (
     <>
       {editprofile}
-      {courseDialog}
+      
       {followerList}
       {followingList}
       <div className="w-full min-h-screen bg-[#f5f5f5] dark:bg-[#171717] z-0 text-gray-900">
@@ -1160,7 +1099,7 @@ export const ProfileComponent = (props: Props) => {
                     <BookOpenText size={20} />
                   </span>
                   <div>
-                    <span> Student of {userProfile.userData?.hsc_batch}</span>
+                    <span> Student of {userProfile.userData?.hsc_batch || 'HSC'}</span>
                   </div>
                 </h4>
 
@@ -1305,7 +1244,7 @@ export const ProfileComponent = (props: Props) => {
                       <div>
                         <span>
                           {" "}
-                          Student of {userProfile.userData?.hsc_batch}
+                          Student of {userProfile.userData?.hsc_batch || 'HSC'}
                         </span>
                       </div>
                     </h4>

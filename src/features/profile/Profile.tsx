@@ -187,8 +187,8 @@ export const ProfileComponent = (props: Props) => {
         handleError(err as AxiosError, () => getUserFollowings());
       }
     }
-    if (!!user?.id) getUserFollowings();
-  }, [user]);
+    if (!!user?.id && !!id) getUserFollowings();
+  }, [user, id]);
 
   useEffect(() => {
     async function getUserFollowers() {
@@ -206,8 +206,8 @@ export const ProfileComponent = (props: Props) => {
         handleError(err as AxiosError, () => getUserFollowers());
       }
     }
-    if (!!user?.id) getUserFollowers();
-  }, [user]);
+    if (!!user?.id && !!id) getUserFollowers();
+  }, [user, id]);
 
   const loadMoreTrigger = useRef<HTMLDivElement>(null);
 

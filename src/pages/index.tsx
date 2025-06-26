@@ -165,44 +165,44 @@ const HomePage: NextPage = () => {
 
   const [tutorialOpen, setTutorialOpen] = useState(false);
 
-  const tutorial = (
-    <Dialog open={tutorialOpen} onOpenChange={setTutorialOpen}>
-      <DialogContent className="max-w-2xl z-[99] bg-white text-black p-5">
-        <DialogHeader>
-          <DialogTitle>
-            <h2 className="text-xl font-bold text-center">
-              কমিউনিটি এর ব্যবহারবিধি
-            </h2>
-          </DialogTitle>
-        </DialogHeader>
-        <div>
-          <div className="flex flex-col gap-4 items-center justify-center">
-            <h2 className="text-center">
-              কমিউনিটি কিভাবে ব্যবহার করবে তার বিস্তারিত জেনে নাও এই ভিডিও দেখে
-            </h2>
-            <iframe
-              className="w-full rounded-xl"
-              width="100%"
-              height="315"
-              src={community_video}
-              title="YouTube video player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            ></iframe>
-          </div>
-        </div>
-        <DialogFooter className="flex !justify-center">
-          <Button
-            className="bg-hot !w-full !rounded-lg text-white"
-            onClick={() => setTutorialOpen(false)}
-          >
-            বুঝেছি
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
+  // const tutorial = (
+  //   <Dialog open={tutorialOpen} onOpenChange={setTutorialOpen}>
+  //     <DialogContent className="max-w-2xl z-[99] bg-white text-black p-5">
+  //       <DialogHeader>
+  //         <DialogTitle>
+  //           <h2 className="text-xl font-bold text-center">
+  //             কমিউনিটি এর ব্যবহারবিধি
+  //           </h2>
+  //         </DialogTitle>
+  //       </DialogHeader>
+  //       <div>
+  //         <div className="flex flex-col gap-4 items-center justify-center">
+  //           <h2 className="text-center">
+  //             কমিউনিটি কিভাবে ব্যবহার করবে তার বিস্তারিত জেনে নাও এই ভিডিও দেখে
+  //           </h2>
+  //           <iframe
+  //             className="w-full rounded-xl"
+  //             width="100%"
+  //             height="315"
+  //             src={community_video}
+  //             title="YouTube video player"
+  //             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  //             referrerPolicy="strict-origin-when-cross-origin"
+  //             allowFullScreen
+  //           ></iframe>
+  //         </div>
+  //       </div>
+  //       <DialogFooter className="flex !justify-center">
+  //         <Button
+  //           className="bg-hot !w-full !rounded-lg text-white"
+  //           onClick={() => setTutorialOpen(false)}
+  //         >
+  //           বুঝেছি
+  //         </Button>
+  //       </DialogFooter>
+  //     </DialogContent>
+  //   </Dialog>
+  // );
 
   return (
     <>
@@ -221,7 +221,6 @@ const HomePage: NextPage = () => {
               className="mx-auto"
             />
             <h2 className="text-xl font-bold text-center">শীঘ্রই আসছে! </h2>
-            {/* <h2 className='text-base text-center'>চোখ রাখো ACS ফিউচার স্কুল, স্টাডি কমিউনিটিতে...</h2> */}
           </div>
         </div>
       ) : (
@@ -243,9 +242,9 @@ const HomePage: NextPage = () => {
               >
                 <div className="w-full space-y-2 py-1 max-w-4xl mx-auto h-full">
                   <CreatePost />
-                  {tutorial}
+                  {/* {tutorial} */}
 
-                  <div className="w-full z-[2] relative bg-white dark:bg-gray-900 rounded-lg">
+                  {/* <div className="w-full z-[2] relative bg-white dark:bg-gray-900 rounded-lg">
                     <button
                       type="button"
                       onClick={() => setTutorialOpen(true)}
@@ -274,7 +273,7 @@ const HomePage: NextPage = () => {
                       </h2>
                       <ChevronDownIcon className="w-4 h-4" />
                     </button>
-                  </div>
+                  </div> */}
 
                   <SubjectFilters
                     setSort={(s) => setSort(s)}

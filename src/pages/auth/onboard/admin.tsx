@@ -831,7 +831,7 @@ const OnboardPage = () => {
   return (
     <>
       <Head>
-        <title>ACS Community</title>
+        <title>GuidelineBox Community</title>
       </Head>
       <Layout variant="other">
         <div className="flex flex-col md:pt-10 w-full bg-white dark:bg-ash/20 items-center justify-start h-full min-h-[calc(100vh-80px)]">

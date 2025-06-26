@@ -185,7 +185,7 @@ const LoginPage = () => {
               <div className="py-2 px-6 flex flex-col items-center justify-center">
                 <Image
                   src="/logo.png"
-                  alt="acs-logo"
+                  alt="guidelinebox-logo"
                   className="mx-auto"
                   width={150}
                   height={200}

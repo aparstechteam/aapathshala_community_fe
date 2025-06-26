@@ -334,13 +334,3 @@ export const personalityTypes = [
     { id: 3, name: 'Ambivert' },
 ]
 
-// export const sources = [
-//     { id: 1, name: 'ফেসবুক গ্রুপ' },
-//     { id: 2, name: 'ফেসবুক পেইজ' },
-//     { id: 3, name: 'ইউটিউব চ্যানেল' },
-//     { id: 4, name: 'বিজ্ঞাপন দেখে' },
-//     { id: 5, name: 'হোয়াটসঅ্যাপ' },
-//     { id: 6, name: 'কল/SMS পেয়েছি' },
-//     { id: 7, name: 'ACS এর সিনিয়র ভাইয়া/আপু' },
-//     { id: 8, name: 'বন্ধুর কাছ থেকে শুনেছি' },
-// ]

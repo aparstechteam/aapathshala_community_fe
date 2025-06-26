@@ -899,15 +899,7 @@ export const ProfileComponent = (props: Props) => {
                           {course}
                         </span>
                       ))}
-                      {userProfile?.userData?.id === user?.id && (
-                        <button
-                          type="button"
-                          onClick={() => setOpenCourse(true)}
-                          className="text-sm text-hot px-3 py-0.5 rounded-full bg-hot/10 hover:bg-hot hover:text-white transition-colors duration-300"
-                        >
-                          Add +
-                        </button>
-                      )}
+                  
                     </div>
                   </div>
 
@@ -1079,7 +1071,7 @@ export const ProfileComponent = (props: Props) => {
                   </span>
                   <span className={cn("capitalize")}>
                     {userProfile?.userData?.institute_name?.toLowerCase() ||
-                      "ACS Future School"}
+                      "No School Selected"}
                   </span>
                 </h4>
 
@@ -1225,7 +1217,7 @@ export const ProfileComponent = (props: Props) => {
                       </span>
                       <span className={cn("capitalize")}>
                         {userProfile?.userData?.institute_name?.toLowerCase() ||
-                          "ACS Future School"}
+                          "No School Selected"}
                       </span>
                     </h4>
                   </>

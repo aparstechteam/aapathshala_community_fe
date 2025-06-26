@@ -1,6 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   Button,
   DashCard,
   Dialog,
@@ -12,6 +15,7 @@ import {
   Input,
   Label,
   PostSkeleton,
+  ScrollArea,
   Select,
   SelectContent,
   SelectItem,
@@ -51,6 +55,7 @@ import { ValidImage } from "@/components/shared/ValidImage";
 import Image from "next/image";
 import Link from "next/link";
 import { validateFbLink } from "@/hooks/link-validation";
+import { UserFollower } from "@/@types/follower";
 
 type UserData = {
   id: string;
@@ -126,6 +131,11 @@ export const ProfileComponent = (props: Props) => {
   const [preview, setPreview] = useState(userProfile?.userData?.image || "");
   const [isFTLoading, setIsFTLoading] = useState<boolean>(false);
   const [collections, setCollections] = useState<Collection[]>([]);
+  const [followerOpen, setFollowerOpen] = useState(false);
+  const [followingOpen, setFollowingOpen] = useState(false);
+
+  const [userFollowings, setUserFollowings] = useState<UserFollower[]>([]);
+  const [userFollowers, setUserFollowers] = useState<UserFollower[]>([]);
 
   const [openCourse, setOpenCourse] = useState(false);
 
@@ -160,6 +170,44 @@ export const ProfileComponent = (props: Props) => {
     }
     getcollections();
   }, []);
+
+  useEffect(() => {
+    async function getUserFollowings() {
+      try {
+        const response = await axios.get(
+          `${secondaryAPI}/api/follow/following`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        setUserFollowings(response.data.following);
+      } catch (err) {
+        handleError(err as AxiosError, () => getUserFollowings());
+      }
+    }
+    if (!!user?.id) getUserFollowings();
+  }, [user]);
+
+  useEffect(() => {
+    async function getUserFollowers() {
+      try {
+        const response = await axios.get(
+          `${secondaryAPI}/api/follow/followers`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        setUserFollowers(response.data.followers);
+      } catch (err) {
+        handleError(err as AxiosError, () => getUserFollowers());
+      }
+    }
+    if (!!user?.id) getUserFollowers();
+  }, [user]);
 
   const loadMoreTrigger = useRef<HTMLDivElement>(null);
 
@@ -686,7 +734,6 @@ export const ProfileComponent = (props: Props) => {
             </div>
           </div>
 
-        
           <div className="flex items-center gap-2">
             <Label htmlFor="facebook">
               <Image
@@ -831,10 +878,94 @@ export const ProfileComponent = (props: Props) => {
     </Dialog>
   );
 
+  const followerList = (
+    <Dialog open={followerOpen} onOpenChange={setFollowerOpen}>
+      <DialogContent className="p-4 bg-white max-w-sm text-black/80 dark:bg-gray-900 dark:text-white">
+        <DialogHeader className="text-base font-bold py-1">
+          <DialogTitle>Followers</DialogTitle>
+        </DialogHeader>
+        <ScrollArea className="max-h-[400px]">
+          {userFollowers?.map((r) => (
+            <div key={r.id} className="p-2 flex gap-2 items-center">
+              <div className="relative p-1">
+                <Avatar>
+                  <AvatarImage src={r?.image as string} />
+                  <AvatarFallback>
+                    {r.name
+                      ?.split(" ")
+                      ?.map((n: string) => n[0])
+                      ?.join("")}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+
+              <div className="flex justify-between items-center w-full">
+                <Link
+                  href={`/users/${r.id}`}
+                  className="hover:text-light duration-300"
+                >
+                  {r.name}
+                </Link>
+                {/* {r.user.id !== user.id ? (
+                  <button type="button" className="font-semibold text-sm text-life hover:text-elegant duration-300">
+                    {r?.user?.isFollowing ? "Following" : "Follow"}
+                  </button>
+                ) : null} */}
+              </div>
+            </div>
+          ))}
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  );
+
+  const followingList = (
+    <Dialog open={followingOpen} onOpenChange={setFollowingOpen}>
+      <DialogContent className="p-4 bg-white max-w-sm text-black/80 dark:bg-gray-900 dark:text-white">
+        <DialogHeader className="text-base font-bold py-1">
+          <DialogTitle>Following</DialogTitle>
+        </DialogHeader>
+        <ScrollArea className="max-h-[400px]">
+          {userFollowings?.map((r) => (
+            <div key={r.id} className="p-2 flex gap-2 items-center">
+              <div className="relative p-1">
+                <Avatar>
+                  <AvatarImage src={r?.image as string} />
+                  <AvatarFallback>
+                    {r.name
+                      ?.split(" ")
+                      ?.map((n: string) => n[0])
+                      ?.join("")}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+
+              <div className="flex justify-between items-center w-full">
+                <Link
+                  href={`/users/${r.id}`}
+                  className="hover:text-light duration-300"
+                >
+                  {r.name}
+                </Link>
+                {/* {r.user.id !== user.id ? (
+                  <button type="button" className="font-semibold text-sm text-life hover:text-elegant duration-300">
+                    {r?.user?.isFollowing ? "Following" : "Follow"}
+                  </button>
+                ) : null} */}
+              </div>
+            </div>
+          ))}
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  );
+
   return (
     <>
       {editprofile}
       {courseDialog}
+      {followerList}
+      {followingList}
       <div className="w-full min-h-screen bg-[#f5f5f5] dark:bg-[#171717] z-0 text-gray-900">
         <div className="max-w-6xl grid grid-cols-1 px-0 md:px-4 w-full mx-auto">
           {/* Cover & Profile Photo  */}
@@ -886,9 +1017,13 @@ export const ProfileComponent = (props: Props) => {
                     </div>
 
                     <div className="flex items-center gap-2 text-sm sm:text-base text-gray-600">
-                      <span>{userProfile?.userData?.followers} Followers</span>
+                      <button onClick={() => setFollowerOpen(true)}>
+                        {userProfile?.userData?.followers} Followers
+                      </button>
                       <span>•</span>
-                      <span>{userProfile?.userData?.following} Following</span>
+                      <button onClick={() => setFollowingOpen(true)}>
+                        {userProfile?.userData?.following} Following
+                      </button>
                     </div>
                     <div className="flex items-center gap-2">
                       {userProfile?.course_enrolled?.map((course: string) => (
@@ -899,7 +1034,6 @@ export const ProfileComponent = (props: Props) => {
                           {course}
                         </span>
                       ))}
-                  
                     </div>
                   </div>
 

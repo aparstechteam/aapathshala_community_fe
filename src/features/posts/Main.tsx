@@ -42,6 +42,7 @@ import { reactionTabs } from "@/data/reactions";
 import { collections } from "@/data/saved-types";
 import { ReactCounts } from "@/components/shared/ReactCounts";
 import { FeaturedComments } from "../comments";
+import { VideoPlayer } from "./sections";
 const AppMath = dynamic(() => import("../../components/contexts/MathJAX"), {
   ssr: false,
 });
@@ -948,7 +949,14 @@ export const PostComponent: React.FC<PostShowProps> = ({
           />
 
           {/* Video  */}
-          <VideoComponent videoUrl={post?.video_url || ""} />
+          {post?.video_url?.includes("embed") ? (
+            <VideoComponent videoUrl={post?.video_url || ""} />
+          ) : (
+            <VideoPlayer
+              src={post?.video_url || ""}
+              thumbnail={post?.image || ""}
+            />
+          )}
 
           {/* Reaction & comments counts */}
           <div className="grid grid-cols-2 justify-between items-center gap-2 -mb-2 px-4 md:px-0">

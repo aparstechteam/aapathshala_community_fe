@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, FormEvent, ChangeEvent, useEffect, useRef } from "react";
 import axios, { AxiosError } from "axios";
 import Router, { useRouter } from "next/router";
@@ -32,7 +31,6 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-  formatBnNumber,
   Jhikimiki,
 } from "@/components";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
@@ -45,7 +43,7 @@ import { secondaryAPI } from "@/configs";
 
 import Link from "next/link";
 import { guidelines } from "@/data/community";
-import { Chapter, CreatePostProps, Group, TimeLeft } from "@/@types";
+import { Chapter, CreatePostProps, Group } from "@/@types";
 import { Err, WritePost } from "./sections";
 
 export const CreatePost: React.FC<CreatePostProps> = ({
@@ -84,7 +82,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
   });
 
   const [limit, setLimit] = useState<number>(0);
-  const [canUseAi, setCanUseAi] = useState<boolean>(false);
+  // const [canUseAi, setCanUseAi] = useState<boolean>(false);
   const [limitRemaining, setLimitRemaining] = useState<number>(0);
   const [communityOpen, setCommunityOpen] = useState(false);
   const [poll, setPoll] = useState(false);
@@ -107,12 +105,18 @@ export const CreatePost: React.FC<CreatePostProps> = ({
   const [destinationType, setDestinationType] = useState(group_type || "");
   const { subjects, subLoading } = useSubject();
   const [subjectDisabled, setSubjectDisabled] = useState(false);
-  const [isPaid, setIsPaid] = useState(false);
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    days: 0,
-    hours: 12,
-    minutes: 1,
-  });
+  // const [isPaid, setIsPaid] = useState(false);
+  // const [timeLeft, setTimeLeft] = useState<TimeLeft>({
+  //   days: 0,
+  //   hours: 12,
+  //   minutes: 1,
+  // });
+
+  // Video states
+  const [videoSrc, setVideoSrc] = useState<File | null>(null);
+  const [videoPreview, setVideoPreview] = useState<string>("");
+  const [videoUploading, setVideoUploading] = useState<boolean>(false);
+  const [thumbnail, setThumbnail] = useState<string>("");
 
   useEffect(() => {
     if (!!subject_id) {
@@ -122,23 +126,23 @@ export const CreatePost: React.FC<CreatePostProps> = ({
     }
   }, [subject_id]);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime.minutes > 0) {
-          return { ...prevTime, minutes: prevTime.minutes - 1 };
-        } else if (prevTime.hours > 0) {
-          return { ...prevTime, hours: prevTime.hours - 1, minutes: 59 };
-        } else if (prevTime.days > 0) {
-          return { days: prevTime.days - 1, hours: 23, minutes: 59 };
-        }
-        clearInterval(timer);
-        return prevTime;
-      });
-    }, 60000); // Update every minute
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setTimeLeft((prevTime) => {
+  //       if (prevTime.minutes > 0) {
+  //         return { ...prevTime, minutes: prevTime.minutes - 1 };
+  //       } else if (prevTime.hours > 0) {
+  //         return { ...prevTime, hours: prevTime.hours - 1, minutes: 59 };
+  //       } else if (prevTime.days > 0) {
+  //         return { days: prevTime.days - 1, hours: 23, minutes: 59 };
+  //       }
+  //       clearInterval(timer);
+  //       return prevTime;
+  //     });
+  //   }, 60000); // Update every minute
 
-    return () => clearInterval(timer);
-  }, []);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   useEffect(() => {
     if (!!open) {
@@ -166,13 +170,13 @@ export const CreatePost: React.FC<CreatePostProps> = ({
         });
         setLimit(Number(res.data.limit));
         setLimitRemaining(Number(res.data.remaining));
-        setCanUseAi(res.data.canUseAi);
-        setIsPaid(res.data.isPaid);
-        setTimeLeft({
-          days: res.data.trialDaysRemaining,
-          hours: 0,
-          minutes: 1,
-        });
+        // setCanUseAi(res.data.canUseAi);
+        // setIsPaid(res.data.isPaid);
+        // setTimeLeft({
+        //   days: res.data.trialDaysRemaining,
+        //   hours: 0,
+        //   minutes: 1,
+        // });
       } catch (error) {
         handleError(error as AxiosError, () => getlimit());
       }
@@ -180,7 +184,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
     getlimit();
   }, [user]);
 
-  const handleCreatePost = async (e: FormEvent) => {
+  const handleCreatePost = async (e: FormEvent, videoLink?: string[]) => {
     e.preventDefault();
     if (category.value === "subject" && !subject) {
       setError({ ...error, subject: "Subject is required" });
@@ -231,10 +235,11 @@ export const CreatePost: React.FC<CreatePostProps> = ({
         subject_id: subject || "",
         chapter_id: chapter,
         token,
+        image: thumbnail || "",
         images: preview || "",
         ai_enabled: ai,
         group_id: destination,
-        video_url: videoUrl || undefined,
+        video_url: videoLink || videoUrl || undefined,
         status: "published",
       };
 
@@ -562,6 +567,109 @@ export const CreatePost: React.FC<CreatePostProps> = ({
     fetchGroups();
   }, []);
 
+  function captureThumbnail(
+    videoUrl: string,
+    timeInSeconds: number,
+    callback: (file: File) => void
+  ) {
+    const video = document.createElement("video");
+    video.src = videoUrl;
+    video.crossOrigin = "anonymous";
+
+    video.addEventListener("loadeddata", () => {
+      video.currentTime = timeInSeconds;
+    });
+
+    video.addEventListener("seeked", () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob((blob: Blob | null) => {
+        if (blob) {
+          const file = new File([blob], "thumbnail.jpg", {
+            type: "image/jpeg",
+          });
+          callback(file);
+        }
+      }, "image/jpeg");
+    });
+
+    video.load();
+  }
+
+  async function handleUploadVideo(e: FormEvent) {
+    try {
+      setVideoUploading(true);
+      const videoLink = await uploadImage(videoSrc as File, "videos/");
+
+      setVideoUploading(false);
+      if (videoLink) {
+        setTimeout(() => {
+          if (!!poll) {
+            handlePollSubmit(e);
+          } else {
+            handleCreatePost(e, videoLink);
+          }
+        }, 600);
+      }
+    } catch (error) {
+      handleError(error as AxiosError, () => handleUploadVideo(e));
+      setVideoUploading(false);
+      toast({
+        title: "File Upload Failed",
+        description: "Please try again",
+        variant: "destructive",
+      });
+      return false;
+    }
+  }
+
+  const handleVideoChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files[0]) {
+      setVideoUploading(true);
+      const file = files[0];
+
+      // Validate video file
+      if (!file.type.startsWith("video/")) {
+        toast({
+          title: "Invalid file type",
+          description: "Please upload only video files",
+          variant: "destructive",
+        });
+        setVideoUploading(false);
+        return;
+      }
+
+      setVideoSrc(file);
+      setVideoPreview(URL.createObjectURL(file));
+      captureThumbnail(URL.createObjectURL(file), 2, async (thumbnailFile) => {
+        try {
+          const thumb = await uploadImage(thumbnailFile, "thumbnails/");
+          setThumbnail(thumb);
+          console.log("thumbnail: " + thumb);
+        } catch (error) {
+          console.error("Failed to upload thumbnail: ", error);
+        }
+      });
+      setVideoUploading(false);
+    }
+  };
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    if (!!videoSrc) {
+      await handleUploadVideo(e);
+    } else if (!!poll) {
+      handlePollSubmit(e);
+    } else {
+      handleCreatePost(e);
+    }
+  }
   return (
     <>
       <div>
@@ -1177,6 +1285,30 @@ export const CreatePost: React.FC<CreatePostProps> = ({
                         ))}
                       </div>
 
+                      {/* Video preview */}
+                      {videoPreview && (
+                        <div className="w-full flex items-center relative justify-center h-[160px] sm:h-[300px]">
+                          <video
+                            className="!rounded-xl bg-purple-800/20 w-full h-full object-contain"
+                            src={videoPreview}
+                            controls
+                          />
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setVideoPreview("");
+                              setVideoSrc(null);
+                            }}
+                            className="absolute flex items-center justify-center duration-300 w-full h-full rounded-xl opacity-100 sm:opacity-0 sm:hover:opacity-100 bg-black/40"
+                          >
+                            <span className="cursor-pointer rounded-full bg-white/20 hover:bg-white/40 duration-300 p-2">
+                              <X size={20} className="text-white" />
+                            </span>
+                          </button>
+                        </div>
+                      )}
+
                       {/* Upload Image, Poll, AI Enable Switch */}
                       <div className="flex items-center pb-2 justify-between gap-2">
                         <div className="flex items-center gap-4">
@@ -1224,6 +1356,48 @@ export const CreatePost: React.FC<CreatePostProps> = ({
                                     d="M4 19.4999C8.37246 14.275 13.2741 7.384 20.4975 12.0424"
                                     stroke="currentColor"
                                     strokeWidth="1.5"
+                                  />
+                                </svg>
+                              </p>
+                            )}
+                          </div>
+
+                          {/* Video Upload Button */}
+                          <div
+                            className={cn(
+                              "relative cursor-pointer duration-300 hover:text-elegant text-light"
+                            )}
+                          >
+                            <Input
+                              disabled={poll}
+                              className="!p-0 opacity-0 absolute w-full h-full !cursor-pointer"
+                              type="file"
+                              accept="video/*"
+                              onChange={handleVideoChange}
+                              multiple={false}
+                            />
+
+                            {videoUploading ? (
+                              <Loader2 className="animate-spin text-center mb-1" />
+                            ) : (
+                              <p className="flex items-center gap-2 hover:text-elegant text-light">
+                                <svg
+                                  width="24"
+                                  height="25"
+                                  viewBox="0 0 24 25"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M2 11.5C2 8.20017 2 6.55025 3.02513 5.52513C4.05025 4.5 5.70017 4.5 9 4.5H10C13.2998 4.5 14.9497 4.5 15.9749 5.52513C17 6.55025 17 8.20017 17 11.5V13.5C17 16.7998 17 18.4497 15.9749 19.4749C14.9497 20.5 13.2998 20.5 10 20.5H9C5.70017 20.5 4.05025 20.5 3.02513 19.4749C2 18.4497 2 16.7998 2 13.5V11.5Z"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                  />
+                                  <path
+                                    d="M17 9.40585L17.1259 9.30196C19.2417 7.55623 20.2996 6.68336 21.1498 7.10482C22 7.52628 22 8.92355 22 11.7181V13.2819C22 16.0765 22 17.4737 21.1498 17.8952C20.2996 18.3166 19.2417 17.4438 17.1259 15.698L17 15.5941"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
                                   />
                                 </svg>
                               </p>
@@ -1295,7 +1469,6 @@ export const CreatePost: React.FC<CreatePostProps> = ({
                         </div>
 
                         <div className="flex items-center gap-1 text-black">
-                      
                           {group_type === "SUBJECT" ? (
                             <>
                               <Jhikimiki />
@@ -1344,15 +1517,16 @@ export const CreatePost: React.FC<CreatePostProps> = ({
                       {/* Submit Button  */}
                       <div className="grid w-full">
                         <Button
-                          onClick={(e) => {
-                            if (!!poll) {
-                              handlePollSubmit(e);
-                            } else {
-                              // e.preventDefault()
-                              handleCreatePost(e);
-                              // console.log(e)
-                            }
-                          }}
+                          // onClick={(e) => {
+                          //   if (!!poll) {
+                          //     handlePollSubmit(e);
+                          //   } else {
+                          //     // e.preventDefault()
+                          //     handleCreatePost(e);
+                          //     // console.log(e)
+                          //   }
+                          // }}
+                          onClick={(e) => handleSubmit(e)}
                           type="submit"
                           className="!rounded-full bg-hot dark:bg-hot"
                           disabled={loading}
@@ -1535,18 +1709,6 @@ export const CreatePost: React.FC<CreatePostProps> = ({
             </div>
           </div>
         </div>
-        {/* {timeLeft?.days !== 0 && (
-          <div
-            className={cn(
-              "z-[2] relative bg-white rounded-lg my-2",
-              user.role === "ADMIN" && "hidden"
-            )}
-          >
-            <p className="text-center bg-hot/20 max-w-4xl py-2 mx-auto rounded-lg h-full px-5 w-full flex items-center justify-center text-base font-semibold text-hot">
-              {formatBnNumber(timeLeft.days)} দিন ফ্রি ট্রায়াল বাকি আছে
-            </p>
-          </div>
-        )} */}
       </div>
     </>
   );

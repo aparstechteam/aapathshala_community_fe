@@ -1,1 +1,2 @@
-export * from './Write'
+export * from "./Write";
+export * from "./VideoPlayer";

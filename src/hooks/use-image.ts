@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import axios, { AxiosError } from 'axios';
-import { handleError } from './error-handle';
-import { secondaryAPI } from '@/configs';
+import { useState } from "react";
+import axios, { AxiosError } from "axios";
+import { handleError } from "./error-handle";
+import { secondaryAPI } from "@/configs";
 
 export function useCloudflareImage() {
   const [progress, setProgress] = useState(0);
@@ -12,23 +12,29 @@ export function useCloudflareImage() {
     fileSize: number
   ) => {
     try {
-      const response = await axios.post(`${secondaryAPI}/api/utils/file/upload`, { fileName, fileType, fileSize },
+      const response = await axios.post(
+        `${secondaryAPI}/api/utils/file/upload`,
+        { fileName, fileType, fileSize },
         {
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       );
       return response.data;
     } catch (error) {
-      handleError(error as AxiosError, () => getUploadUrl(fileName, fileType, fileSize))
+      handleError(error as AxiosError, () =>
+        getUploadUrl(fileName, fileType, fileSize)
+      );
     }
   };
 
-  const uploadImage = async (file: File, folder: string = '') => {
+  const uploadImage = async (file: File, folder: string = "") => {
     try {
-      const fileName = `${folder}${file?.name.split('.')[0]}_${Math.floor(Math.random() * 1000)}_${Date.now()}`;
+      const fileName = `${folder}${file?.name.split(".")[0]}_${Math.floor(
+        Math.random() * 1000
+      )}_${Date.now()}`;
 
       const { uploadUrl, imageUrl } = await getUploadUrl(
         fileName,
@@ -46,7 +52,7 @@ export function useCloudflareImage() {
 
       return imageUrl;
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error("Error uploading image:", error);
     }
   };
 
@@ -55,12 +61,12 @@ export function useCloudflareImage() {
       await axios.delete(`${secondaryAPI}/api/utils/file/delete`, {
         data: { url: imageUrl },
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
     } catch (error) {
-      console.error('Error deleting image:', error);
-      handleError(error as AxiosError, () => deleteImage(imageUrl))
+      console.error("Error deleting image:", error);
+      handleError(error as AxiosError, () => deleteImage(imageUrl));
     }
   };
 

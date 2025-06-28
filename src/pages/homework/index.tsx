@@ -201,7 +201,7 @@ const HomeWorkPage = () => {
   return (
     <>
       <Head>
-        <title>AFS - Homeworks</title>
+        <title>Homeworks</title>
       </Head>
       <Layout variant="home">
         <div className="max-w-5xl xl:max-w-[calc(100vw_-_750px)] 2xl:max-w-[calc(100vw_-_850px)] w-full mx-auto z-[2] relative sm:px-4 xl:px-0 sm:py-5">
@@ -335,7 +335,6 @@ const HomeWorkPage = () => {
             </div>
           ) : (
             <div className="flex flex-col gap-2 sm:gap-4 pt-10 xl:pt-0">
-           
               {/* Create HW Post  */}
               {user.role !== "USER" && user.level !== 0 && (
                 <HwCreate
